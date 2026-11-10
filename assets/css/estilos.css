@@ -265,3 +265,122 @@ strong{font-weight:500}
 }
 @media print{.cabecera,.wa-flotante,.indice,.hero .escenario{display:none!important}body{background:#fff}}
 kbd{font:500 .9em/1 var(--fuente-texto);padding:3px 8px;border-radius:var(--r-s);background:var(--crema);box-shadow:inset 0 0 0 1px var(--borde-fuerte),0 2px 0 var(--borde)}
+
+/* =========================================================
+   Cristal líquido (liquid glass) para botones y tarjetas.
+   Fondos translúcidos con desenfoque, borde luminoso y brillo superior.
+   Con «reducir transparencia» o sin soporte, se ven sólidos.
+   ========================================================= */
+:root{
+  --vidrio: linear-gradient(135deg, rgba(255,255,255,.66) 0%, rgba(255,255,255,.34) 100%);
+  --vidrio-oscuro: linear-gradient(135deg, rgba(86,79,93,.92) 0%, rgba(62,56,68,.94) 100%);
+  --vidrio-borde: rgba(255,255,255,.75);
+  --vidrio-luz: inset 0 1px 0 rgba(255,255,255,.85), inset 0 -1px 0 rgba(74,68,80,.10), inset 0 0 0 1px rgba(255,255,255,.35);
+  --vidrio-filtro: blur(16px) saturate(170%);
+}
+/* manchas de color suaves para que el cristal tenga algo que refractar */
+body{background-image:radial-gradient(42vmax 42vmax at 92% 8%, rgba(233,188,198,.75), transparent 70%),radial-gradient(36vmax 36vmax at 0% 55%, rgba(201,196,204,.55), transparent 70%),radial-gradient(30vmax 30vmax at 70% 100%, rgba(201,140,156,.25), transparent 70%);background-attachment:fixed}
+.bloque.perla,.seccion-complementos{background-image:radial-gradient(40vmax 30vmax at 90% 0%, rgba(233,188,198,.45), transparent 70%),radial-gradient(30vmax 30vmax at 0% 100%, rgba(201,196,204,.7), transparent 70%)}
+.bloque.crema{background-image:radial-gradient(40vmax 30vmax at 100% 100%, rgba(233,188,198,.35), transparent 70%)}
+.seccion-merceria{background-image:radial-gradient(40vmax 30vmax at 100% 0%, rgba(233,188,198,.7), transparent 70%),radial-gradient(30vmax 30vmax at 0% 60%, rgba(201,140,156,.18), transparent 70%)}
+
+.boton,.control,.estado,.indice a,.puerta .sub a,.producto,.puerta,.cambio,.subseccion ul.lista li{
+  position:relative;isolation:isolate;}
+.wa-flotante,.cesta-flotante,.tarjeta{isolation:isolate;}
+.boton,.control,.estado,.indice a,.puerta .sub a,.producto,.puerta,.cambio,.wa-flotante,.cesta-flotante,.cesta,.tarjeta,.subseccion ul.lista li{-webkit-backdrop-filter:var(--vidrio-filtro);backdrop-filter:var(--vidrio-filtro)}
+.boton,.control,.indice a,.puerta .sub a,.estado,.subseccion ul.lista li{
+  background:var(--vidrio);border:1px solid rgba(74,68,80,.28);box-shadow:var(--vidrio-luz),0 6px 16px -10px rgba(74,68,80,.35)}
+.boton::before,.control::before,.puerta::before,.cambio::before,.producto::before,.tarjeta::before,.cesta-flotante::before,.wa-flotante::before{
+  content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;z-index:-1;
+  background:linear-gradient(180deg, rgba(255,255,255,.55) 0%, rgba(255,255,255,0) 48%),radial-gradient(120% 80% at 20% 0%, rgba(255,255,255,.35), transparent 60%);opacity:.75}
+.boton:hover,.control:hover,.indice a:hover,.puerta .sub a:hover{background:linear-gradient(135deg, rgba(255,255,255,.88), rgba(255,255,255,.55));color:var(--grafito);border-color:rgba(74,68,80,.55);box-shadow:var(--vidrio-luz),0 10px 22px -12px rgba(74,68,80,.45)}
+.boton.lleno,.control[aria-pressed="true"],.indice a.activo,.wa-flotante,.cesta-flotante{background:var(--vidrio-oscuro);color:var(--crema);border:1px solid rgba(255,255,255,.22);box-shadow:inset 0 1px 0 rgba(255,255,255,.28),inset 0 -1px 0 rgba(0,0,0,.25),0 10px 24px -12px rgba(46,40,52,.65)}
+.boton.lleno::before,.wa-flotante::before,.cesta-flotante::before{opacity:.28}
+.boton.lleno:hover,.wa-flotante:hover,.cesta-flotante:hover{background:linear-gradient(135deg, rgba(156,90,108,.95), rgba(126,69,86,.96));color:var(--blanco);border-color:rgba(255,255,255,.3)}
+.puerta,.cambio,.producto{border:1px solid var(--vidrio-borde);box-shadow:var(--vidrio-luz),0 2px 4px rgba(74,68,80,.05),0 24px 48px -28px rgba(74,68,80,.45)}
+.puerta.m,.cambio.a-m{background:linear-gradient(135deg, rgba(233,188,198,.82), rgba(233,188,198,.55))}
+.puerta.c,.cambio.a-c{background:linear-gradient(135deg, rgba(238,236,239,.85), rgba(238,236,239,.55))}
+.tarjeta{border:1px solid var(--vidrio-borde)}
+.tarjeta.m{background:linear-gradient(135deg, rgba(240,200,209,.92), rgba(233,188,198,.78))}
+.tarjeta.c{background:linear-gradient(135deg, rgba(247,246,248,.94), rgba(238,236,239,.8))}
+.ayuda{box-shadow:inset 0 1px 0 rgba(255,255,255,.18),0 30px 60px -30px rgba(46,40,52,.6)}
+.ayuda .boton{background:linear-gradient(135deg, rgba(255,255,255,.18), rgba(255,255,255,.06));border-color:rgba(255,255,255,.5);color:var(--crema)}
+.ayuda .boton.lleno{background:linear-gradient(135deg, rgba(251,247,248,.96), rgba(238,236,239,.9));color:var(--grafito)}
+.ayuda .boton:hover{background:var(--crema);color:var(--grafito)}
+@media (prefers-reduced-transparency:reduce){
+  .boton,.control,.estado,.indice a,.puerta .sub a,.producto,.puerta,.cambio,.cesta,.tarjeta,.subseccion ul.lista li{-webkit-backdrop-filter:none;backdrop-filter:none}
+  .boton,.control,.indice a,.puerta .sub a,.estado,.producto,.subseccion ul.lista li{background:var(--crema)}
+  .puerta.m,.cambio.a-m,.tarjeta.m{background:var(--rosa)} .puerta.c,.cambio.a-c,.tarjeta.c{background:var(--perla)}
+  .boton.lleno,.wa-flotante,.cesta-flotante,.control[aria-pressed="true"],.indice a.activo{background:var(--grafito)}
+  .cesta{background:var(--crema)}
+}
+
+/* ---------- Productos ---------- */
+.subseccion.con-productos{grid-template-columns:minmax(0,5fr) minmax(0,6fr)}
+.subseccion.con-productos .foto{order:0}
+.subseccion.con-productos:nth-child(even) .foto{order:2}
+.productos{grid-column:1 / -1;list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:var(--e4)}
+.producto{max-width:none;display:grid;grid-template-rows:auto 1fr auto;gap:var(--e3);padding:var(--e3) var(--e3) var(--e4);border-radius:var(--r);background:var(--vidrio)}
+.producto .muestra{aspect-ratio:3/2;border-radius:calc(var(--r) - 4px);background:linear-gradient(140deg, var(--rosa) 0%, var(--rosa-polvo) 100%);box-shadow:inset 0 0 0 1px rgba(255,255,255,.6)}
+.producto .muestra.gris{background:linear-gradient(140deg, var(--niebla) 0%, var(--perla) 100%)}
+.producto-texto{display:grid;gap:2px;padding-inline:var(--e1)}
+.producto h3{font:500 1.125rem/1.3 var(--fuente-texto);letter-spacing:0}
+.producto .secundario{font-size:1rem}
+.producto .precio{font:500 1.375rem/1.2 var(--fuente-display);margin-top:var(--e2);color:var(--grafito)}
+.producto .boton{width:100%;min-height:52px;font-size:1rem;padding:0 16px}
+.producto .boton svg{width:20px;height:20px}
+.producto .boton.en-cesta{background:var(--vidrio-oscuro);color:var(--crema)}
+@media (max-width:760px){.subseccion.con-productos,.subseccion.con-productos:nth-child(even){grid-template-columns:1fr}.subseccion.con-productos:nth-child(even) .foto{order:0}}
+@media (max-width:560px){.productos{grid-template-columns:1fr;gap:var(--e3)}.producto{grid-template-columns:96px minmax(0,1fr);grid-template-rows:auto auto;align-items:center}.producto .muestra{aspect-ratio:1}.producto .boton{grid-column:1 / -1}}
+.aviso-compra{padding:var(--e4) var(--e5);border-radius:var(--r);background:var(--vidrio);border:1px solid var(--vidrio-borde);box-shadow:var(--vidrio-luz);-webkit-backdrop-filter:var(--vidrio-filtro);backdrop-filter:var(--vidrio-filtro)}
+
+/* ---------- Cesta flotante ---------- */
+.wa-flotante{bottom:calc(16px + env(safe-area-inset-bottom,0px))}
+.cesta-flotante{position:fixed;z-index:31;right:max(16px, calc(env(safe-area-inset-right,0px) + 12px));bottom:calc(84px + env(safe-area-inset-bottom,0px));
+  display:flex;align-items:center;gap:10px;min-height:60px;padding:0 14px 0 20px;border-radius:var(--r-pill);font:500 1.0625rem/1 var(--fuente-texto);cursor:pointer}
+.cesta-flotante[hidden]{display:none}
+.cesta-flotante svg{width:24px;height:24px;fill:currentColor}
+.cesta-flotante .contador{display:grid;place-items:center;min-width:32px;height:32px;padding:0 8px;border-radius:var(--r-pill);background:var(--rosa);color:var(--grafito);font-weight:500;box-shadow:inset 0 1px 0 rgba(255,255,255,.7)}
+.cesta-flotante:active{transform:translateY(1px)}
+.cesta-flotante.aparece{animation:cesta-entra .55s cubic-bezier(.2,1.4,.4,1) both}
+.cesta-flotante.late .contador{animation:cesta-late .45s cubic-bezier(.2,1.6,.4,1)}
+@keyframes cesta-entra{from{opacity:0;transform:translateY(24px) scale(.6)}to{opacity:1;transform:none}}
+@keyframes cesta-late{40%{transform:scale(1.35)}}
+.aviso-cesta{position:fixed;z-index:45;left:50%;top:88px;transform:translate(-50%,-16px);opacity:0;pointer-events:none;
+  max-width:min(92vw,28rem);padding:14px 20px;border-radius:var(--r-pill);background:var(--vidrio-oscuro);color:var(--crema);font-weight:500;text-align:center;
+  box-shadow:0 16px 32px -16px rgba(46,40,52,.7);-webkit-backdrop-filter:var(--vidrio-filtro);backdrop-filter:var(--vidrio-filtro);transition:opacity .25s ease,transform .25s ease}
+.aviso-cesta.visible{opacity:1;transform:translate(-50%,0)}
+
+
+/* ---------- Panel de la cesta ---------- */
+.cesta{position:fixed;inset:0 0 0 auto;margin:0;height:100%;max-height:100%;max-width:100%;width:min(100%,30rem);padding:0;border:0;border-left:1px solid var(--vidrio-borde);color:var(--grafito);
+  background:linear-gradient(160deg, rgba(251,247,248,.86), rgba(246,228,231,.78));box-shadow:-30px 0 60px -30px rgba(46,40,52,.5),inset 1px 0 0 rgba(255,255,255,.8)}
+.cesta[open]{display:flex;flex-direction:column;animation:cesta-panel .35s cubic-bezier(.2,.8,.2,1)}
+@keyframes cesta-panel{from{transform:translateX(40px);opacity:0}}
+.cesta::backdrop{background:rgba(46,40,52,.35);-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px)}
+.cesta-cabeza{display:flex;align-items:center;justify-content:space-between;gap:var(--e4);padding:var(--e5) var(--e5) var(--e4);border-bottom:1px solid var(--borde)}
+.cesta-cabeza h2{font-size:2rem}
+.cesta-cuerpo{display:grid;gap:var(--e4);align-content:start;padding:var(--e5);overflow-y:auto;flex:1}
+.cesta-vacia{font-size:1.125rem}
+.cesta-lista{list-style:none;margin:0;padding:0;display:grid;gap:var(--e3)}
+.cesta-lista li{max-width:none;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:var(--e2) var(--e3);padding:var(--e3) var(--e4);border-radius:var(--r);background:var(--vidrio);border:1px solid var(--vidrio-borde);box-shadow:var(--vidrio-luz)}
+.cesta-lista .nombre{font-weight:500}
+.cesta-lista .detalle{font-size:.95rem;color:var(--grafito-suave)}
+.cesta-lista .subtotal{font-weight:500;text-align:right;font-variant-numeric:tabular-nums}
+.cantidad{display:flex;align-items:center;gap:var(--e2);grid-column:1 / -1}
+.cantidad button{min-width:var(--toque);min-height:var(--toque);border-radius:50%;padding:0;font:500 1.375rem/1 var(--fuente-texto)}
+.cantidad output{min-width:2ch;text-align:center;font-weight:500;font-size:1.125rem;font-variant-numeric:tabular-nums}
+.cantidad .quitar{margin-left:auto;border-radius:var(--r-pill);padding:0 14px;font-size:1rem}
+.cesta-total{display:flex;justify-content:space-between;align-items:baseline;padding-top:var(--e3);border-top:1.5px solid var(--grafito);font-size:1.125rem}
+.cesta-total strong{font:500 1.75rem/1 var(--fuente-display)}
+.cesta-form{display:grid;gap:var(--e2)}
+.cesta-form label{font-weight:500;margin-top:var(--e2)}
+.cesta-form input,.cesta-form textarea{font:400 1.0625rem/1.4 var(--fuente-texto);color:var(--grafito);padding:12px 14px;min-height:var(--toque);border-radius:var(--r-s);border:1.5px solid var(--borde-fuerte);background:rgba(255,255,255,.75);width:100%}
+.cesta-form input:focus-visible,.cesta-form textarea:focus-visible{border-color:var(--grafito)}
+.cesta-acciones{display:grid;gap:var(--e3)}
+.cesta-acciones .boton{width:100%}
+.enlace-boton{justify-self:center;min-height:var(--toque);padding:0 var(--e3);background:none;border:0;font:500 1rem/1 var(--fuente-texto);color:var(--malva-texto);text-decoration:underline;text-underline-offset:.2em;cursor:pointer}
+.cesta.vacia .cesta-lista,.cesta.vacia .cesta-total,.cesta.vacia .cesta-form,.cesta.vacia .nota,.cesta.vacia .cesta-acciones{display:none}
+.cesta:not(.vacia) .cesta-vacia{display:none}
+@media (forced-colors:active){.cesta-flotante,.cesta{border:2px solid CanvasText}}
+@media print{.cesta-flotante,.aviso-cesta{display:none!important}}
