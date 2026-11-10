@@ -1,15 +1,38 @@
-/* La Valenciana · tokens de marca (paso 3) */
+/* La Valenciana · tokens de marca (paso 3, revisados para accesibilidad) */
 :root {
+  /* Paleta de marca (sin cambios) */
   --rosa-polvo: #F6E4E7;   /* fondo principal y bandas */
-  --rosa: #E9BCC6;         /* botones, tarjetas de Mercería */
-  --rosa-antiguo: #C98C9C; /* marco del logo, detalles */
-  --malva: #9C5A6C;        /* enlaces y texto destacado */
+  --rosa: #E9BCC6;         /* tarjetas de Mercería */
+  --rosa-antiguo: #C98C9C; /* detalles decorativos (nunca texto) */
+  --malva: #9C5A6C;        /* acento: rellenos y textos grandes */
   --perla: #EEECEF;        /* fondo alterno, tarjetas de Complementos */
-  --niebla: #C9C4CC;       /* líneas y bordes */
-  --grafito: #4A4450;      /* texto y logo principal */
+  --niebla: #C9C4CC;       /* líneas decorativas */
+  --grafito: #4A4450;      /* texto principal */
   --kraft: #C8A27A;        /* solo la caja del hero */
-  --blanco: #FFFFFF;
 
-  --fuente-display: "Playfair Display", Georgia, "Times New Roman", serif; /* logo y titulares, 500/700 */
-  --fuente-texto: "Jost", "Helvetica Neue", Arial, sans-serif;             /* textos, menús y botones, 300/400/500 */
+  /* Derivados para accesibilidad (mismos tonos, más contraste) */
+  --malva-texto: #7E4556;  /* enlaces y textos pequeños: 6:1 sobre rosa polvo */
+  --grafito-suave: #5E5864;/* texto secundario: 5,6:1 sobre rosa polvo */
+  --crema: #FBF7F8;        /* sustituye al blanco puro en fondos */
+  --blanco: #FFFFFF;       /* solo texto sobre fondos oscuros */
+  --borde: color-mix(in srgb, var(--grafito) 22%, transparent);
+  --borde-fuerte: color-mix(in srgb, var(--grafito) 55%, transparent);
+
+  /* Tipografía */
+  --fuente-display: "Playfair Display", Georgia, "Times New Roman", serif; /* titulares, 500/700 */
+  --fuente-texto: "Jost", "Helvetica Neue", Arial, sans-serif;             /* textos, menús y botones, 400/500 */
+
+  /* Espaciado (múltiplos de 4/8) y radios */
+  --e1: 4px; --e2: 8px; --e3: 12px; --e4: 16px; --e5: 24px; --e6: 32px; --e7: 48px; --e8: 64px;
+  --seccion: clamp(72px, 11vw, 136px);
+  --r: 12px;            /* radio base */
+  --r-s: 6px;           /* radio pequeño */
+  --r-pill: 999px;
+
+  /* Sombras suaves en capas */
+  --sombra: 0 1px 2px rgba(74,68,80,.06), 0 8px 24px -12px rgba(74,68,80,.22);
+  --sombra-alta: 0 2px 4px rgba(74,68,80,.06), 0 24px 48px -24px rgba(74,68,80,.38);
+
+  /* Objetivo táctil mínimo */
+  --toque: 48px;
 }
