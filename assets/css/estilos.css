@@ -1,0 +1,20 @@
+:root {
+  --rosa: #f3d6dc;
+  --gris: #e6e4e6;
+  --texto: #4a4448;
+}
+* { box-sizing: border-box; margin: 0; }
+body {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(160deg, var(--rosa), var(--gris));
+  color: var(--texto);
+  font-family: Georgia, "Times New Roman", serif;
+  text-align: center;
+  padding: 16px;
+}
+.proximamente { display: grid; gap: 12px; }
+h1 { font-size: clamp(2.2rem, 8vw, 4rem); letter-spacing: .02em; }
+.nota { opacity: .75; }
+a { color: inherit; }
