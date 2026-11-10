@@ -384,3 +384,104 @@ body{background-image:radial-gradient(42vmax 42vmax at 92% 8%, rgba(233,188,198,
 .cesta:not(.vacia) .cesta-vacia{display:none}
 @media (forced-colors:active){.cesta-flotante,.cesta{border:2px solid CanvasText}}
 @media print{.cesta-flotante,.aviso-cesta{display:none!important}}
+
+/* =========================================================
+   Mercería «cosida»: los botones relacionados con Mercería llevan una
+   costura por fuera, como si estuvieran cosidos al fondo.
+   Hilo malva oscuro (6:1 sobre el rosa) con un brillo claro que lo separa
+   del botón y del fondo.
+   ========================================================= */
+.cosido,.seccion-merceria .boton,.seccion-merceria .indice a,.menu-principal a.cosido{position:relative}
+.cosido::after,.seccion-merceria .boton::after,.seccion-merceria .indice a::after{
+  content:"";position:absolute;inset:-7px;border-radius:inherit;pointer-events:none;z-index:1;
+  border:2.5px dashed var(--malva-texto);
+  filter:drop-shadow(0 1px 0 rgba(255,255,255,.95)) drop-shadow(0 -1px 0 rgba(74,68,80,.15))}
+/* «pespunte» interior: el botón parece hundido en la tela */
+.cosido,.seccion-merceria .boton,.seccion-merceria .indice a{box-shadow:var(--vidrio-luz),0 0 0 3px rgba(255,255,255,.55),0 8px 18px -10px rgba(74,68,80,.45)}
+.boton.lleno.cosido,.seccion-merceria .boton.lleno{box-shadow:inset 0 1px 0 rgba(255,255,255,.28),0 0 0 3px rgba(255,255,255,.6),0 10px 24px -12px rgba(46,40,52,.65)}
+.puerta.cosido::after,.cambio.cosido::after,.tarjeta.cosido::after{inset:-9px;border-radius:calc(var(--r) + 9px)}
+.menu-principal a.cosido::after{inset:4px -2px}
+.ayuda .boton::after{border-color:var(--rosa);filter:drop-shadow(0 1px 0 rgba(0,0,0,.4))}
+/* aire para que las costuras no se toquen */
+.botones:has(.cosido),.seccion-merceria .botones{gap:22px}
+.seccion-merceria .indice ul{gap:20px;padding:16px 10px}
+.puerta.cosido .sub{gap:var(--e3)}
+.seccion-merceria .producto{padding:var(--e4) var(--e4) var(--e5)}
+@media (prefers-reduced-transparency:reduce){.cosido::after,.seccion-merceria .boton::after,.seccion-merceria .indice a::after{filter:none}}
+@media (forced-colors:active){.cosido::after,.seccion-merceria .boton::after,.seccion-merceria .indice a::after{border-color:CanvasText;filter:none}}
+
+/* Avisos de compra */
+.aviso-compra{display:flex;gap:var(--e3);align-items:flex-start}
+.aviso-compra svg,.pago-info svg{width:22px;height:22px;flex:none;fill:var(--malva-texto);margin-top:3px}
+
+/* =========================================================
+   Página de pedido y pago
+   ========================================================= */
+.pedido-pagina{display:grid;gap:var(--e6);padding-block:var(--e5) var(--seccion)}
+.pedido-cabeza{display:grid;gap:var(--e3)}
+.pedido-cabeza h1{font-size:clamp(2.4rem,6vw,4rem)}
+.progreso{list-style:none;margin:var(--e2) 0 0;padding:0;display:flex;flex-wrap:wrap;gap:var(--e2)}
+.progreso li{max-width:none;display:flex;align-items:center;gap:8px;padding:8px 16px;border-radius:var(--r-pill);font-size:1rem;color:var(--grafito-suave);background:var(--vidrio);border:1px solid var(--borde)}
+.progreso li.hecho::before{content:"✓";font-weight:500;color:var(--malva-texto)}
+.progreso li[aria-current]{background:var(--grafito);color:var(--crema);border-color:var(--grafito);font-weight:500}
+.aviso-prueba{padding:var(--e4) var(--e5);border-radius:var(--r);background:#FFF4D6;border:1.5px solid #B08A2E;color:#4A3B12}
+.pedido-rejilla{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:clamp(24px,4vw,56px);align-items:start}
+.pedido-rejilla[hidden],.pedido-vacio[hidden],.pedido-ok[hidden]{display:none}
+@media (max-width:900px){.pedido-rejilla{grid-template-columns:1fr}.pedido-resumen{order:-1}}
+.pedido-form{display:grid;gap:var(--e5)}
+.pedido-form fieldset{margin:0;padding:clamp(20px,3vw,32px);border-radius:var(--r);border:1px solid var(--vidrio-borde);background:var(--vidrio);box-shadow:var(--vidrio-luz),0 24px 48px -32px rgba(74,68,80,.45);-webkit-backdrop-filter:var(--vidrio-filtro);backdrop-filter:var(--vidrio-filtro);display:grid;gap:var(--e4);min-width:0}
+.pedido-form legend{float:left;width:100%;display:flex;align-items:center;gap:var(--e3);font:500 clamp(1.5rem,3vw,1.875rem)/1.2 var(--fuente-display);padding:0;margin-bottom:var(--e1)}
+.pedido-form legend+*{clear:both}
+.paso-num{display:grid;place-items:center;width:40px;height:40px;border-radius:50%;background:var(--grafito);color:var(--crema);font:500 1.125rem/1 var(--fuente-texto);flex:none}
+.campo{display:grid;gap:6px}
+.campo label{font-weight:500}
+.campo input[type=text],.campo input[type=email],.campo input[type=tel],.campo textarea{font:400 1.125rem/1.4 var(--fuente-texto);color:var(--grafito);width:100%;min-height:52px;padding:12px 16px;border-radius:var(--r-s);border:1.5px solid var(--borde-fuerte);background:rgba(255,255,255,.85)}
+.campo input:hover,.campo textarea:hover{border-color:var(--grafito)}
+.campo [aria-invalid="true"]{border-color:#A3263A;box-shadow:0 0 0 1px #A3263A}
+.ayuda-campo{font-size:1rem;color:var(--grafito-suave)}
+.error{font-size:1rem;font-weight:500;color:#A3263A}
+.error:empty{display:none}
+.error::before{content:"⚠ "}
+.campo-check{grid-template-columns:auto minmax(0,1fr);align-items:start;gap:var(--e3)}
+.campo-check input{width:28px;height:28px;margin:2px 0 0;accent-color:var(--grafito);cursor:pointer}
+.campo-check label{font-weight:400}
+.campo-check .error{grid-column:1 / -1}
+.resumen-errores{padding:var(--e4) var(--e5);border-radius:var(--r);border:2px solid #A3263A;background:#FDF1F2}
+.resumen-errores h2{font-size:1.5rem;margin-bottom:var(--e2)}
+.resumen-errores ul{margin:0;padding-left:1.2em;display:grid;gap:4px}
+.resumen-errores a{color:#A3263A;font-weight:500}
+.opcion-entrega{display:grid;grid-template-columns:auto minmax(0,1fr);gap:var(--e3);padding:var(--e4);border-radius:var(--r);border:2px solid var(--grafito);background:rgba(255,255,255,.7)}
+.marca-ok{display:grid;place-items:center;width:32px;height:32px;border-radius:50%;background:var(--grafito);color:var(--crema);font-weight:500}
+.pago-info{display:flex;gap:var(--e3);align-items:flex-start}
+.pago-estado:empty{display:none}
+.pago-estado{padding:var(--e3) var(--e4);border-radius:var(--r-s);background:var(--crema);border:1px solid var(--borde);font-weight:500}
+.pago-estado.mal{background:#FDF1F2;border-color:#A3263A;color:#7A1C2B}
+.pago-botones{min-height:56px;max-width:100%;position:relative;z-index:0}
+.pago-alternativa{display:grid;gap:var(--e3);padding-top:var(--e3);border-top:1px solid var(--borde)}
+.pago-alternativa[hidden]{display:none}
+.pedido-resumen{position:sticky;top:96px}
+@media (max-width:900px){.pedido-resumen{position:static}}
+.resumen-caja{display:grid;gap:var(--e4);padding:clamp(20px,3vw,32px);border-radius:var(--r);border:1px solid var(--vidrio-borde);background:var(--vidrio);box-shadow:var(--vidrio-luz),0 24px 48px -32px rgba(74,68,80,.45);-webkit-backdrop-filter:var(--vidrio-filtro);backdrop-filter:var(--vidrio-filtro)}
+.resumen-caja h2{font-size:1.875rem}
+.resumen-lista{list-style:none;margin:0;padding:0;display:grid;gap:var(--e3)}
+.resumen-lista li{max-width:none;display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:var(--e3);align-items:baseline;padding-bottom:var(--e3);border-bottom:1px solid var(--borde)}
+.r-cant{color:var(--grafito-suave);font-weight:500}
+.r-nombre{display:grid}
+.r-nombre small{font-size:.95rem;color:var(--grafito-suave)}
+.r-precio{font-weight:500}
+.resumen-totales{margin:0;display:grid;gap:var(--e2)}
+.resumen-totales div{display:flex;justify-content:space-between;gap:var(--e3)}
+.resumen-totales dd{margin:0}
+.resumen-totales .total{padding-top:var(--e3);border-top:1.5px solid var(--grafito);font-size:1.125rem;align-items:baseline}
+.resumen-totales .total dd{font:500 1.875rem/1 var(--fuente-display)}
+.editar-cesta{justify-self:start}
+.pedido-vacio{display:grid;gap:var(--e5)}
+.pedido-ok{display:grid;gap:var(--e4);justify-items:start;padding:clamp(28px,5vw,56px);border-radius:var(--r);background:var(--vidrio);border:1px solid var(--vidrio-borde);box-shadow:var(--vidrio-luz),var(--sombra-alta);max-width:48rem}
+.ok-sello{display:grid;place-items:center;width:72px;height:72px;border-radius:50%;background:#3F7A5A;color:#fff;font-size:2.25rem;box-shadow:0 0 0 8px color-mix(in srgb,#3F7A5A 18%,transparent)}
+.ok-lista{width:100%}
+.ok-total{font:500 1.5rem/1.2 var(--fuente-display)}
+.pagina-pedido .wa-flotante{display:none}
+.pagina-pedido .cesta-flotante{bottom:calc(16px + env(safe-area-inset-bottom,0px))}
+.menu-principal a.cosido{box-shadow:none}
+.producto .boton.en-cesta::before{opacity:.28}
+.producto .boton.en-cesta:hover{background:linear-gradient(135deg, rgba(156,90,108,.95), rgba(126,69,86,.96));color:var(--blanco)}

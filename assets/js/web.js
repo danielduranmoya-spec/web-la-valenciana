@@ -92,7 +92,7 @@
     }
     document.querySelectorAll('.anadir').forEach(function(bt){
       var x=cesta[bt.getAttribute('data-id')]; bt.classList.toggle('en-cesta',!!x);
-      bt.querySelector('.txt').textContent=x?('Añadir otro ('+x.q+' en la cesta)'):'Añadir a la cesta';
+      bt.querySelector('.txt').textContent=x?('Añadir otro (tienes '+x.q+')'):'Añadir a la cesta';
     });
     if(!dlg) return;
     dlg.classList.toggle('vacia',n===0);
@@ -115,6 +115,7 @@
     });
     dlg.querySelector('.cesta-importe').textContent=eur.format(total());
     actualizarEnvio();
+    try{ document.dispatchEvent(new CustomEvent('lv-cesta',{detail:{cesta:cesta}})) }catch(e){}
   }
   function enfocarTrasBorrar(){ var b=dlg.querySelector('.cesta-lista .mas')||dlg.querySelector('.cerrar-cesta'); if(b) b.focus() }
   function cambiar(id,d,boton){
@@ -135,7 +136,7 @@
     });
   });
   function mensaje(){
-    var f=dlg.querySelector('.cesta-form'), nombre=f.nombre.value.trim(), notas=f.notas.value.trim();
+    var f=dlg.querySelector('.cesta-form'), nombre=f.nombre?f.nombre.value.trim():'', notas=f.notas?f.notas.value.trim():'';
     var l=['Hola, La Valenciana. Quiero hacer este pedido para recoger en la tienda:',''];
     items().forEach(function(x){ l.push('- '+x.q+' × '+x.n+' ('+x.d+') · '+eur.format(x.p*x.q)) });
     l.push('','Total orientativo: '+eur.format(total()));
@@ -150,7 +151,7 @@
     var para=secs.complementos&&!secs.merceria?dlg.getAttribute('data-correo-c'):dlg.getAttribute('data-correo-m');
     var cc=secs.complementos&&secs.merceria?'&cc='+dlg.getAttribute('data-correo-c'):'';
     dlg.querySelector('.enviar-wa').href='https://wa.me/'+dlg.getAttribute('data-wa')+'?text='+encodeURIComponent(m);
-    dlg.querySelector('.enviar-correo').href='mailto:'+para+'?subject='+encodeURIComponent('Pedido para recoger en tienda')+cc+'&body='+encodeURIComponent(m);
+    var ec=dlg.querySelector('.enviar-correo'); if(ec) ec.href='mailto:'+para+'?subject='+encodeURIComponent('Pedido para recoger en tienda')+cc+'&body='+encodeURIComponent(m);
   }
   if(dlg){
     var ultimoFoco=null;
@@ -158,6 +159,8 @@
     function cerrarCesta(){ if(dlg.close) dlg.close(); else dlg.removeAttribute('open') }
     dlg.addEventListener('close',function(){ if(ultimoFoco&&ultimoFoco.focus) ultimoFoco.focus() });
     if(flot) flot.addEventListener('click',abrir);
+    document.querySelectorAll('.editar-cesta').forEach(function(bt){ bt.addEventListener('click',abrir) });
+    window.LVCesta={abrir:abrir,vaciar:function(){ cesta={}; guardarCesta(); pintar() },leer:function(){ return JSON.parse(JSON.stringify(cesta)) }};
     dlg.querySelector('.cerrar-cesta').addEventListener('click',cerrarCesta);
     dlg.addEventListener('click',function(e){ if(e.target===dlg) cerrarCesta() });
     dlg.querySelector('.cesta-form').addEventListener("input",actualizarEnvio);

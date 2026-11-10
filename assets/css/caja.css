@@ -48,8 +48,8 @@
 .entrada .abriendo{opacity:1}
 .fase-abierta .abriendo{opacity:0}
 @media (max-width:900px){.hero{--escala:.82}}
-@media (max-width:640px){.hero{--escala:.64}}
-@media (max-width:380px){.hero{--escala:.56}}
+@media (max-width:640px){.hero{--escala:.58}}
+@media (max-width:380px){.hero{--escala:.52}}
 
 /* ---------- Caja: más detalle (luz, cartón ondulado, cinta y lazo, papel de seda, sombras) ---------- */
 .cara{background-image:
@@ -95,3 +95,17 @@
   background:radial-gradient(closest-side, rgba(50,35,25,.45), rgba(50,35,25,0));filter:blur(2px);transform:translateY(118px);transition:transform calc(1.1s*var(--t)) cubic-bezier(.3,.7,.2,1)}
 .fase-abanico .sombra-contacto{transform:translateY(196px) scale(.95)}
 .tarjeta{box-shadow:0 2px 4px rgba(74,68,80,.10),0 14px 24px -10px rgba(74,68,80,.35),0 40px 60px -30px rgba(74,68,80,.35)}
+
+/* ---------- Objetos de la tienda que salen de la caja ---------- */
+.objeto{position:absolute;left:0;top:0;width:var(--ow);margin-left:calc(var(--ow)/-2);margin-top:calc(var(--ow)/-2);opacity:0;transform-style:preserve-3d;pointer-events:none;
+  transform:translate3d(calc(var(--ox)*.15),10px,0) rotateY(16deg) rotateX(24deg) scale(.35);
+  transition:transform calc(1s*var(--t)) cubic-bezier(.2,1.25,.35,1) calc((.05s + var(--oi)*.07s)*var(--t)), opacity calc(.35s*var(--t)) ease calc(var(--oi)*.07s*var(--t))}
+.objeto svg{width:100%;height:auto;overflow:visible;filter:drop-shadow(0 10px 8px rgba(74,68,80,.28)) drop-shadow(0 2px 2px rgba(74,68,80,.18))}
+.fase-sale .objeto{opacity:1;transform:translate3d(calc(var(--ox)*.4),calc(var(--oy)*.55),var(--oz)) rotateY(16deg) rotateX(24deg) rotateZ(calc(var(--or)*2)) scale(.8)}
+.fase-abanico .objeto{opacity:1;transform:translate3d(calc(var(--ox)*var(--sx,1)),var(--oy),var(--oz)) rotateY(8deg) rotateX(18deg) rotateZ(var(--or))}
+.flota{animation:flotar 5.5s ease-in-out infinite;animation-delay:calc(var(--oi)*-.7s)}
+@keyframes flotar{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-8px) rotate(3deg)}}
+@media (prefers-reduced-motion:reduce){.flota{animation:none}}
+/* costura de la tarjeta de Mercería dentro de la caja */
+.tarjeta.cosido::after{border-color:var(--malva-texto)}
+@media (max-width:640px){.hero{--sx:.82}}
