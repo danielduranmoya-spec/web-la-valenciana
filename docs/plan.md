@@ -6,6 +6,6 @@ Cada paso se valida antes de empezar el siguiente.
 - [x] **2. Investigación y contenidos** · datos del perfil de Google e Instagram, textos de la web.
 - [x] **3. Identidad visual** · logo vectorial en versión pastel, paleta y tipografías.
 - [x] **4. Estructura y wireframes** · Inicio, Mercería, Complementos, Nosotras, Contacto.
-- [ ] **5. Animación del hero** · la caja se abre y despliega el menú.
-- [ ] **6. Desarrollo** · web completa, adaptada al móvil, SEO local.
+- [x] **5. Animación del hero** · la caja se abre y despliega el menú.
+- [x] **6. Desarrollo** · web completa, adaptada al móvil, SEO local.
 - [ ] **7. Publicación y revisión final** · más adelante, conexión de los dominios.

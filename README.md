@@ -9,14 +9,21 @@ Web de **La Valenciana**, con sus dos secciones: **Mercería** y **Complementos*
 ## Estructura
 
 ```
-index.html            Portada (hero con la caja)
-merceria/             Sección Mercería
-complementos/         Sección Complementos
-assets/css/           Estilos
-assets/js/            Scripts y animaciones
-assets/img/marca/     Logotipo y referencias de marca
-docs/                 Plan y documentación del proyecto
+index.html                    Inicio: caja animada, secciones, Nosotras y Visítanos
+merceria/                     Mercería y sus subsecciones (anclas #hilos-y-lanas, ...)
+complementos/                 Complementos y sus subsecciones
+aviso-legal/ privacidad/ cookies/   Textos legales (faltan titular y NIF)
+404.html                      Página de error
+assets/css/tokens.css         Colores y tipografías de marca
+assets/css/estilos.css        Estilos comunes
+assets/css/caja.css           Animación 3D de la caja (solo Inicio)
+assets/js/web.js              Menú móvil, índice de subsecciones y animación
+assets/fonts/                 Playfair Display y Jost alojadas en la web
+assets/img/marca/             Logotipos y monograma
+docs/                         Plan e identidad
 ```
+
+Las fotos son huecos con el color de la paleta (`.foto`). Para poner una foto real, añade dentro un `<img src="..." alt="...">`.
 
 ## Ver la web en local
 

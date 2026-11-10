@@ -1,20 +1,131 @@
-:root {
-  --rosa: #f3d6dc;
-  --gris: #e6e4e6;
-  --texto: #4a4448;
+/* La Valenciana · estilos comunes. Requiere tokens.css y fuentes.css */
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important;animation:none!important}}
+body{margin:0;background:var(--rosa-polvo);color:var(--grafito);font:300 17px/1.65 var(--fuente-texto);-webkit-font-smoothing:antialiased}
+img,svg{max-width:100%;display:block}
+a{color:var(--malva)}
+h1,h2,h3{font-family:var(--fuente-display);font-weight:500;line-height:1.15;margin:0;text-wrap:balance;color:var(--grafito)}
+h1{font-size:clamp(2.2rem,6vw,3.6rem)}
+h2{font-size:clamp(1.8rem,4.2vw,2.6rem)}
+h3{font-size:1.35rem}
+p{margin:0}
+:focus-visible{outline:2px solid var(--malva);outline-offset:3px}
+.salto{position:absolute;left:-999px;top:8px;background:var(--grafito);color:var(--blanco);padding:8px 14px;border-radius:4px;z-index:50}
+.salto:focus{left:12px}
+.envoltura{width:100%;max-width:1120px;margin:0 auto;padding-left:max(20px, env(safe-area-inset-left,0px));padding-right:max(20px, env(safe-area-inset-right,0px))}
+.etiqueta{font:500 .74rem/1 var(--fuente-texto);letter-spacing:.18em;text-transform:uppercase;color:var(--malva)}
+.entradilla{font-size:1.1rem;max-width:56ch}
+
+/* Cabecera */
+.cabecera{position:sticky;top:0;z-index:20;background:color-mix(in srgb, var(--rosa-polvo) 88%, transparent);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid transparent;transition:border-color .3s ease}
+.cabecera.con-borde{border-bottom-color:color-mix(in srgb, var(--niebla) 60%, transparent)}
+.cabecera .envoltura{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:68px;padding-top:env(safe-area-inset-top,0px)}
+.marca{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--grafito);font:700 1.2rem/1 var(--fuente-display);letter-spacing:.01em}
+.marca img{width:34px;height:34px;border-radius:9px}
+.menu-principal ul{list-style:none;margin:0;padding:0;display:flex;gap:28px}
+.menu-principal a{font:400 .8rem/1 var(--fuente-texto);letter-spacing:.16em;text-transform:uppercase;color:var(--grafito);text-decoration:none;padding:8px 0;border-bottom:1px solid transparent}
+.menu-principal a:hover,.menu-principal a[aria-current="page"]{border-bottom-color:var(--malva)}
+.boton-menu{display:none;background:none;border:1px solid var(--niebla);border-radius:999px;padding:9px 14px;font:500 .72rem/1 var(--fuente-texto);letter-spacing:.16em;text-transform:uppercase;color:var(--grafito);cursor:pointer}
+@media (max-width:760px){
+  .boton-menu{display:block}
+  .menu-principal{position:absolute;left:0;right:0;top:100%;background:var(--rosa-polvo);border-bottom:1px solid var(--niebla);display:none}
+  .menu-principal.abierto{display:block}
+  .menu-principal ul{flex-direction:column;gap:0;padding:8px max(20px, env(safe-area-inset-left,0px)) 18px}
+  .menu-principal a{display:block;padding:14px 0;font-size:.9rem}
 }
-* { box-sizing: border-box; margin: 0; }
-body {
-  min-height: 100vh;
-  display: grid;
-  place-items: center;
-  background: linear-gradient(160deg, var(--rosa), var(--gris));
-  color: var(--texto);
-  font-family: Georgia, "Times New Roman", serif;
-  text-align: center;
-  padding: 16px;
-}
-.proximamente { display: grid; gap: 12px; }
-h1 { font-size: clamp(2.2rem, 8vw, 4rem); letter-spacing: .02em; }
-.nota { opacity: .75; }
-a { color: inherit; }
+
+/* Bloques */
+.bloque{padding-block:clamp(64px,10vw,120px)}
+.bloque.perla{background:var(--perla)}
+.bloque.blanco{background:var(--blanco)}
+.cabeza-bloque{display:grid;gap:14px;margin-bottom:clamp(32px,5vw,56px)}
+
+/* Huecos de foto (hasta tener fotos reales) */
+.foto{position:relative;border-radius:6px;overflow:hidden;aspect-ratio:4/3;max-width:100%;
+  background:linear-gradient(140deg, var(--rosa) 0%, var(--rosa-polvo) 100%)}
+.foto.gris{background:linear-gradient(140deg, var(--niebla) 0%, var(--perla) 100%)}
+.foto::after{content:"";position:absolute;inset:12px;border:1.5px dashed color-mix(in srgb, var(--blanco) 75%, transparent);border-radius:3px}
+.foto span{position:absolute;left:24px;bottom:20px;font:400 .72rem/1 var(--fuente-texto);letter-spacing:.14em;text-transform:uppercase;color:color-mix(in srgb, var(--grafito) 70%, transparent)}
+.foto img{width:100%;height:100%;object-fit:cover}
+
+/* Puertas a las secciones */
+.puertas{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+@media (max-width:700px){.puertas{grid-template-columns:1fr}}
+.puerta{display:grid;gap:18px;text-decoration:none;color:var(--grafito);border-radius:8px;padding:18px 18px 26px;transition:transform .25s ease, box-shadow .25s ease}
+.puerta.m{background:var(--rosa)} .puerta.c{background:var(--perla)}
+.puerta:hover{transform:translateY(-3px);box-shadow:0 22px 36px -24px rgba(74,68,80,.55)}
+.puerta .texto{display:grid;gap:6px;padding-inline:8px}
+.puerta .ir{font:500 .74rem/1 var(--fuente-texto);letter-spacing:.16em;text-transform:uppercase;color:var(--malva);margin-top:6px}
+.puerta .foto{background:color-mix(in srgb, var(--blanco) 45%, transparent)}
+
+/* Dos columnas */
+.dos{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(28px,5vw,64px);align-items:center}
+@media (max-width:800px){.dos{grid-template-columns:1fr}}
+.pila{display:grid;gap:18px;min-width:0}
+
+/* Datos de visita */
+.datos{display:grid;gap:18px;margin:8px 0 0;padding:0}
+.datos div{display:grid;grid-template-columns:120px minmax(0,1fr);gap:12px;border-top:1px solid var(--niebla);padding-top:14px}
+@media (max-width:420px){.datos div{grid-template-columns:1fr;gap:2px}}
+.datos dt{font:500 .74rem/1.8 var(--fuente-texto);letter-spacing:.14em;text-transform:uppercase;color:var(--malva)}
+.datos dd{margin:0;overflow-wrap:anywhere}
+.datos a{color:var(--grafito)}
+.horario{font-variant-numeric:tabular-nums}
+
+/* Botones */
+.botones{display:flex;flex-wrap:wrap;gap:12px}
+.boton{display:inline-flex;align-items:center;gap:10px;border-radius:999px;padding:14px 22px;font:500 .78rem/1 var(--fuente-texto);letter-spacing:.14em;text-transform:uppercase;text-decoration:none;border:1px solid var(--grafito);color:var(--grafito);background:transparent;transition:background .2s ease,color .2s ease}
+.boton:hover{background:var(--grafito);color:var(--blanco)}
+.boton.lleno{background:var(--grafito);color:var(--blanco)}
+.boton.lleno:hover{background:var(--malva);border-color:var(--malva)}
+.boton svg{width:16px;height:16px;fill:currentColor}
+
+/* Página de sección */
+.portada-seccion{padding-block:clamp(48px,8vw,96px) clamp(40px,6vw,72px)}
+.portada-seccion .dos{align-items:end}
+.seccion-merceria{background:var(--rosa-polvo)}
+.seccion-complementos{background:var(--perla)}
+.indice{position:sticky;top:68px;z-index:10;background:inherit;border-block:1px solid color-mix(in srgb, var(--niebla) 70%, transparent)}
+.indice ul{list-style:none;margin:0;padding:12px 0;display:flex;gap:10px;overflow-x:auto;scrollbar-width:none}
+.indice ul::-webkit-scrollbar{display:none}
+.indice a{display:block;white-space:nowrap;border:1px solid var(--niebla);border-radius:999px;padding:8px 14px;font-size:.85rem;color:var(--grafito);text-decoration:none;background:color-mix(in srgb, var(--blanco) 50%, transparent)}
+.indice a:hover,.indice a.activo{border-color:var(--grafito);background:var(--blanco)}
+.subsecciones{display:grid;gap:clamp(56px,8vw,96px);padding-block:clamp(56px,8vw,96px)}
+.subseccion{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:clamp(24px,5vw,64px);align-items:center;scroll-margin-top:140px}
+.subseccion:nth-child(even) .foto{order:2}
+@media (max-width:760px){.subseccion{grid-template-columns:1fr}.subseccion:nth-child(even) .foto{order:0}}
+.subseccion .pila{max-width:46ch}
+.subseccion ul.lista{margin:0;padding:0;list-style:none;display:flex;flex-wrap:wrap;gap:8px}
+.subseccion ul.lista li{font-size:.85rem;border:1px dashed var(--rosa-antiguo);border-radius:999px;padding:4px 12px}
+.enlace-wa{display:inline-flex;gap:8px;align-items:center;font:500 .76rem/1 var(--fuente-texto);letter-spacing:.14em;text-transform:uppercase;color:var(--malva);text-decoration:none;border-bottom:1px solid currentColor;padding-bottom:4px;justify-self:start}
+.cambio{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:24px;align-items:center;border-radius:8px;padding:clamp(28px,5vw,48px);text-decoration:none;color:var(--grafito)}
+.cambio.a-c{background:var(--perla)} .cambio.a-m{background:var(--rosa)}
+.cambio .flecha{font:500 2rem/1 var(--fuente-display);transition:transform .25s ease}
+.cambio:hover .flecha{transform:translateX(6px)}
+
+/* Pie */
+.pie{background:var(--grafito);color:var(--perla);padding-block:64px calc(40px + env(safe-area-inset-bottom,0px))}
+.pie a{color:var(--perla)}
+.pie .rejilla{display:grid;grid-template-columns:minmax(0,1.3fr) repeat(3,minmax(0,1fr));gap:36px}
+@media (max-width:860px){.pie .rejilla{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:480px){.pie .rejilla{grid-template-columns:1fr}}
+.pie .logo-pie{width:220px}
+.pie h2{font:500 .74rem/1 var(--fuente-texto);letter-spacing:.18em;text-transform:uppercase;color:var(--rosa);margin-bottom:14px}
+.pie ul{list-style:none;margin:0;padding:0;display:grid;gap:8px;font-size:.95rem}
+.pie li{overflow-wrap:anywhere}
+.pie .legal{margin-top:48px;padding-top:20px;border-top:1px solid color-mix(in srgb, var(--perla) 25%, transparent);display:flex;flex-wrap:wrap;gap:12px 24px;justify-content:space-between;font-size:.85rem}
+.pie .legal ul{display:flex;flex-wrap:wrap;gap:18px}
+
+/* WhatsApp flotante */
+.wa-flotante{position:fixed;z-index:30;right:max(18px, calc(env(safe-area-inset-right,0px) + 12px));bottom:calc(18px + env(safe-area-inset-bottom,0px));
+  display:flex;align-items:center;gap:8px;background:var(--grafito);color:var(--blanco);text-decoration:none;border-radius:999px;padding:13px 18px;
+  font:500 .74rem/1 var(--fuente-texto);letter-spacing:.12em;text-transform:uppercase;box-shadow:0 14px 28px -14px rgba(74,68,80,.7);transition:opacity .5s ease, transform .5s ease}
+.wa-flotante svg{width:18px;height:18px;fill:currentColor}
+.wa-flotante:hover{background:var(--malva)}
+
+/* Páginas legales */
+.legal-texto{max-width:72ch;display:grid;gap:18px;padding-block:clamp(48px,8vw,96px)}
+.legal-texto h2{font-size:1.5rem;margin-top:16px}
+.pendiente{background:var(--rosa);padding:2px 6px;border-radius:3px;font-weight:400}
+.enlace-wa svg{width:16px;height:16px;fill:currentColor;flex:none}
