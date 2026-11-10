@@ -1,0 +1,15 @@
+/* La Valenciana · tokens de marca (paso 3) */
+:root {
+  --rosa-polvo: #F6E4E7;   /* fondo principal y bandas */
+  --rosa: #E9BCC6;         /* botones, tarjetas de Mercería */
+  --rosa-antiguo: #C98C9C; /* marco del logo, detalles */
+  --malva: #9C5A6C;        /* enlaces y texto destacado */
+  --perla: #EEECEF;        /* fondo alterno, tarjetas de Complementos */
+  --niebla: #C9C4CC;       /* líneas y bordes */
+  --grafito: #4A4450;      /* texto y logo principal */
+  --kraft: #C8A27A;        /* solo la caja del hero */
+  --blanco: #FFFFFF;
+
+  --fuente-display: "Playfair Display", Georgia, "Times New Roman", serif; /* logo y titulares, 500/700 */
+  --fuente-texto: "Jost", "Helvetica Neue", Arial, sans-serif;             /* textos, menús y botones, 300/400/500 */
+}
