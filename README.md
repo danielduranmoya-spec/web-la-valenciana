@@ -41,6 +41,11 @@ y visita http://localhost:8000.
 - TikTok: _lavalenciana_
 - Facebook: La Valenciana
 - WhatsApp: 633 930 935
-- Dominios: lavalencianamerceria.com · lavalencianacomplementos.com (pendientes)
+- Dominios: lavalencianamerceria.com · lavalencianacomplementos.com (ver docs/dominios.md)
 
-Plan de trabajo: [docs/plan.md](docs/plan.md)
+Web publicada: https://danielduranmoya-spec.github.io/web-la-valenciana/
+
+- Plan de trabajo: [docs/plan.md](docs/plan.md)
+- Identidad visual: [docs/identidad.md](docs/identidad.md)
+- Conectar los dominios: [docs/dominios.md](docs/dominios.md)
+- Las páginas se generan con `python3 docs/generar.py` (cabecera y pie compartidos). Si cambias textos, edita ese archivo y vuelve a ejecutarlo.
