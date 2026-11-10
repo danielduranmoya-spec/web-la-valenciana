@@ -43,6 +43,28 @@
   </div>
 </footer>
 <a class="wa-flotante" href="https://wa.me/34633930935?text=Hola%2C%20La%20Valenciana"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.1l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.7.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.3-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6a2.7 2.7 0 0 0 1.8-1.2 2.2 2.2 0 0 0 .2-1.3c-.1-.1-.3-.2-.5-.3z"/></svg><span>WhatsApp<span class="vh">: escríbenos</span></span></a>
+<button class="cesta-flotante" type="button" hidden aria-haspopup="dialog" aria-controls="cesta"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 7V6a5 5 0 0 1 10 0v1h3a1 1 0 0 1 1 1.1l-1.2 12A2 2 0 0 1 17.8 22H6.2a2 2 0 0 1-2-1.9L3 8.1A1 1 0 0 1 4 7zm2 0h6V6a3 3 0 0 0-6 0zm-1 4a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm8 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/></svg><span>Cesta</span><span class="contador num" aria-hidden="true">0</span><span class="vh cesta-resumen"></span></button>
+<p class="aviso-cesta" role="status" aria-live="polite"></p>
+<dialog class="cesta" id="cesta" aria-labelledby="titulo-cesta" data-wa="34633930935" data-correo-m="pedidos@lavalencianamerceria.com" data-correo-c="pedidos@lavalencianacomplementos.com">
+  <div class="cesta-cabeza"><h2 id="titulo-cesta">Tu cesta</h2><button class="control cerrar-cesta" type="button">Cerrar<span class="vh"> la cesta</span> <span aria-hidden="true">✕</span></button></div>
+  <div class="cesta-cuerpo">
+    <p class="cesta-vacia">Tu cesta está vacía. Entra en <a href="/web-la-valenciana/merceria/">Mercería</a> o en <a href="/web-la-valenciana/complementos/">Complementos</a> y pulsa «Añadir a la cesta».</p>
+    <ul class="cesta-lista"></ul>
+    <div class="cesta-total"><span>Total orientativo</span><strong class="num cesta-importe">0,00 €</strong></div>
+    <form class="cesta-form">
+      <label for="cesta-nombre">Tu nombre <span class="secundario">(opcional)</span></label>
+      <input id="cesta-nombre" name="nombre" type="text" autocomplete="name">
+      <label for="cesta-notas">Tallas, colores u otras indicaciones <span class="secundario">(opcional)</span></label>
+      <textarea id="cesta-notas" name="notas" rows="3"></textarea>
+    </form>
+    <p class="nota">Recoges y pagas el pedido en la tienda (Plaza de Espronceda 2). Te confirmamos disponibilidad y precio antes.</p>
+    <div class="cesta-acciones">
+      <a class="boton lleno enviar-wa" href="#"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.1l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.7.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.3-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6a2.7 2.7 0 0 0 1.8-1.2 2.2 2.2 0 0 0 .2-1.3c-.1-.1-.3-.2-.5-.3z"/></svg>Enviar pedido por WhatsApp</a>
+      <a class="boton enviar-correo" href="#">Enviar por correo</a>
+      <button class="enlace-boton vaciar" type="button">Vaciar la cesta</button>
+    </div>
+  </div>
+</dialog>
 <script src="/web-la-valenciana/assets/js/web.js" defer></script>
 </body>
 </html>

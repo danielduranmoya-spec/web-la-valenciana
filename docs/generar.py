@@ -30,6 +30,32 @@ COMP=[('medias-y-pantis','Medias y pantis','Medias, pantis y leggins para el dí
  ('panuelos-y-bufandas','Pañuelos y bufandas','Pañuelos, fulares y bufandas para dar el toque final.',['Pañuelos','Fulares','Bufandas']),
  ('bolsos-y-bisuteria','Bolsos y bisutería','Bolsos, carteras y bisutería para completar tu estilo o para hacer un regalo.',['Bolsos','Carteras','Bisutería'])]
 
+# Catálogo de ejemplo (nombre, detalle, precio en euros). EDITAR con productos y precios reales.
+PRODUCTOS={
+ 'hilos-y-lanas':[('Hilo de coser poliéster','Bobina de 100 m · varios colores',1.50),('Madeja de mouliné','Algodón para bordar · 8 m',1.20),('Algodón para ganchillo','Ovillo de 50 g',3.50),('Lana merino','Ovillo de 50 g',4.90)],
+ 'botones-y-cremalleras':[('Botones de nácar','15 mm · bolsa de 6',2.40),('Cremallera invisible','20 cm · varios colores',1.80),('Corchetes metálicos','Caja de 12',1.50),('Velcro para coser','1 metro',2.20)],
+ 'cintas-y-puntillas':[('Cinta de raso','10 mm · por metro',0.60),('Bies de algodón','Por metro',0.80),('Goma plana','20 mm · por metro',0.90),('Puntilla de algodón','Por metro',1.90)],
+ 'agujas-y-accesorios':[('Agujas de coser surtidas','Sobre de 20',1.50),('Alfileres cabeza de perla','Caja de 50',2.90),('Dedal metálico','Varias tallas',1.80),('Tijeras de costura','21 cm',12.90)],
+ 'labores':[('Agujas de punto','Bambú · 4 mm',4.50),('Ganchillo de aluminio','3,5 mm',2.50),('Tela Aida','Punto de cruz · 50 × 50 cm',6.90),('Bastidor de bordado','Madera · 20 cm',3.90)],
+ 'medias-y-pantis':[('Panty transparente','20 den · tallas S a XL',3.95),('Panty tupido','40 den · tallas S a XL',5.50),('Medias de descanso','Compresión ligera',12.90),('Leggins térmicos','Interior afelpado',9.90)],
+ 'calcetines':[('Calcetín de algodón','Pack de 3',7.50),('Calcetín de lana','Par',4.90),('Pinkies','Pack de 3',4.50),('Calcetín infantil','Pack de 3',5.90)],
+ 'lenceria':[('Sujetador sin aros','Algodón · tallas 85 a 110',19.90),('Braguita de algodón','Tallas S a XXL',4.90),('Camiseta interior','Tirantes · algodón',8.90),('Camisón','Algodón estampado',24.90)],
+ 'panuelos-y-bufandas':[('Pañuelo estampado','70 × 70 cm',9.90),('Fular liso','Varios colores',12.90),('Bufanda de punto','Suave y cálida',14.90)],
+ 'bolsos-y-bisuteria':[('Bolso bandolera','Polipiel',29.90),('Monedero cartera','Con cremallera',12.90),('Pendientes','Bisutería',6.90),('Collar','Bisutería',9.90)],
+}
+def euros(x): return f"{x:,.2f}".replace(',','X').replace('.',',').replace('X','.')+' €'
+import re as _re
+def slugify(t): return _re.sub(r'[^a-z0-9]+','-',t.lower().translate(str.maketrans('áéíóúñü','aeiouñu')).replace('ñ','n')).strip('-')
+CESTA_ICO='<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 7V6a5 5 0 0 1 10 0v1h3a1 1 0 0 1 1 1.1l-1.2 12A2 2 0 0 1 17.8 22H6.2a2 2 0 0 1-2-1.9L3 8.1A1 1 0 0 1 4 7zm2 0h6V6a3 3 0 0 0-6 0zm-1 4a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm8 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/></svg>'
+def productos_html(slug,seccion,gris):
+    ps=PRODUCTOS.get(slug)
+    if not ps: return ''
+    out=''
+    for n,d,pr in ps:
+        pid=slug+'--'+slugify(n)
+        out+=f'''<li class="producto"><div class="muestra{' gris' if gris else ''}" aria-hidden="true"></div><div class="producto-texto"><h3>{n}</h3><p class="secundario">{d}</p><p class="precio num">{euros(pr)}</p></div><button class="boton anadir" type="button" data-id="{pid}" data-nombre="{n}" data-detalle="{d}" data-precio="{pr}" data-seccion="{seccion}">{CESTA_ICO}<span class="txt">Añadir a la cesta</span><span class="vh">: {n}</span></button></li>'''
+    return f'<ul class="productos" aria-label="Productos de ejemplo">{out}</ul>'
+
 NAV=[('merceria/','Mercería','merceria'),('complementos/','Complementos','complementos'),('#como-comprar','Cómo comprar',''),('#visitanos','Horario y dirección','')]
 def cab(p,actual):
     items=[]
@@ -61,6 +87,28 @@ def pie(p):
   </div>
 </footer>
 <a class="wa-flotante" href="{wa('Hola, La Valenciana')}">{WA_ICO}<span>WhatsApp<span class="vh">: escríbenos</span></span></a>
+<button class="cesta-flotante" type="button" hidden aria-haspopup="dialog" aria-controls="cesta">{CESTA_ICO}<span>Cesta</span><span class="contador num" aria-hidden="true">0</span><span class="vh cesta-resumen"></span></button>
+<p class="aviso-cesta" role="status" aria-live="polite"></p>
+<dialog class="cesta" id="cesta" aria-labelledby="titulo-cesta" data-wa="{WA}" data-correo-m="{PED_M}" data-correo-c="{PED_C}">
+  <div class="cesta-cabeza"><h2 id="titulo-cesta">Tu cesta</h2><button class="control cerrar-cesta" type="button">Cerrar<span class="vh"> la cesta</span> <span aria-hidden="true">✕</span></button></div>
+  <div class="cesta-cuerpo">
+    <p class="cesta-vacia">Tu cesta está vacía. Entra en <a href="{p}merceria/">Mercería</a> o en <a href="{p}complementos/">Complementos</a> y pulsa «Añadir a la cesta».</p>
+    <ul class="cesta-lista"></ul>
+    <div class="cesta-total"><span>Total orientativo</span><strong class="num cesta-importe">0,00 €</strong></div>
+    <form class="cesta-form">
+      <label for="cesta-nombre">Tu nombre <span class="secundario">(opcional)</span></label>
+      <input id="cesta-nombre" name="nombre" type="text" autocomplete="name">
+      <label for="cesta-notas">Tallas, colores u otras indicaciones <span class="secundario">(opcional)</span></label>
+      <textarea id="cesta-notas" name="notas" rows="3"></textarea>
+    </form>
+    <p class="nota">Recoges y pagas el pedido en la tienda ({DIR1}). Te confirmamos disponibilidad y precio antes.</p>
+    <div class="cesta-acciones">
+      <a class="boton lleno enviar-wa" href="#">{WA_ICO}Enviar pedido por WhatsApp</a>
+      <a class="boton enviar-correo" href="#">Enviar por correo</a>
+      <button class="enlace-boton vaciar" type="button">Vaciar la cesta</button>
+    </div>
+  </div>
+</dialog>
 <script src="{p}assets/js/web.js" defer></script>'''
 def doc(p,titulo,desc,cuerpo,actual,clase='',extra_css='',extra_head=''):
     return f'''<!doctype html>
@@ -120,7 +168,7 @@ PREGUNTAS=[
  ('¿Y si no tenéis lo que busco?','<p>Te lo buscamos. Cuéntanos qué necesitas y te avisamos cuando lo tengamos.</p>'),
  ('¿Hacéis arreglos de ropa?','<p>Sí: bajos, cambio de cremalleras y pequeños arreglos. Tráenos la prenda y te decimos plazo y precio antes de empezar.</p>'),
  ('Estoy empezando a tejer o a bordar. ¿Me ayudáis?','<p>Claro. Te aconsejamos el material para empezar: qué agujas, qué hilo o lana y cuánto vas a necesitar.</p>'),
- ('¿Se puede comprar por internet?',f'<p>Esta web es solo informativa. Para encargos, escríbenos por WhatsApp o por correo:</p><ul><li>Mercería: <a href="mailto:{PED_M}">{PED_M}</a></li><li>Complementos: <a href="mailto:{PED_C}">{PED_C}</a></li></ul>'),
+ ('¿Se puede comprar por internet?',f'<p>Sí. En Mercería y en Complementos pulsa «Añadir a la cesta» y, cuando termines, envíanos el pedido por WhatsApp o por correo. Te confirmamos disponibilidad y precio, y lo recoges y pagas en la tienda. También puedes escribirnos directamente:</p><ul><li>Mercería: <a href="mailto:{PED_M}">{PED_M}</a></li><li>Complementos: <a href="mailto:{PED_C}">{PED_C}</a></li></ul>'),
  ('¿Qué días abrís?',f'<p>De lunes a sábado, de 10:00 a 14:00 y de 17:00 a 21:00. Domingos y festivos, cerrado.</p>'),
 ]
 preg=''.join(f'<details><summary>{q}</summary><div class="respuesta">{a}</div></details>' for q,a in PREGUNTAS)
@@ -139,17 +187,19 @@ inicio=f'''<section class="hero" aria-labelledby="titulo-inicio">
       </div>
     </div>
     <div class="escenario" aria-hidden="true">
-      <div class="sombra"></div>
+      <div class="sombra"></div><div class="sombra-contacto"></div>
       <div class="escala"><div class="mundo">
         <div class="cara fondo"></div>
         <div class="cara seda"></div>
-        <div class="cara trasera"></div>
-        <div class="cara izq"></div>
-        <div class="cara der"></div>
+        <div class="seda-atras"></div>
+        <div class="cara trasera"><span class="borde-carton"></span></div>
+        <div class="cara izq"><span class="borde-carton"></span></div>
+        <div class="cara der"><span class="borde-carton"></span></div>
         <a class="tarjeta m" href="merceria/" tabindex="-1"><span class="t">Mercería</span><span class="s">Hilos, lanas, botones y labores</span><span class="ir">Entrar →</span></a>
         <a class="tarjeta c" href="complementos/" tabindex="-1"><span class="t">Complementos</span><span class="s">Medias, lencería y detalles</span><span class="ir">Entrar →</span></a>
-        <div class="cara frente"><span class="datos-caja">lavalencianamerceria.com · lavalencianacomplementos.com<br>@_lavalenciana · 633 930 935</span></div>
-        <div class="bisagra"><div class="cara tapa"><img src="{logo_caja}" alt="" width="600" height="300"><div class="tapa-dentro"></div><div class="cara solapa"></div></div></div>
+        <div class="cara frente"><span class="borde-carton"></span><span class="cinta"></span><span class="datos-caja">lavalencianamerceria.com · lavalencianacomplementos.com<br>@_lavalenciana · 633 930 935</span></div>
+        <div class="seda-ala"></div>
+        <div class="bisagra"><div class="cara tapa"><img src="{logo_caja}" alt="" width="600" height="300"><span class="cinta"></span><span class="lazo"><i></i><i></i><b></b></span><div class="tapa-dentro"></div><div class="cara solapa"></div></div></div>
       </div></div>
       <span class="abriendo">Abriendo la caja…</span>
     </div>
@@ -181,9 +231,9 @@ inicio=f'''<section class="hero" aria-labelledby="titulo-inicio">
   <div class="envoltura">
     <div class="cabeza-bloque"><p class="etiqueta">Cómo comprar</p><h2 id="titulo-comprar">Fácil, como en la tienda de toda la vida</h2></div>
     <ol class="pasos">
-      <li><h3>Pregunta sin compromiso</h3><p>Llámanos o escríbenos por WhatsApp. Si nos mandas una foto de lo que buscas, mejor.</p><div class="botones">{btn_wa('Hola, quería preguntar por','WhatsApp')}</div></li>
-      <li><h3>Te lo buscamos</h3><p>Si lo tenemos, te lo guardamos. Si no, te decimos si podemos conseguirlo y te avisamos cuando llegue.</p></li>
-      <li><h3>Pásate a recogerlo</h3><p>Te esperamos en la Plaza de Espronceda 2, de lunes a sábado, por la mañana o por la tarde.</p><div class="botones"><a class="boton" href="{MAPS}">{MAPA_ICO}Cómo llegar</a></div></li>
+      <li><h3>Prepara tu cesta o pregunta</h3><p>Añade productos a la cesta desde la web y envíanos el pedido, o escríbenos por WhatsApp con una foto de lo que buscas.</p><div class="botones"><a class="boton" href="merceria/">Ver productos {FLECHA}</a></div></li>
+      <li><h3>Te lo preparamos</h3><p>Te confirmamos disponibilidad y precio. Si lo tenemos, te lo guardamos. Si no, te decimos si podemos conseguirlo y te avisamos cuando llegue.</p></li>
+      <li><h3>Recoge y paga en la tienda</h3><p>Te esperamos en la Plaza de Espronceda 2, de lunes a sábado, por la mañana o por la tarde.</p><div class="botones"><a class="boton" href="{MAPS}">{MAPA_ICO}Cómo llegar</a></div></li>
     </ol>
   </div>
 </section>
@@ -249,7 +299,7 @@ def seccion(slug,nombre,clase,intro,subs,otra,otra_nombre,otra_txt,correo,gris):
     for i,(s,t,txt,lst) in enumerate(subs):
         f='foto gris' if gris else 'foto'
         bloques+=f'''
-    <article class="subseccion" id="{s}" aria-labelledby="t-{s}">
+    <article class="subseccion{' con-productos' if s in PRODUCTOS else ''}" id="{s}" aria-labelledby="t-{s}">
       <div class="{f}"><span>Foto · {t.lower()}</span></div>
       <div class="pila">
         <p class="numero" aria-hidden="true">{i+1:02d} / {len(subs):02d}</p>
@@ -258,6 +308,7 @@ def seccion(slug,nombre,clase,intro,subs,otra,otra_nombre,otra_txt,correo,gris):
         <ul class="lista" aria-label="Algunos productos de {t.lower()}">{''.join(f'<li>{x}</li>' for x in lst)}</ul>
         <div class="botones">{btn_wa(f'Hola, quería preguntar por {t.lower()}',f'Preguntar por {t.lower()}')}</div>
       </div>
+      {productos_html(s,slug,gris)}
     </article>'''
     return f'''<div class="{clase}">
 <section class="portada-seccion" aria-labelledby="titulo-seccion">
@@ -267,6 +318,7 @@ def seccion(slug,nombre,clase,intro,subs,otra,otra_nombre,otra_txt,correo,gris):
   <div class="envoltura dos">
     <div class="pila"><p class="etiqueta">La Valenciana · {len(subs)} apartados</p><h1 id="titulo-seccion">{nombre}</h1><p class="entradilla">{intro}</p>
       <p>Pedidos y consultas: <a href="mailto:{correo}">{correo}</a></p>
+      <p class="aviso-compra">Añade productos a la cesta y envíanos el pedido por WhatsApp o por correo. <strong>Lo recoges y lo pagas en la tienda.</strong> Precios orientativos: te confirmamos el total al preparar tu pedido.</p>
       <div class="botones">{btn_wa(f'Hola, tengo una consulta sobre {nombre.lower()}','Preguntar por WhatsApp','boton lleno')}{btn_tel()}</div></div>
     <div class="{'foto gris' if gris else 'foto'}"><span>Foto · {nombre.lower()}</span></div>
   </div>
@@ -312,20 +364,20 @@ legales={
 <h2>Titular</h2>
 <p>Nombre o razón social: {P}<br>NIF: {P}<br>Domicilio: {DIR1}, {DIR2}<br>Correo: {CORREO}<br>Teléfono: {TEL}</p>
 <h2>Uso de la web</h2>
-<p>Esta web informa sobre la tienda La Valenciana y sus productos. No se realizan ventas a través de ella. El uso de la web implica la aceptación de este aviso.</p>
+<p>Esta web informa sobre la tienda La Valenciana y sus productos. A través de ella puedes preparar un pedido y enviarlo por WhatsApp o por correo electrónico para recogerlo y pagarlo en la tienda. El pedido no es firme hasta que La Valenciana lo confirma; los precios mostrados son orientativos y el importe final se confirma antes de la recogida. El uso de la web implica la aceptación de este aviso.</p>
 <h2>Propiedad intelectual</h2>
 <p>Los textos, el logotipo y las imágenes de esta web pertenecen a La Valenciana o se usan con permiso. No se permite su reproducción sin autorización.</p>'''),
-'privacidad':('Política de privacidad',f'''<p>Esta web no tiene formularios ni recoge datos personales por sí misma.</p>
+'privacidad':('Política de privacidad',f'''<p>Esta web no envía datos a ningún servidor. La cesta y lo que escribes en ella se guardan solo en tu navegador hasta que decides enviarnos el pedido por WhatsApp o por correo.</p>
 <h2>Responsable</h2>
 <p>{P} (NIF {P}), con domicilio en {DIR1}, {DIR2}. Contacto: {CORREO}</p>
 <h2>Datos que nos envías</h2>
-<p>Si nos escribes por correo electrónico o por WhatsApp, usaremos tus datos solo para responderte y atender tu pedido o consulta. La base legal es tu consentimiento al contactarnos. No cedemos tus datos a terceros salvo obligación legal.</p>
+<p>Si nos envías un pedido desde la cesta o nos escribes por correo electrónico o por WhatsApp, usaremos tus datos (nombre, teléfono o correo y el contenido del pedido) solo para responderte y atender tu pedido o consulta. La base legal es tu consentimiento al contactarnos. No cedemos tus datos a terceros salvo obligación legal.</p>
 <h2>Tus derechos</h2>
 <p>Puedes pedir acceso, rectificación, supresión, oposición, limitación y portabilidad de tus datos escribiendo a {CORREO}. También puedes reclamar ante la Agencia Española de Protección de Datos (aepd.es).</p>'''),
 'cookies':('Política de cookies','''<p>Esta web no usa cookies propias ni de terceros, ni herramientas de analítica o publicidad. Las tipografías se sirven desde la propia web.</p>
 <h2>Almacenamiento local</h2>
-<p>El navegador guarda dos marcas técnicas que no contienen datos personales:</p>
-<ul><li><code>lv-caja</code>: para que la animación de la caja de la portada sea más rápida en tus siguientes visitas.</li><li><code>lv-letra</code>: para recordar si has elegido «Letra grande».</li></ul>
+<p>El navegador guarda estas marcas técnicas, que no contienen datos personales:</p>
+<ul><li><code>lv-caja</code>: para que la animación de la caja de la portada sea más rápida en tus siguientes visitas.</li><li><code>lv-letra</code>: para recordar si has elegido «Letra grande».</li><li><code>lv-cesta</code>: los productos que añades a la cesta, para que no se pierdan al cambiar de página. Solo se guardan en tu navegador; no nos llegan hasta que envías el pedido.</li></ul>
 <p>Puedes borrarlas desde la configuración de tu navegador.</p>
 <h2>Enlaces externos</h2>
 <p>Los enlaces a Instagram, TikTok, Facebook, WhatsApp y Google Maps te llevan a esos servicios, que tienen sus propias políticas de cookies.</p>''')}
