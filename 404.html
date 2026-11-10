@@ -13,6 +13,7 @@
 <link rel="icon" href="/web-la-valenciana/favicon.svg" type="image/svg+xml">
 <link rel="preload" href="/web-la-valenciana/assets/fonts/PlayfairDisplay.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/web-la-valenciana/assets/fonts/Jost.woff2" as="font" type="font/woff2" crossorigin>
+<script>try{if(localStorage.getItem('lv-letra')==='1')document.documentElement.classList.add('letra-grande')}catch(e){}</script>
 <link rel="stylesheet" href="/web-la-valenciana/assets/fonts/fuentes.css">
 <link rel="stylesheet" href="/web-la-valenciana/assets/css/tokens.css">
 <link rel="stylesheet" href="/web-la-valenciana/assets/css/estilos.css">
@@ -21,26 +22,27 @@
 <a class="salto" href="#contenido">Saltar al contenido</a>
 <header class="cabecera">
   <div class="envoltura">
-    <a class="marca" href="/web-la-valenciana/"><img src="/web-la-valenciana/assets/img/marca/monograma.svg" alt="" width="34" height="34">La Valenciana</a>
-    <button class="boton-menu" type="button" aria-expanded="false" aria-controls="menu-principal">Menú</button>
-    <nav class="menu-principal" id="menu-principal" aria-label="Menú principal"><ul><li><a href="/web-la-valenciana/merceria/">Mercería</a></li><li><a href="/web-la-valenciana/complementos/">Complementos</a></li><li><a href="/web-la-valenciana/#nosotras">Nosotras</a></li><li><a href="/web-la-valenciana/#visitanos">Visítanos</a></li></ul></nav>
+    <a class="marca" href="/web-la-valenciana/"><img src="/web-la-valenciana/assets/img/marca/monograma.svg" alt="" width="38" height="38">La Valenciana<span class="vh">, ir al inicio</span></a>
+    <nav class="menu-principal" id="menu-principal" aria-label="Menú principal"><ul><li><a href="/web-la-valenciana/merceria/">Mercería</a></li><li><a href="/web-la-valenciana/complementos/">Complementos</a></li><li><a href="/web-la-valenciana/#como-comprar">Cómo comprar</a></li><li><a href="/web-la-valenciana/#visitanos">Horario y dirección</a></li><li class="menu-contacto"><a href="tel:+34924670839">Llamar al <span class="num">924 67 08 39</span></a><a href="https://wa.me/34633930935?text=Hola%2C%20La%20Valenciana">WhatsApp <span class="num">633 930 935</span></a></li></ul></nav>
+    <button class="control boton-letra" type="button" aria-pressed="false"><span class="aa" aria-hidden="true">A<small>A</small></span><span class="letra-texto">Letra grande</span><span class="vh"> (letra más grande)</span></button>
+    <button class="control boton-menu" type="button" aria-expanded="false" aria-controls="menu-principal"><span class="rayas" aria-hidden="true"></span><span class="txt">Menú</span></button>
   </div>
 </header>
-<main id="contenido">
-<div class="envoltura legal-texto" style="text-align:center;justify-items:center"><p class="etiqueta">Error 404</p><h1>Esta página se ha descosido</h1><p>No encontramos lo que buscabas. Vuelve al inicio o elige una sección.</p><div class="botones" style="justify-content:center"><a class="boton lleno" href="/web-la-valenciana/">Volver al inicio</a><a class="boton" href="/web-la-valenciana/merceria/">Mercería</a><a class="boton" href="/web-la-valenciana/complementos/">Complementos</a></div></div>
+<main id="contenido" tabindex="-1">
+<div class="envoltura legal-texto centrado"><p class="etiqueta">Error 404</p><h1>Esta página se ha descosido</h1><p class="entradilla">No encontramos lo que buscabas. Vuelve al inicio o elige una sección.</p><div class="botones" style="justify-content:center"><a class="boton lleno" href="/web-la-valenciana/">Volver al inicio</a><a class="boton" href="/web-la-valenciana/merceria/">Mercería</a><a class="boton" href="/web-la-valenciana/complementos/">Complementos</a></div><p>¿Necesitas ayuda? Llámanos al <a class="num" href="tel:+34924670839">924 67 08 39</a>.</p></div>
 </main>
 <footer class="pie">
   <div class="envoltura">
     <div class="rejilla">
       <div><img class="logo-pie" src="/web-la-valenciana/assets/img/marca/logo-blanco.svg" alt="La Valenciana" width="220" height="110"></div>
-      <div><h2>Visítanos</h2><ul><li>Plaza de Espronceda 2<br>06200 Almendralejo (Badajoz)</li><li class="horario">Lunes a sábado<br>10:00–14:00 y 17:00–21:00</li></ul></div>
-      <div><h2>Contacto</h2><ul><li><a href="tel:+34924670839">924 67 08 39</a></li><li><a href="https://wa.me/34633930935?text=Hola%2C%20La%20Valenciana">WhatsApp 633 930 935</a></li><li><a href="mailto:administracion@lavalencianamerceria.com">administracion@lavalencianamerceria.com</a></li></ul></div>
+      <div><h2>Visítanos</h2><ul><li>Plaza de Espronceda 2<br>06200 Almendralejo (Badajoz)</li><li class="num">Lunes a sábado<br>10:00–14:00 y 17:00–21:00</li><li>Domingos y festivos, cerrado</li></ul></div>
+      <div><h2>Contacto</h2><ul><li><a href="tel:+34924670839">Teléfono&nbsp;<span class="num">924 67 08 39</span></a></li><li><a href="https://wa.me/34633930935?text=Hola%2C%20La%20Valenciana">WhatsApp&nbsp;<span class="num">633 930 935</span></a></li><li><a href="mailto:administracion@lavalencianamerceria.com">administracion@lavalencianamerceria.com</a></li></ul></div>
       <div><h2>Síguenos</h2><ul><li><a href="https://www.instagram.com/_lavalenciana">Instagram</a></li><li><a href="https://www.tiktok.com/@_lavalenciana_">TikTok</a></li><li><a href="https://www.facebook.com/mercerialavalenciana/">Facebook</a></li></ul></div>
     </div>
-    <div class="legal"><span>© 2026 La Valenciana · Mercería y Complementos</span><ul><li><a href="/web-la-valenciana/aviso-legal/">Aviso legal</a></li><li><a href="/web-la-valenciana/privacidad/">Privacidad</a></li><li><a href="/web-la-valenciana/cookies/">Cookies</a></li></ul></div>
+    <div class="legal"><span>© 2026 La Valenciana · Mercería y Complementos</span><ul><li><a href="/web-la-valenciana/accesibilidad/">Accesibilidad</a></li><li><a href="/web-la-valenciana/aviso-legal/">Aviso legal</a></li><li><a href="/web-la-valenciana/privacidad/">Privacidad</a></li><li><a href="/web-la-valenciana/cookies/">Cookies</a></li><li><a href="#contenido">Volver arriba ↑</a></li></ul></div>
   </div>
 </footer>
-<a class="wa-flotante" href="https://wa.me/34633930935?text=Hola%2C%20La%20Valenciana" aria-label="Escríbenos por WhatsApp"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.1l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.7.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.3-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6a2.7 2.7 0 0 0 1.8-1.2 2.2 2.2 0 0 0 .2-1.3c-.1-.1-.3-.2-.5-.3z"/></svg><span>WhatsApp</span></a>
+<a class="wa-flotante" href="https://wa.me/34633930935?text=Hola%2C%20La%20Valenciana"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.1l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.7.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.3-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6a2.7 2.7 0 0 0 1.8-1.2 2.2 2.2 0 0 0 .2-1.3c-.1-.1-.3-.2-.5-.3z"/></svg><span>WhatsApp<span class="vh">: escríbenos</span></span></a>
 <script src="/web-la-valenciana/assets/js/web.js" defer></script>
 </body>
 </html>
