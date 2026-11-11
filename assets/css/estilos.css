@@ -399,7 +399,8 @@ body{background-image:radial-gradient(40vmax 40vmax at 95% 6%, rgba(245,208,220,
 .cosido,.seccion-merceria .boton,.seccion-merceria .indice a{box-shadow:var(--vidrio-luz),0 0 0 3px rgba(255,255,255,.55),0 8px 18px -10px rgba(74,68,80,.45)}
 .boton.lleno.cosido,.seccion-merceria .boton.lleno{box-shadow:inset 0 1px 0 rgba(255,255,255,.28),0 0 0 3px rgba(255,255,255,.6),0 10px 24px -12px rgba(46,40,52,.65)}
 .puerta.cosido::after,.cambio.cosido::after,.tarjeta.cosido::after{inset:-9px;border-radius:calc(var(--r) + 9px)}
-.menu-principal a.cosido::after{inset:4px -2px}
+.menu-principal a.cosido::after{inset:0;border-radius:var(--r-pill)}
+.menu-principal a.cosido:active::after{inset:2px}
 .ayuda .boton::after{border-color:var(--rosa);filter:drop-shadow(0 1px 0 rgba(0,0,0,.4))}
 /* aire para que las costuras no se toquen */
 .botones:has(.cosido),.seccion-merceria .botones{gap:22px}
@@ -580,5 +581,6 @@ body{background-image:radial-gradient(40vmax 40vmax at 95% 6%, rgba(245,208,220,
 .cesta-total strong,.resumen-totales .total dd{font-size:1.75rem}
 .ok-total{font-size:1.5rem}
 /* Cápsulas en la caja: tercera tarjeta, arriba en el centro */
-.tarjeta.k{background:linear-gradient(135deg, rgba(249,222,231,.95), rgba(216,203,236,.92));--x:0px}
 .puerta .texto{align-content:start}
+/* Mercería en el menú: la costura marca el borde del botón también en móvil */
+@media (max-width:1000px){.menu-principal a.cosido{border-radius:var(--r);padding:0 var(--e4);margin:6px 0}.menu-principal a.cosido::after{content:"";border-radius:inherit}}

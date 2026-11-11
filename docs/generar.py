@@ -250,7 +250,6 @@ inicio=f'''<section class="hero" aria-labelledby="titulo-inicio">
         <div class="cara der"><span class="borde-carton"></span></div>
         {objetos_html()}
         <a class="tarjeta m cosido" href="merceria/" tabindex="-1"><span class="t">Mercería</span><span class="s">Hilos, lanas, botones y labores</span><span class="ir">Entrar →</span></a>
-        <a class="tarjeta k" href="capsulas/" tabindex="-1"><span class="t">Cápsulas</span><span class="s">Kits y colecciones</span><span class="ir">Entrar →</span></a>
         <a class="tarjeta c" href="complementos/" tabindex="-1"><span class="t">Complementos</span><span class="s">Medias, lencería y detalles</span><span class="ir">Entrar →</span></a>
         <div class="cara frente"><span class="borde-carton"></span><span class="cinta"></span><span class="datos-caja">lavalencianamerceria.com · lavalencianacomplementos.com<br>@_lavalenciana · 633 930 935</span></div>
         <div class="seda-ala"></div>
