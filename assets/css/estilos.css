@@ -3,7 +3,6 @@
    foco siempre visible, nada importante escondido tras una animación. */
 *,*::before,*::after{box-sizing:border-box}
 html{font-size:100%;scroll-behavior:smooth;-webkit-text-size-adjust:100%;scroll-padding-top:96px}
-html.letra-grande{font-size:118.75%}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{transition:none!important;animation:none!important}}
 body{margin:0;background:var(--fondo);color:var(--grafito);font:400 1.125rem/1.65 var(--fuente-texto);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
 img,svg{max-width:100%;display:block}

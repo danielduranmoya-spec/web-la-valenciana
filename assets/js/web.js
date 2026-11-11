@@ -4,17 +4,6 @@
   var reduce=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
   function guardar(k,v){try{localStorage.setItem(k,v)}catch(e){}}
 
-  // Letra grande (se recuerda en este navegador)
-  var letra=document.querySelector('.boton-letra');
-  if(letra){
-    letra.setAttribute('aria-pressed',root.classList.contains('letra-grande')?'true':'false');
-    letra.addEventListener('click',function(){
-      var on=root.classList.toggle('letra-grande');
-      letra.setAttribute('aria-pressed',on?'true':'false');
-      guardar('lv-letra',on?'1':'0');
-    });
-  }
-
   // Menú en móvil
   var boton=document.querySelector('.boton-menu'), menu=document.getElementById('menu-principal');
   function cerrar(foco){ menu.classList.remove('abierto'); boton.setAttribute('aria-expanded','false'); boton.querySelector('.txt').textContent='Menú'; if(foco) boton.focus() }
@@ -35,8 +24,8 @@
   function borde(){ if(cab) cab.classList.toggle('con-borde', window.scrollY>8) }
   window.addEventListener('scroll',borde,{passive:true}); borde();
 
-  // Abierto / cerrado ahora (hora de Madrid). Horario: L-S 10-14 y 17-21.
-  var TRAMOS=[[600,840],[1020,1260]], DIAS=['domingo','lunes','martes','miércoles','jueves','viernes','sábado'];
+  // Abierto / cerrado ahora (hora de Madrid). Horario: L-S 10-14 y 17-20.
+  var TRAMOS=[[600,840],[1020,1200]], DIAS=['domingo','lunes','martes','miércoles','jueves','viernes','sábado'];
   function ahoraMadrid(){
     try{
       var f=new Intl.DateTimeFormat('es-ES',{timeZone:'Europe/Madrid',weekday:'short',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).formatToParts(new Date());

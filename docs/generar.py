@@ -8,7 +8,7 @@ CORREO='administracion@lavalencianamerceria.com'
 PED_M='pedidos@lavalencianamerceria.com'; PED_C='pedidos@lavalencianacomplementos.com'
 DIR1='Plaza de Espronceda 2'; DIR2='06200 Almendralejo (Badajoz)'
 MAPS='https://www.google.com/maps/search/?api=1&amp;query=La+Valenciana+Plaza+de+Espronceda+2+Almendralejo'
-HORARIO_CORTO='Lunes a sábado, de 10:00 a 14:00 y de 17:00 a 21:00'
+HORARIO_CORTO='Lunes a sábado, de 10:00 a 14:00 y de 17:00 a 20:00'
 REDES=[('https://www.instagram.com/_lavalenciana','Instagram','@_lavalenciana'),('https://www.tiktok.com/@_lavalenciana_','TikTok','@_lavalenciana_'),('https://www.facebook.com/mercerialavalenciana/','Facebook','La Valenciana')]
 WA_ICO='<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.1l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.7.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.3-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6a2.7 2.7 0 0 0 1.8-1.2 2.2 2.2 0 0 0 .2-1.3c-.1-.1-.3-.2-.5-.3z"/></svg>'
 TEL_ICO='<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z"/></svg>'
@@ -86,7 +86,6 @@ def cab(p,actual):
     <a class="marca" href="{p or './'}"><img src="{p}assets/img/marca/monograma.svg" alt="" width="38" height="38"><span class="marca-texto">La Valenciana</span><span class="vh">, ir al inicio</span></a>
     <nav class="menu-principal" id="menu-principal" aria-label="Menú principal"><ul>{''.join(items)}{contacto}</ul></nav>
     <button class="control boton-buscar" type="button" aria-haspopup="dialog" aria-controls="buscador">{LUPA_ICO}<span class="buscar-texto">Buscar</span></button>
-    <button class="control boton-letra" type="button" aria-pressed="false"><span class="aa" aria-hidden="true">A<small>A</small></span><span class="letra-texto">Letra grande</span><span class="vh"> (letra más grande)</span></button>
     <button class="control boton-menu" type="button" aria-expanded="false" aria-controls="menu-principal"><span class="rayas" aria-hidden="true"></span><span class="txt">Menú</span></button>
   </div>
 </header>'''
@@ -96,7 +95,7 @@ def pie(p):
   <div class="envoltura">
     <div class="rejilla">
       <div><img class="logo-pie" src="{p}assets/img/marca/logo-blanco.svg" alt="La Valenciana" width="220" height="110"></div>
-      <div><h2>Visítanos</h2><ul><li>{DIR1}<br>{DIR2}</li><li class="num">Lunes a sábado<br>10:00–14:00 y 17:00–21:00</li><li>Domingos y festivos, cerrado</li></ul></div>
+      <div><h2>Visítanos</h2><ul><li>{DIR1}<br>{DIR2}</li><li class="num">Lunes a sábado<br>10:00–14:00 y 17:00–20:00</li><li>Domingos y festivos, cerrado</li></ul></div>
       <div><h2>Contacto</h2><ul><li><a href="{TEL_HREF}">Teléfono&nbsp;<span class="num">{TEL}</span></a></li><li><a href="{wa('Hola, La Valenciana')}">WhatsApp&nbsp;<span class="num">{WA_TXT}</span></a></li><li><a href="mailto:{CORREO}">{CORREO}</a></li></ul></div>
       <div><h2>Síguenos</h2><ul>{redes}</ul></div>
     </div>
@@ -151,7 +150,6 @@ def doc(p,titulo,desc,cuerpo,actual,clase='',extra_css='',extra_head=''):
 <link rel="icon" href="{p}favicon.svg" type="image/svg+xml">
 <link rel="preload" href="{p}assets/fonts/PlayfairDisplay.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="{p}assets/fonts/Jost.woff2" as="font" type="font/woff2" crossorigin>
-<script>try{{if(localStorage.getItem('lv-letra')==='1')document.documentElement.classList.add('letra-grande')}}catch(e){{}}</script>
 <script src="{p}assets/js/catalogo.js" defer></script>
 <link rel="stylesheet" href="{p}assets/fonts/fuentes.css">
 <link rel="stylesheet" href="{p}assets/css/tokens.css">
@@ -172,7 +170,7 @@ def w(path,txt):
 def estado(): return f'<p class="estado" data-estado><span class="punto" aria-hidden="true"></span><span class="estado-txt num">{HORARIO_CORTO}</span></p>'
 DIAS=[(1,'Lunes'),(2,'Martes'),(3,'Miércoles'),(4,'Jueves'),(5,'Viernes'),(6,'Sábado'),(0,'Domingo')]
 def tabla_horario():
-    filas=''.join(f'<tr data-dia="{n}"><th scope="row">{d}</th><td>{"Cerrado" if n==0 else "10:00 – 14:00<br>17:00 – 21:00"}</td></tr>' for n,d in DIAS)
+    filas=''.join(f'<tr data-dia="{n}"><th scope="row">{d}</th><td>{"Cerrado" if n==0 else "10:00 – 14:00<br>17:00 – 20:00"}</td></tr>' for n,d in DIAS)
     return f'<table class="tabla-horario"><caption>Horario de la tienda</caption><tbody>{filas}</tbody></table><p class="nota">Festivos: cerrado.</p>'
 
 
@@ -215,7 +213,7 @@ PREGUNTAS=[
  ('¿Cuánto cuesta el envío y cuánto tarda?',f'<p>{euros(ENVIO_PRECIO)} en la Península y <strong>gratis desde {ENVIO_GRATIS} €</strong>. Llega en {PLAZO_ENVIO} si pides antes de las 14:00. Recoger en la tienda es siempre gratis. <a href="envios-y-devoluciones/">Más detalles</a>.</p>'),
  ('¿Puedo devolver algo?','<p>Sí, tienes 14 días. No se pueden devolver los productos cortados a medida ni la ropa interior, medias o calcetines con el precinto abierto.</p>'),
  ('¿Cómo acierto con el color de un hilo o un botón?','<p>Indica el número de color del fabricante en tu pedido, o pídenos por WhatsApp una foto real con luz natural antes de comprar.</p>'),
- ('¿Qué días abrís?',f'<p>De lunes a sábado, de 10:00 a 14:00 y de 17:00 a 21:00. Domingos y festivos, cerrado.</p>'),
+ ('¿Qué días abrís?',f'<p>De lunes a sábado, de 10:00 a 14:00 y de 17:00 a 20:00. Domingos y festivos, cerrado.</p>'),
 ]
 preg=''.join(f'<details><summary>{q}</summary><div class="respuesta">{a}</div></details>' for q,a in PREGUNTAS)
 redes_txt=''.join(f'<li><a href="{u}">{n}<span class="vh"> ({h})</span></a></li>' for u,n,h in REDES)
@@ -257,7 +255,7 @@ inicio=f'''<section class="hero" aria-labelledby="titulo-inicio">
   <div class="envoltura">
     <ul>
       <li><span class="que">Dirección</span><a href="{MAPS}">{DIR1}, Almendralejo</a></li>
-      <li><span class="que">Horario</span><strong class="num">L–S · 10–14 h y 17–21 h</strong></li>
+      <li><span class="que">Horario</span><strong class="num">L–S · 10–14 h y 17–20 h</strong></li>
       <li><span class="que">Teléfono</span><a class="num" href="{TEL_HREF}">{TEL}</a></li>
       <li><span class="que">WhatsApp</span><a class="num" href="{wa('Hola, La Valenciana')}">{WA_TXT}</a></li>
     </ul>
@@ -333,7 +331,7 @@ ld={"@context":"https://schema.org","@type":"Store","name":"La Valenciana","desc
  "address":{"@type":"PostalAddress","streetAddress":"Plaza de Espronceda 2","postalCode":"06200","addressLocality":"Almendralejo","addressRegion":"Badajoz","addressCountry":"ES"},
  "telephone":"+34924670839","email":CORREO,
  "openingHoursSpecification":[{"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],"opens":"10:00","closes":"14:00"},
-   {"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],"opens":"17:00","closes":"21:00"}],
+   {"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],"opens":"17:00","closes":"20:00"}],
  "sameAs":[u for u,_,_ in REDES]}
 faq={"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":q,"acceptedAnswer":{"@type":"Answer","text":__import__('re').sub('<[^>]+>','',a)}} for q,a in PREGUNTAS]}
 w('index.html',doc('','La Valenciana · Mercería y Complementos en Almendralejo','Mercería y complementos en la Plaza de Espronceda 2 de Almendralejo: hilos, lanas, botones, labores, medias, lencería y más. Lunes a sábado.',inicio,'inicio','con-caja',
@@ -375,7 +373,7 @@ def seccion(slug,nombre,clase,intro,subs,otra,otra_nombre,otra_txt,correo,gris):
 </div>
 <div class="envoltura final-seccion">
   <section class="ayuda" aria-labelledby="titulo-ayuda">
-    <div class="pila junta"><h2 id="titulo-ayuda">¿No encuentras lo que buscas?</h2><p>Pregúntanos. Si no lo tenemos, te lo buscamos. Atendemos de lunes a sábado, de 10:00 a 14:00 y de 17:00 a 21:00.</p></div>
+    <div class="pila junta"><h2 id="titulo-ayuda">¿No encuentras lo que buscas?</h2><p>Pregúntanos. Si no lo tenemos, te lo buscamos. Atendemos de lunes a sábado, de 10:00 a 14:00 y de 17:00 a 20:00.</p></div>
     <div class="botones">{btn_wa(f'Hola, busco algo de {nombre.lower()}','WhatsApp','boton lleno')}{btn_tel()}</div>
   </section>
   <a class="cambio {'a-c' if otra=='complementos' else 'a-m cosido'}" href="../{otra}/"><div class="pila junta"><span class="etiqueta">La otra sección</span><h2>{otra_nombre}</h2><p>{otra_txt}</p></div><span class="flecha" aria-hidden="true">→</span></a>
@@ -481,7 +479,7 @@ legales={
 'accesibilidad':('Accesibilidad',f'''<p class="entradilla">Queremos que cualquier persona, tenga la edad que tenga, pueda usar esta web con comodidad.</p>
 <h2>Qué hemos hecho</h2>
 <ul>
-<li>Letra grande y botón <strong>«Letra grande»</strong> arriba a la derecha para agrandar todo el texto. La web lo recuerda en tu navegador.</li>
+<li>Texto grande y con buen contraste; la web se puede ampliar con el zoom del navegador.</li>
 <li>Colores con buen contraste, según las pautas WCAG 2.2 nivel AA.</li>
 <li>Botones y enlaces grandes, fáciles de tocar con el dedo.</li>
 <li>Se puede usar entera con el teclado: el elemento activo siempre se ve resaltado. Al pulsar Tabulador, el primer enlace permite saltar al contenido.</li>
@@ -491,7 +489,7 @@ legales={
 </ul>
 <h2>Trucos útiles</h2>
 <ul>
-<li>Para ampliar aún más: en el ordenador pulsa <kbd>Ctrl</kbd> y <kbd>+</kbd> (en Mac, <kbd>Cmd</kbd> y <kbd>+</kbd>).</li>
+<li>Para ampliar el texto: en el ordenador pulsa <kbd>Ctrl</kbd> y <kbd>+</kbd> (en Mac, <kbd>Cmd</kbd> y <kbd>+</kbd>).</li>
 <li>Para llamarnos desde el móvil, toca directamente el número de teléfono.</li>
 </ul>
 <h2>¿Algo no funciona bien?</h2>
@@ -549,7 +547,7 @@ legales={
 <p>Solo en la página de pago («Tramitar pedido») se carga el servicio de PayPal, que instala cookies técnicas necesarias para procesar el pago de forma segura y prevenir el fraude. Son imprescindibles para pagar y no se usan para publicidad en esta web. Más información en la política de cookies de PayPal.</p>
 <h2>Almacenamiento local</h2>
 <p>El navegador guarda estas marcas técnicas, que no contienen datos personales:</p>
-<ul><li><code>lv-caja</code>: para que la animación de la caja de la portada sea más rápida en tus siguientes visitas.</li><li><code>lv-letra</code>: para recordar si has elegido «Letra grande».</li><li><code>lv-cesta</code>: los productos que añades a la cesta, para que no se pierdan al cambiar de página. Solo se guardan en tu navegador; no nos llegan hasta que pagas el pedido.</li><li><code>lv-ultimo-pedido</code>: el resumen de tu último pedido pagado, para mostrarte la confirmación (se borra al cerrar la pestaña).</li></ul>
+<ul><li><code>lv-caja</code>: para que la animación de la caja de la portada sea más rápida en tus siguientes visitas.</li><li><code>lv-cesta</code>: los productos que añades a la cesta, para que no se pierdan al cambiar de página. Solo se guardan en tu navegador; no nos llegan hasta que pagas el pedido.</li><li><code>lv-ultimo-pedido</code>: el resumen de tu último pedido pagado, para mostrarte la confirmación (se borra al cerrar la pestaña).</li></ul>
 <p>Puedes borrarlas desde la configuración de tu navegador.</p>
 <h2>Enlaces externos</h2>
 <p>Los enlaces a Instagram, TikTok, Facebook, WhatsApp y Google Maps te llevan a esos servicios, que tienen sus propias políticas de cookies.</p>''')}
