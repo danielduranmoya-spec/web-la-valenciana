@@ -90,7 +90,7 @@
       flot.querySelector('.cesta-resumen').textContent=': '+texto(n)+', '+eur.format(total());
       if(!reduce&&n>0){ if(antes){ flot.classList.remove('aparece'); void flot.offsetWidth; flot.classList.add('aparece') } else if(nuevo){ flot.classList.remove('late'); void flot.offsetWidth; flot.classList.add('late') } }
     }
-    document.querySelectorAll('.anadir').forEach(function(bt){
+    document.querySelectorAll('.anadir[data-id]').forEach(function(bt){
       var x=cesta[bt.getAttribute('data-id')]; bt.classList.toggle('en-cesta',!!x);
       bt.querySelector('.txt').textContent=x?('Añadir otro (tienes '+x.q+')'):'Añadir a la cesta';
     });
@@ -114,6 +114,8 @@
       li.setAttribute('data-id',x.id); ul.appendChild(li);
     });
     dlg.querySelector('.cesta-importe').textContent=eur.format(total());
+    var ce=dlg.querySelector('.cesta-envio');
+    if(ce){ var g=+ce.getAttribute('data-gratis'), f=g-total(); ce.textContent=f>0?('Te faltan '+eur.format(f)+' para el envío gratis a domicilio. Recoger en la tienda es siempre gratis.'):'¡Tienes envío gratis a domicilio!'; ce.classList.toggle('logrado',f<=0) }
     actualizarEnvio();
     try{ document.dispatchEvent(new CustomEvent('lv-cesta',{detail:{cesta:cesta}})) }catch(e){}
   }
@@ -127,7 +129,7 @@
   }
   var tAviso;
   function avisar(t){ if(!aviso) return; aviso.textContent=t; aviso.classList.add('visible'); clearTimeout(tAviso); tAviso=setTimeout(function(){aviso.classList.remove('visible')},2600) }
-  document.querySelectorAll('.anadir').forEach(function(bt){
+  document.querySelectorAll('.anadir[data-id]').forEach(function(bt){
     bt.addEventListener('click',function(){
       var id=bt.getAttribute('data-id');
       if(!cesta[id]) cesta[id]={n:bt.getAttribute('data-nombre'),d:bt.getAttribute('data-detalle'),p:+bt.getAttribute('data-precio'),s:bt.getAttribute('data-seccion'),q:0};
@@ -168,6 +170,37 @@
     window.addEventListener('storage',function(e){ if(e.key===CLAVE){ try{cesta=JSON.parse(e.newValue||'{}')||{}}catch(_){cesta={}} pintar() } });
   }
   pintar();
+
+  // ---------- Buscador ----------
+  var bus=document.getElementById('buscador');
+  if(bus){
+    var q=bus.querySelector('input'), res=bus.querySelector('.buscador-resultados'), est=document.getElementById('buscador-estado'), base=bus.getAttribute('data-base')||'';
+    var focoPrevio=null;
+    function norm(t){ return (t||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'') }
+    function abrirBus(){ focoPrevio=document.activeElement; if(bus.showModal) bus.showModal(); else bus.setAttribute('open',''); q.focus(); buscar() }
+    function cerrarBus(){ if(bus.close) bus.close(); else bus.removeAttribute('open') }
+    bus.addEventListener('close',function(){ if(focoPrevio&&focoPrevio.focus) focoPrevio.focus() });
+    document.querySelectorAll('.boton-buscar').forEach(function(bt){ bt.addEventListener('click',abrirBus) });
+    bus.querySelector('.cerrar-buscador').addEventListener('click',cerrarBus);
+    bus.addEventListener('click',function(e){ if(e.target===bus) cerrarBus() });
+    var ST={si:'En stock',pocas:'Últimas unidades',agotado:'Agotado'};
+    function buscar(){
+      var t=norm(q.value.trim()); res.innerHTML='';
+      if(t.length<2){ est.textContent='Escribe al menos 2 letras.'; return }
+      var CAT=window.LV_CATALOGO||{}, AP=window.LV_APARTADOS||{}, palabras=t.split(/\s+/), n=0;
+      Object.keys(AP).forEach(function(a){ if(palabras.every(function(w){return norm(AP[a]).indexOf(w)>=0})){
+        var sec=Object.keys(CAT).some(function(k){return CAT[k].a===a&&CAT[k].s==='complementos'})?'complementos':'merceria';
+        var li=document.createElement('li'); li.innerHTML='<a><span class="r-tipo">Apartado</span><span class="r-n"></span></a>'; li.querySelector('a').href=base+sec+'/#'+a; li.querySelector('.r-n').textContent=AP[a]; res.appendChild(li); n++ } });
+      Object.keys(CAT).forEach(function(k){ var x=CAT[k], txt=norm(x.n+' '+x.d+' '+(AP[x.a]||'')); if(n<30&&palabras.every(function(w){return txt.indexOf(w)>=0})){
+        var li=document.createElement('li'); li.innerHTML='<a><span class="r-n"></span><span class="r-d"></span><span class="r-p num"></span></a>';
+        var a=li.querySelector('a'); a.href=base+x.s+'/#'+k; li.querySelector('.r-n').textContent=x.n; li.querySelector('.r-d').textContent=x.d+' · '+(ST[x.st]||'');
+        li.querySelector('.r-p').textContent=eur.format(x.p); res.appendChild(li); n++ } });
+      est.textContent=n?(n===1?'1 resultado.':n+' resultados.'):'No hemos encontrado nada. Pregúntanos por WhatsApp: si no lo tenemos, te lo buscamos.';
+    }
+    q.addEventListener('input',buscar);
+    res.addEventListener('click',function(e){ var a=e.target.closest('a'); if(!a) return; var u=new URL(a.href,location.href); if(u.pathname===location.pathname){ cerrarBus() } });
+    document.addEventListener('keydown',function(e){ if(e.key==='/'&&!/input|textarea/i.test((document.activeElement||{}).tagName||'')&&!document.querySelector('dialog[open]')){ e.preventDefault(); abrirBus() } });
+  }
 
   // La caja: solo decoración. Todo el contenido está visible desde el principio.
   if(!b.classList.contains('con-caja')) return;

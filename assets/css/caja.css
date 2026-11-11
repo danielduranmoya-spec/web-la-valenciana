@@ -1,5 +1,5 @@
 /* La Valenciana · hero con la caja que se abre (solo en Inicio) */
-.hero{--w:340px;--d:240px;--h:110px;--t:1;position:relative;overflow-x:clip;background:radial-gradient(90% 70% at 72% 40%, #FBF1F3 0%, var(--rosa-polvo) 62%, #EFD7DC 100%)}
+.hero{--w:340px;--d:240px;--h:110px;--t:1;position:relative;overflow-x:clip;background:radial-gradient(60% 60% at 75% 35%, rgba(216,203,236,.55) 0%, transparent 70%),radial-gradient(50% 60% at 20% 90%, rgba(245,208,220,.55) 0%, transparent 70%),var(--fondo)}
 .hero .envoltura{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:clamp(16px,4vw,48px);align-items:center;min-height:min(calc(100svh - 76px),760px);padding-block:var(--e6) var(--e8)}
 .hero-texto{display:grid;gap:var(--e5);align-content:center}
 .hero-texto h1{max-width:13ch}
@@ -107,5 +107,5 @@
 @keyframes flotar{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-8px) rotate(3deg)}}
 @media (prefers-reduced-motion:reduce){.flota{animation:none}}
 /* costura de la tarjeta de Mercería dentro de la caja */
-.tarjeta.cosido::after{border-color:var(--malva-texto)}
+.tarjeta.cosido::after{border-color:var(--rosa-texto)}
 @media (max-width:640px){.hero{--sx:.82}}

@@ -22,8 +22,7 @@ MERC=[('hilos-y-lanas','Hilos y lanas','Hilos de coser, de bordar y de ganchillo
  ('botones-y-cremalleras','Botones y cremalleras','Botones de todos los tamaños y materiales, y cremalleras a la medida que necesites. Trae el botón que te falta y lo comparamos en el mostrador.',['Botones','Corchetes y broches','Cremalleras','Velcro']),
  ('cintas-y-puntillas','Cintas y puntillas','Cintas, bieses, gomas, puntillas y entredoses para rematar cualquier prenda. Se venden por metros.',['Cintas','Bieses','Gomas','Puntillas']),
  ('agujas-y-accesorios','Agujas y accesorios de costura','Todo lo básico del costurero: agujas, alfileres, dedales, tijeras y cintas métricas.',['Agujas','Alfileres','Dedales','Tijeras']),
- ('labores','Labores','Material para punto, ganchillo, bordado y punto de cruz. Si estás empezando, te aconsejamos qué agujas y qué hilo elegir.',['Punto','Ganchillo','Bordado','Punto de cruz']),
- ('arreglos','Arreglos','Bajos, cremalleras y pequeños arreglos. Tráenos la prenda y te decimos plazo y precio antes de empezar.',['Bajos','Cambio de cremallera','Pequeños arreglos'])]
+ ('labores','Labores','Material para punto, ganchillo, bordado y punto de cruz. Si estás empezando, te aconsejamos qué agujas y qué hilo elegir.',['Punto','Ganchillo','Bordado','Punto de cruz']),]
 COMP=[('medias-y-pantis','Medias y pantis','Medias, pantis y leggins para el día a día y para las ocasiones especiales, en varias densidades y tallas.',['Pantis','Medias','Leggins','Tallas grandes']),
  ('calcetines','Calcetines','Calcetines de algodón, de lana y de fantasía para toda la familia.',['Algodón','Lana','Pinkies','Infantil']),
  ('lenceria','Lencería y ropa interior','Ropa interior cómoda y bonita: sujetadores, braguitas, camisetas interiores y lencería. Te ayudamos a encontrar tu talla.',['Sujetadores','Braguitas','Camisetas interiores','Lencería']),
@@ -43,19 +42,32 @@ PRODUCTOS={
  'panuelos-y-bufandas':[('Pañuelo estampado','70 × 70 cm',9.90),('Fular liso','Varios colores',12.90),('Bufanda de punto','Suave y cálida',14.90)],
  'bolsos-y-bisuteria':[('Bolso bandolera','Polipiel',29.90),('Monedero cartera','Con cremallera',12.90),('Pendientes','Bisutería',6.90),('Collar','Bisutería',9.90)],
 }
+# Stock de EJEMPLO por nombre de producto: 'si' (por defecto), 'pocas' o 'agotado'. EDITAR con el stock real.
+STOCK={'Lana merino':'pocas','Tijeras de costura':'pocas','Bastidor de bordado':'agotado','Medias de descanso':'agotado','Camisón':'pocas','Bolso bandolera':'pocas'}
+# Productos que se eligen por color: se pide la referencia del fabricante para acertar con el tono.
+CON_COLOR={'Hilo de coser poliéster','Madeja de mouliné','Algodón para ganchillo','Lana merino','Botones de nácar','Cremallera invisible','Cinta de raso','Bies de algodón','Puntilla de algodón','Panty transparente','Panty tupido','Fular liso'}
+ESTADO_TXT={'si':'En stock','pocas':'Últimas unidades','agotado':'Agotado'}
+ENVIO_GRATIS=50; ENVIO_PRECIO=4.95; PLAZO_ENVIO='2 a 4 días laborables'
 def euros(x): return f"{x:,.2f}".replace(',','X').replace('.',',').replace('X','.')+' €'
 import re as _re
 def slugify(t): return _re.sub(r'[^a-z0-9]+','-',t.lower().translate(str.maketrans('áéíóúñü','aeiouñu')).replace('ñ','n')).strip('-')
 TARJETA_ICO='<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M3 5h18a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2zm0 4v8h18V9zm0-2h18V7H3zm2 6h6v2H5z"/></svg>'
 CANDADO_ICO='<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 10V8a5 5 0 0 1 10 0v2h1a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2zm2 0h6V8a3 3 0 0 0-6 0z"/></svg>'
+LUPA_ICO='<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M10 3a7 7 0 0 1 5.6 11.2l4.6 4.6-1.4 1.4-4.6-4.6A7 7 0 1 1 10 3zm0 2a5 5 0 1 0 0 10 5 5 0 0 0 0-10z"/></svg>'
+BIZUM_TEL='633 930 935'  # SUPUESTO: móvil de WhatsApp. Cambiar si el Bizum de la tienda es otro número.
 CESTA_ICO='<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 7V6a5 5 0 0 1 10 0v1h3a1 1 0 0 1 1 1.1l-1.2 12A2 2 0 0 1 17.8 22H6.2a2 2 0 0 1-2-1.9L3 8.1A1 1 0 0 1 4 7zm2 0h6V6a3 3 0 0 0-6 0zm-1 4a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm8 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/></svg>'
 def productos_html(slug,seccion,gris):
     ps=PRODUCTOS.get(slug)
     if not ps: return ''
     out=''
     for n,d,pr in ps:
-        pid=slug+'--'+slugify(n)
-        out+=f'''<li class="producto"><div class="muestra{' gris' if gris else ''}" aria-hidden="true"></div><div class="producto-texto"><h3>{n}</h3><p class="secundario">{d}</p><p class="precio num">{euros(pr)}</p></div><button class="boton anadir" type="button" data-id="{pid}" data-nombre="{n}" data-detalle="{d}" data-precio="{pr}" data-seccion="{seccion}">{CESTA_ICO}<span class="txt">Añadir a la cesta</span><span class="vh">: {n}</span></button></li>'''
+        pid=slug+'--'+slugify(n); st=STOCK.get(n,'si')
+        color='<p class="ref-color">Indica el nº de color del fabricante en las indicaciones del pedido, o pídenos una foto real por WhatsApp.</p>' if n in CON_COLOR else ''
+        if st=='agotado':
+            accion=f'<button class="boton anadir" type="button" disabled aria-disabled="true">Agotado<span class="vh">: {n}</span></button><a class="enlace-aviso" href="{wa(f"Hola, avisadme cuando volváis a tener: {n}")}">Avísame cuando llegue</a>'
+        else:
+            accion=f'<button class="boton anadir" type="button" data-id="{pid}" data-nombre="{n}" data-detalle="{d}" data-precio="{pr}" data-seccion="{seccion}">{CESTA_ICO}<span class="txt">Añadir a la cesta</span><span class="vh">: {n}</span></button>'
+        out+=f'''<li class="producto" id="{pid}"><div class="muestra{' gris' if gris else ''}" aria-hidden="true"></div><div class="producto-texto"><h3>{n}</h3><p class="secundario">{d}</p><p class="stock stock-{st}"><span class="punto" aria-hidden="true"></span>{ESTADO_TXT[st]}</p><p class="precio num">{euros(pr)}</p>{color}</div><div class="producto-accion">{accion}</div></li>'''
     return f'<ul class="productos" aria-label="Productos de ejemplo">{out}</ul>'
 
 NAV=[('merceria/','Mercería','merceria'),('complementos/','Complementos','complementos'),('#como-comprar','Cómo comprar',''),('#visitanos','Horario y dirección','')]
@@ -68,10 +80,12 @@ def cab(p,actual):
         items.append(f'<li><a{cos} href="{h}"{cur}>{t}</a></li>')
     contacto=f'<li class="menu-contacto"><a href="{TEL_HREF}">Llamar al <span class="num">{TEL}</span></a><a href="{wa("Hola, La Valenciana")}">WhatsApp <span class="num">{WA_TXT}</span></a></li>'
     return f'''<a class="salto" href="#contenido">Saltar al contenido</a>
+<p class="barra-envio"><span><strong>Envío gratis desde {ENVIO_GRATIS} €</strong> en la Península</span><span class="sep" aria-hidden="true">·</span><span>Recogida gratis en la tienda</span><span class="sep" aria-hidden="true">·</span><span>Te asesoramos por WhatsApp</span></p>
 <header class="cabecera">
   <div class="envoltura">
-    <a class="marca" href="{p or './'}"><img src="{p}assets/img/marca/monograma.svg" alt="" width="38" height="38">La Valenciana<span class="vh">, ir al inicio</span></a>
+    <a class="marca" href="{p or './'}"><img src="{p}assets/img/marca/monograma.svg" alt="" width="38" height="38"><span class="marca-texto">La Valenciana</span><span class="vh">, ir al inicio</span></a>
     <nav class="menu-principal" id="menu-principal" aria-label="Menú principal"><ul>{''.join(items)}{contacto}</ul></nav>
+    <button class="control boton-buscar" type="button" aria-haspopup="dialog" aria-controls="buscador">{LUPA_ICO}<span class="buscar-texto">Buscar</span></button>
     <button class="control boton-letra" type="button" aria-pressed="false"><span class="aa" aria-hidden="true">A<small>A</small></span><span class="letra-texto">Letra grande</span><span class="vh"> (letra más grande)</span></button>
     <button class="control boton-menu" type="button" aria-expanded="false" aria-controls="menu-principal"><span class="rayas" aria-hidden="true"></span><span class="txt">Menú</span></button>
   </div>
@@ -86,23 +100,33 @@ def pie(p):
       <div><h2>Contacto</h2><ul><li><a href="{TEL_HREF}">Teléfono&nbsp;<span class="num">{TEL}</span></a></li><li><a href="{wa('Hola, La Valenciana')}">WhatsApp&nbsp;<span class="num">{WA_TXT}</span></a></li><li><a href="mailto:{CORREO}">{CORREO}</a></li></ul></div>
       <div><h2>Síguenos</h2><ul>{redes}</ul></div>
     </div>
-    <div class="legal"><span>© 2026 La Valenciana · Mercería y Complementos</span><ul><li><a href="{p}condiciones-de-venta/">Condiciones de venta</a></li><li><a href="{p}accesibilidad/">Accesibilidad</a></li><li><a href="{p}aviso-legal/">Aviso legal</a></li><li><a href="{p}privacidad/">Privacidad</a></li><li><a href="{p}cookies/">Cookies</a></li><li><a href="#contenido">Volver arriba ↑</a></li></ul></div>
+    <div class="legal"><span>© 2026 La Valenciana · Mercería y Complementos</span><ul><li><a href="{p}envios-y-devoluciones/">Envíos y devoluciones</a></li><li><a href="{p}condiciones-de-venta/">Condiciones de venta</a></li><li><a href="{p}accesibilidad/">Accesibilidad</a></li><li><a href="{p}aviso-legal/">Aviso legal</a></li><li><a href="{p}privacidad/">Privacidad</a></li><li><a href="{p}cookies/">Cookies</a></li><li><a href="#contenido">Volver arriba ↑</a></li></ul></div>
   </div>
 </footer>
 <a class="wa-flotante" href="{wa('Hola, La Valenciana')}">{WA_ICO}<span>WhatsApp<span class="vh">: escríbenos</span></span></a>
 <button class="cesta-flotante" type="button" hidden aria-haspopup="dialog" aria-controls="cesta">{CESTA_ICO}<span>Cesta</span><span class="contador num" aria-hidden="true">0</span><span class="vh cesta-resumen"></span></button>
 <p class="aviso-cesta" role="status" aria-live="polite"></p>
+<dialog class="buscador" id="buscador" aria-labelledby="titulo-buscador" data-base="{p}">
+  <div class="buscador-cabeza"><h2 id="titulo-buscador">Buscar en la tienda</h2><button class="control cerrar-buscador" type="button">Cerrar<span class="vh"> el buscador</span> <span aria-hidden="true">✕</span></button></div>
+  <div class="buscador-cuerpo">
+    <label for="buscador-q">¿Qué buscas?</label>
+    <input id="buscador-q" type="search" autocomplete="off" placeholder="Por ejemplo: cremallera, lana, panty…" aria-describedby="buscador-estado">
+    <p id="buscador-estado" class="secundario" role="status" aria-live="polite">Escribe al menos 2 letras.</p>
+    <ul class="buscador-resultados"></ul>
+  </div>
+</dialog>
 <dialog class="cesta" id="cesta" aria-labelledby="titulo-cesta" data-wa="{WA}" data-correo-m="{PED_M}" data-correo-c="{PED_C}">
   <div class="cesta-cabeza"><h2 id="titulo-cesta">Tu cesta</h2><button class="control cerrar-cesta" type="button">Cerrar<span class="vh"> la cesta</span> <span aria-hidden="true">✕</span></button></div>
   <div class="cesta-cuerpo">
     <p class="cesta-vacia">Tu cesta está vacía. Entra en <a href="{p}merceria/">Mercería</a> o en <a href="{p}complementos/">Complementos</a> y pulsa «Añadir a la cesta».</p>
     <ul class="cesta-lista"></ul>
+    <p class="cesta-envio" data-gratis="{ENVIO_GRATIS}"></p>
     <div class="cesta-total"><span>Total <span class="secundario">(IVA incluido)</span></span><strong class="num cesta-importe">0,00 €</strong></div>
     <form class="cesta-form">
       <label for="cesta-notas">Tallas, colores u otras indicaciones <span class="secundario">(opcional)</span></label>
       <textarea id="cesta-notas" name="notas" rows="3"></textarea>
     </form>
-    <p class="nota">Pagas con tarjeta en la web y lo recoges en la tienda ({DIR1}), sin gastos de envío.</p>
+    <p class="nota">Recogida gratis en la tienda ({DIR1}) o envío a domicilio ({euros(ENVIO_PRECIO)}, gratis desde {ENVIO_GRATIS} €). Paga con tarjeta, PayPal o Bizum.</p>
     <div class="cesta-acciones">
       <a class="boton lleno ir-pago" href="{p}pedido/">{TARJETA_ICO}Tramitar pedido y pagar</a>
       <a class="boton enviar-wa" href="#">{WA_ICO}Prefiero pedir por WhatsApp</a>
@@ -128,6 +152,7 @@ def doc(p,titulo,desc,cuerpo,actual,clase='',extra_css='',extra_head=''):
 <link rel="preload" href="{p}assets/fonts/PlayfairDisplay.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="{p}assets/fonts/Jost.woff2" as="font" type="font/woff2" crossorigin>
 <script>try{{if(localStorage.getItem('lv-letra')==='1')document.documentElement.classList.add('letra-grande')}}catch(e){{}}</script>
+<script src="{p}assets/js/catalogo.js" defer></script>
 <link rel="stylesheet" href="{p}assets/fonts/fuentes.css">
 <link rel="stylesheet" href="{p}assets/css/tokens.css">
 <link rel="stylesheet" href="{p}assets/css/estilos.css">
@@ -185,9 +210,11 @@ def puerta(clave,nombre,txt,subs,gris):
 PREGUNTAS=[
  ('¿Puedo preguntar si tenéis algo antes de ir?',f'<p>Sí. Escríbenos por WhatsApp al <a class="num" href="{wa("Hola, quería preguntar si tenéis")}">{WA_TXT}</a> o llámanos al <a class="num" href="{TEL_HREF}">{TEL}</a>. Si nos mandas una foto del botón, el hilo o la prenda, te decimos si lo tenemos.</p>'),
  ('¿Y si no tenéis lo que busco?','<p>Te lo buscamos. Cuéntanos qué necesitas y te avisamos cuando lo tengamos.</p>'),
- ('¿Hacéis arreglos de ropa?','<p>Sí: bajos, cambio de cremalleras y pequeños arreglos. Tráenos la prenda y te decimos plazo y precio antes de empezar.</p>'),
  ('Estoy empezando a tejer o a bordar. ¿Me ayudáis?','<p>Claro. Te aconsejamos el material para empezar: qué agujas, qué hilo o lana y cuánto vas a necesitar.</p>'),
- ('¿Se puede comprar por internet?',f'<p>Sí. En Mercería y en Complementos pulsa «Añadir a la cesta», abre la cesta y pulsa «Tramitar pedido y pagar». Puedes pagar con tarjeta de débito o crédito, o con PayPal. Lo recoges en la tienda, sin gastos de envío. Si prefieres, también puedes hacer el encargo por WhatsApp o por correo:</p><ul><li>Mercería: <a href="mailto:{PED_M}">{PED_M}</a></li><li>Complementos: <a href="mailto:{PED_C}">{PED_C}</a></li></ul>'),
+ ('¿Se puede comprar por internet?',f'<p>Sí. En Mercería y en Complementos pulsa «Añadir a la cesta», abre la cesta y pulsa «Tramitar pedido y pagar». Puedes pagar con tarjeta, PayPal o Bizum, y elegir recogida gratis en la tienda o envío a casa (gratis desde 50 €). Si prefieres, también puedes hacer el encargo por WhatsApp o por correo:</p><ul><li>Mercería: <a href="mailto:{PED_M}">{PED_M}</a></li><li>Complementos: <a href="mailto:{PED_C}">{PED_C}</a></li></ul>'),
+ ('¿Cuánto cuesta el envío y cuánto tarda?',f'<p>{euros(ENVIO_PRECIO)} en la Península y <strong>gratis desde {ENVIO_GRATIS} €</strong>. Llega en {PLAZO_ENVIO} si pides antes de las 14:00. Recoger en la tienda es siempre gratis. <a href="envios-y-devoluciones/">Más detalles</a>.</p>'),
+ ('¿Puedo devolver algo?','<p>Sí, tienes 14 días. No se pueden devolver los productos cortados a medida ni la ropa interior, medias o calcetines con el precinto abierto.</p>'),
+ ('¿Cómo acierto con el color de un hilo o un botón?','<p>Indica el número de color del fabricante en tu pedido, o pídenos por WhatsApp una foto real con luz natural antes de comprar.</p>'),
  ('¿Qué días abrís?',f'<p>De lunes a sábado, de 10:00 a 14:00 y de 17:00 a 21:00. Domingos y festivos, cerrado.</p>'),
 ]
 preg=''.join(f'<details><summary>{q}</summary><div class="respuesta">{a}</div></details>' for q,a in PREGUNTAS)
@@ -196,7 +223,7 @@ redes_txt=''.join(f'<li><a href="{u}">{n}<span class="vh"> ({h})</span></a></li>
 inicio=f'''<section class="hero" aria-labelledby="titulo-inicio">
   <div class="envoltura">
     <div class="hero-texto">
-      <p class="etiqueta">Mercería y complementos · Almendralejo</p>
+      <p class="etiqueta">Mercería · Medias · Complementos · Almendralejo</p>
       <h1 id="titulo-inicio">Hilos, botones, medias y lencería en el centro de Almendralejo</h1>
       <p class="entradilla">Una tienda de las de siempre en la Plaza de Espronceda. Te atendemos con calma y, si no lo tenemos, te lo buscamos.</p>
       {estado()}
@@ -241,7 +268,7 @@ inicio=f'''<section class="hero" aria-labelledby="titulo-inicio">
   <div class="envoltura">
     <div class="cabeza-bloque"><p class="etiqueta">Una tienda, dos secciones</p><h2 id="titulo-secciones">¿Qué estás buscando hoy?</h2><p class="entradilla">Elige una sección o ve directamente a lo que necesitas.</p></div>
     <div class="puertas">
-      {puerta('merceria','Mercería','Hilos, lanas, botones, cremalleras y todo lo necesario para coser, tejer y arreglar.',MERC,False)}
+      {puerta('merceria','Mercería','Hilos, lanas, botones, cremalleras, cintas y todo lo necesario para coser, tejer y bordar.',MERC,False)}
       {puerta('complementos','Complementos','Medias, calcetines, lencería, pañuelos y bolsos para el día a día y para las ocasiones especiales.',COMP,True)}
     </div>
   </div>
@@ -252,8 +279,8 @@ inicio=f'''<section class="hero" aria-labelledby="titulo-inicio">
     <div class="cabeza-bloque"><p class="etiqueta">Cómo comprar</p><h2 id="titulo-comprar">Fácil, como en la tienda de toda la vida</h2></div>
     <ol class="pasos">
       <li><h3>Llena tu cesta</h3><p>Entra en Mercería o en Complementos y pulsa «Añadir a la cesta» en lo que quieras. Si no lo encuentras, pregúntanos por WhatsApp.</p><div class="botones"><a class="boton cosido" href="merceria/">Ver Mercería {FLECHA}</a><a class="boton" href="complementos/">Ver Complementos {FLECHA}</a></div></li>
-      <li><h3>Paga con tarjeta</h3><p>Abre la cesta, pulsa «Tramitar pedido y pagar» y rellena tus datos. El pago es seguro y lo gestiona PayPal: no hace falta tener cuenta.</p></li>
-      <li><h3>Recógelo en la tienda</h3><p>Te avisamos cuando esté preparado y te esperamos en la Plaza de Espronceda 2, de lunes a sábado.</p><div class="botones"><a class="boton" href="{MAPS}">{MAPA_ICO}Cómo llegar</a></div></li>
+      <li><h3>Paga como prefieras</h3><p>Tarjeta, PayPal o Bizum. Solo cobramos cuando comprobamos que tenemos todo: si falta algo, te avisamos antes.</p></li>
+      <li><h3>Recógelo o te lo enviamos</h3><p>Recogida gratis en la Plaza de Espronceda 2, o envío a casa en {PLAZO_ENVIO} (gratis desde {ENVIO_GRATIS} €).</p><div class="botones"><a class="boton" href="{MAPS}">{MAPA_ICO}Cómo llegar</a></div></li>
     </ol>
   </div>
 </section>
@@ -309,7 +336,7 @@ ld={"@context":"https://schema.org","@type":"Store","name":"La Valenciana","desc
    {"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],"opens":"17:00","closes":"21:00"}],
  "sameAs":[u for u,_,_ in REDES]}
 faq={"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":q,"acceptedAnswer":{"@type":"Answer","text":__import__('re').sub('<[^>]+>','',a)}} for q,a in PREGUNTAS]}
-w('index.html',doc('','La Valenciana · Mercería y Complementos en Almendralejo','Mercería y complementos en la Plaza de Espronceda 2 de Almendralejo: hilos, lanas, botones, labores, arreglos, medias, lencería y más. Lunes a sábado.',inicio,'inicio','con-caja',
+w('index.html',doc('','La Valenciana · Mercería y Complementos en Almendralejo','Mercería y complementos en la Plaza de Espronceda 2 de Almendralejo: hilos, lanas, botones, labores, medias, lencería y más. Lunes a sábado.',inicio,'inicio','con-caja',
   '<link rel="stylesheet" href="assets/css/caja.css">\n','<script type="application/ld+json">'+json.dumps(ld,ensure_ascii=False)+'</script>\n<script type="application/ld+json">'+json.dumps(faq,ensure_ascii=False)+'</script>\n'))
 
 # ---------- SECCIONES ----------
@@ -338,7 +365,7 @@ def seccion(slug,nombre,clase,intro,subs,otra,otra_nombre,otra_txt,correo,gris):
   <div class="envoltura dos">
     <div class="pila"><p class="etiqueta">La Valenciana · {len(subs)} apartados</p><h1 id="titulo-seccion">{nombre}</h1><p class="entradilla">{intro}</p>
       <p>Pedidos y consultas: <a href="mailto:{correo}">{correo}</a></p>
-      <p class="aviso-compra">{CANDADO_ICO}<span>Añade productos a la cesta y <strong>paga con tarjeta de forma segura</strong>. Lo recoges en la tienda sin gastos de envío. Precios con IVA incluido.</span></p>
+      <p class="aviso-compra">{CANDADO_ICO}<span><strong>Recogida gratis en la tienda</strong> o envío a casa ({euros(ENVIO_PRECIO)}, <strong>gratis desde {ENVIO_GRATIS} €</strong>). Paga con tarjeta, PayPal o Bizum; solo cobramos cuando comprobamos que tenemos todo. <a href="../envios-y-devoluciones/">Envíos y devoluciones</a>.</span></p>
       <div class="botones">{btn_wa(f'Hola, tengo una consulta sobre {nombre.lower()}','Preguntar por WhatsApp','boton lleno')}{btn_tel()}</div></div>
     <div class="{'foto gris' if gris else 'foto'}"><span>Foto · {nombre.lower()}</span></div>
   </div>
@@ -354,18 +381,19 @@ def seccion(slug,nombre,clase,intro,subs,otra,otra_nombre,otra_txt,correo,gris):
   <a class="cambio {'a-c' if otra=='complementos' else 'a-m cosido'}" href="../{otra}/"><div class="pila junta"><span class="etiqueta">La otra sección</span><h2>{otra_nombre}</h2><p>{otra_txt}</p></div><span class="flecha" aria-hidden="true">→</span></a>
 </div>
 </div>'''
-w('merceria/index.html',doc('../','Mercería · La Valenciana','Hilos, lanas, botones, cremalleras, cintas, labores y arreglos en La Valenciana, Plaza de Espronceda 2, Almendralejo.',
-  seccion('merceria','Mercería','seccion-merceria','Todo lo que necesitas para coser, tejer y arreglar, y el consejo de quien sabe.',MERC,'complementos','Complementos','Medias, calcetines, lencería, pañuelos y bolsos.',PED_M,False),'merceria'))
+w('merceria/index.html',doc('../','Mercería · La Valenciana','Hilos, lanas, botones, cremalleras, cintas y labores en La Valenciana, Plaza de Espronceda 2, Almendralejo.',
+  seccion('merceria','Mercería','seccion-merceria','Todo lo que necesitas para coser, tejer y bordar, y el consejo de quien sabe.',MERC,'complementos','Complementos','Medias, calcetines, lencería, pañuelos y bolsos.',PED_M,False),'merceria'))
 w('complementos/index.html',doc('../','Complementos · La Valenciana','Medias, pantis, calcetines, lencería, pañuelos, bolsos y bisutería en La Valenciana, Plaza de Espronceda 2, Almendralejo.',
-  seccion('complementos','Complementos','seccion-complementos','Medias, lencería y detalles elegidos con mimo para el día a día y para las ocasiones especiales.',COMP,'merceria','Mercería','Hilos, lanas, botones, labores y arreglos.',PED_C,True),'complementos'))
+  seccion('complementos','Complementos','seccion-complementos','Medias, lencería y detalles elegidos con mimo para el día a día y para las ocasiones especiales.',COMP,'merceria','Mercería','Hilos, lanas, botones, cintas y labores.',PED_C,True),'complementos'))
 
 # ---------- CATÁLOGO PARA EL PAGO (precios de referencia) ----------
 catalogo={}
 for sec,subs in (('merceria',MERC),('complementos',COMP)):
     for slug_,*_ in subs:
         for n,d,pr in PRODUCTOS.get(slug_,[]):
-            catalogo[slug_+'--'+slugify(n)]={'n':n,'d':d,'p':pr,'s':sec}
-w('assets/js/catalogo.js','/* Generado por docs/generar.py: no editar a mano */\nwindow.LV_CATALOGO='+json.dumps(catalogo,ensure_ascii=False)+';\n')
+            catalogo[slug_+'--'+slugify(n)]={'n':n,'d':d,'p':pr,'s':sec,'a':slug_,'st':STOCK.get(n,'si')}
+apartados={s_:t_ for s_,t_,*_ in MERC+COMP}
+w('assets/js/catalogo.js','/* Generado por docs/generar.py: no editar a mano */\nwindow.LV_CATALOGO='+json.dumps(catalogo,ensure_ascii=False)+';\nwindow.LV_APARTADOS='+json.dumps(apartados,ensure_ascii=False)+';\nwindow.LV_ENVIO='+json.dumps({'gratis':ENVIO_GRATIS,'precio':ENVIO_PRECIO})+';\n')
 
 # ---------- PEDIDO (pago con tarjeta) ----------
 pedido=f'''<div class="envoltura pedido-pagina">
@@ -392,14 +420,33 @@ pedido=f'''<div class="envoltura pedido-pagina">
       </fieldset>
       <fieldset>
         <legend><span class="paso-num">2</span> Entrega</legend>
-        <div class="opcion-entrega"><span class="marca-ok" aria-hidden="true">✓</span><div><strong>Recogida en la tienda · gratis</strong><p>{DIR1}, {DIR2}.<br>{HORARIO_CORTO}. Te avisamos por teléfono o correo cuando esté listo, normalmente en 1 o 2 días laborables.</p></div></div>
+        <div class="opciones">
+          <label class="opcion"><input type="radio" name="entrega" value="tienda" checked><span><strong>Recoger en la tienda · Gratis</strong><small>{DIR1}. Listo en 1 o 2 días laborables; te avisamos por teléfono.</small></span></label>
+          <label class="opcion"><input type="radio" name="entrega" value="envio"><span><strong>Envío a domicilio · <span class="precio-envio num">{euros(ENVIO_PRECIO)}</span></strong><small>Gratis desde {ENVIO_GRATIS} €. Península: {PLAZO_ENVIO} si pides antes de las 14:00, con número de seguimiento.</small></span></label>
+        </div>
+        <div class="direccion" hidden>
+          <div class="campo"><label for="p-dir">Dirección (calle, número, piso)</label><input id="p-dir" name="direccion" type="text" autocomplete="street-address" aria-describedby="p-dir-error"><p class="error" id="p-dir-error"></p></div>
+          <div class="campo-fila">
+            <div class="campo"><label for="p-cp">Código postal</label><input id="p-cp" name="cp" type="text" inputmode="numeric" autocomplete="postal-code" maxlength="5" aria-describedby="p-cp-ayuda p-cp-error"><p class="ayuda-campo" id="p-cp-ayuda">5 cifras. Solo Península.</p><p class="error" id="p-cp-error"></p></div>
+            <div class="campo"><label for="p-loc">Localidad</label><input id="p-loc" name="localidad" type="text" autocomplete="address-level2" aria-describedby="p-loc-error"><p class="error" id="p-loc-error"></p></div>
+          </div>
+          <div class="campo"><label for="p-prov">Provincia</label><input id="p-prov" name="provincia" type="text" autocomplete="address-level1" aria-describedby="p-prov-error"><p class="error" id="p-prov-error"></p></div>
+        </div>
       </fieldset>
       <fieldset>
         <legend><span class="paso-num">3</span> Pago</legend>
         <div class="campo campo-check"><input id="p-acepto" name="acepto" type="checkbox" required aria-describedby="p-acepto-error"><label for="p-acepto">He leído y acepto las <a href="../condiciones-de-venta/" target="_blank" rel="noopener">condiciones de venta<span class="vh"> (se abre en otra pestaña)</span></a> y la <a href="../privacidad/" target="_blank" rel="noopener">política de privacidad<span class="vh"> (se abre en otra pestaña)</span></a>.</label><p class="error" id="p-acepto-error"></p></div>
-        <p class="pago-info">{CANDADO_ICO}<span>Paga con <strong>tarjeta de débito o crédito</strong> (no necesitas cuenta) o con PayPal. La pasarela es segura y nosotros nunca vemos los datos de tu tarjeta.</span></p>
+        <div class="opciones">
+          <label class="opcion"><input type="radio" name="metodo" value="tarjeta" checked><span><strong>Tarjeta de débito o crédito, o PayPal</strong><small>No necesitas cuenta de PayPal.</small></span></label>
+          <label class="opcion"><input type="radio" name="metodo" value="bizum"><span><strong>Bizum</strong><small>Te enviamos la confirmación por WhatsApp y haces el Bizum.</small></span></label>
+        </div>
+        <p class="pago-info">{CANDADO_ICO}<span><strong>Solo cobramos cuando comprobamos que tenemos todo.</strong> Si falta algo, te avisamos antes de cobrar. Nunca vemos los datos de tu tarjeta.</span></p>
         <div class="pago-estado" role="status" aria-live="polite"></div>
-        <div id="pago-botones" class="pago-botones"></div>
+        <div class="bloque-tarjeta"><div id="pago-botones" class="pago-botones"></div></div>
+        <div class="bloque-bizum" hidden>
+          <ol class="pasos-bizum"><li>Pulsa «Enviar pedido» y se abrirá WhatsApp con tu pedido. Envíanos el mensaje.</li><li>Comprobamos que tenemos todo y te confirmamos el total.</li><li>Haces el Bizum al <strong class="num">{BIZUM_TEL}</strong> con tu número de pedido como concepto.</li></ol>
+          <button class="boton lleno confirmar-bizum" type="button">{WA_ICO}Enviar pedido y pagar con Bizum</button>
+        </div>
         <div class="pago-alternativa" hidden><p>Si el pago no funciona, puedes hacer el pedido por WhatsApp y pagarlo al recogerlo.</p><a class="boton enviar-wa-pedido" href="#">{WA_ICO}Pedir por WhatsApp</a></div>
       </fieldset>
     </form>
@@ -408,7 +455,8 @@ pedido=f'''<div class="envoltura pedido-pagina">
       <div class="resumen-caja">
         <h2 id="titulo-resumen">Tu pedido</h2>
         <ul class="resumen-lista"></ul>
-        <dl class="resumen-totales"><div><dt>Productos</dt><dd class="num r-subtotal">0,00 €</dd></div><div><dt>Recogida en tienda</dt><dd>Gratis</dd></div><div class="total"><dt>Total <span class="secundario">(IVA incluido)</span></dt><dd class="num r-total">0,00 €</dd></div></dl>
+        <dl class="resumen-totales"><div><dt>Productos</dt><dd class="num r-subtotal">0,00 €</dd></div><div><dt class="r-envio-txt">Recogida en tienda</dt><dd class="num r-envio">Gratis</dd></div><div class="total"><dt>Total <span class="secundario">(IVA incluido)</span></dt><dd class="num r-total">0,00 €</dd></div></dl>
+        <p class="r-falta" aria-live="polite"></p>
         <button class="boton editar-cesta" type="button" aria-haspopup="dialog" aria-controls="cesta">Cambiar cantidades</button>
       </div>
     </aside>
@@ -416,16 +464,16 @@ pedido=f'''<div class="envoltura pedido-pagina">
 
   <section class="pedido-ok" hidden aria-labelledby="titulo-ok" tabindex="-1">
     <div class="ok-sello" aria-hidden="true">✓</div>
-    <h2 id="titulo-ok">¡Gracias! Tu pedido está pagado</h2>
+    <h2 id="titulo-ok">¡Gracias! Hemos recibido tu pedido</h2>
     <p class="entradilla">Número de pedido: <strong class="num ok-numero"></strong></p>
-    <p>Te avisaremos al <strong class="ok-tel"></strong> cuando esté listo para recoger en {DIR1}. PayPal te enviará el justificante del pago por correo.</p>
+    <p class="ok-texto"></p>
     <ul class="resumen-lista ok-lista"></ul>
     <p class="ok-total"></p>
     <div class="botones"><a class="boton lleno" href="../">Volver al inicio</a><a class="boton ok-wa" href="#">{WA_ICO}Avisarnos por WhatsApp</a></div>
   </section>
 </div>'''
-w('pedido/index.html',doc('../','Tramitar pedido · La Valenciana','Paga tu pedido con tarjeta y recógelo en La Valenciana, Almendralejo.',pedido,'pedido','pagina-pedido','',
-  '<meta name="robots" content="noindex">\n<script src="../assets/js/catalogo.js" defer></script>\n<script src="../assets/js/pago-config.js" defer></script>\n<script src="../assets/js/pedido.js" defer></script>\n'))
+w('pedido/index.html',doc('../','Tramitar pedido · La Valenciana','Paga tu pedido con tarjeta, PayPal o Bizum y recógelo gratis en la tienda o recíbelo en casa.',pedido,'pedido','pagina-pedido','',
+  '<meta name="robots" content="noindex">\n<script src="../assets/js/pago-config.js" defer></script>\n<script src="../assets/js/pedido.js" defer></script>\n'))
 
 # ---------- LEGALES Y ACCESIBILIDAD ----------
 P='<span class="pendiente">[pendiente]</span>'
@@ -448,19 +496,32 @@ legales={
 </ul>
 <h2>¿Algo no funciona bien?</h2>
 <p>Cuéntanoslo y lo arreglamos. Llámanos al <a class="num" href="{TEL_HREF}">{TEL}</a>, escríbenos por <a href="{wa('Hola, he tenido un problema con la web')}">WhatsApp</a> o a <a href="mailto:{CORREO}">{CORREO}</a>.</p>'''),
+'envios-y-devoluciones':('Envíos y devoluciones',f'''<p class="entradilla">Lo importante, en pocas palabras.</p>
+<div class="claves">
+<section><h2>Recogida en la tienda</h2><p><strong>Gratis.</strong> Listo en 1 o 2 días laborables. Te avisamos por teléfono y lo recoges en {DIR1}.</p></section>
+<section><h2>Envío a domicilio</h2><p><strong>{euros(ENVIO_PRECIO)}, gratis desde {ENVIO_GRATIS} €.</strong> Península: {PLAZO_ENVIO} si pides antes de las 14:00. Con número de seguimiento.</p></section>
+<section><h2>Si falta algo</h2><p>Comprobamos el pedido antes de cobrar. Si falta un producto, <strong>te avisamos antes</strong> y no se te cobra.</p></section>
+<section><h2>Devoluciones</h2><p><strong>14 días</strong> para devolver lo que no te convenza, en la tienda o por envío. Te devolvemos el dinero como máximo en 14 días.</p></section>
+</div>
+<h2>Qué no se puede devolver</h2>
+<ul><li>Cintas, puntillas, gomas y cualquier producto <strong>cortado a medida</strong>.</li><li>Ropa interior, lencería, medias y calcetines si se ha <strong>abierto el precinto</strong>, por higiene.</li></ul>
+<h2>¿Dudas o algún problema?</h2>
+<p>Escríbenos por <a href="{wa('Hola, tengo una duda con un pedido')}">WhatsApp al {WA_TXT}</a> o llámanos al <a class="num" href="{TEL_HREF}">{TEL}</a>, de lunes a sábado en horario de tienda. Tienes todos los detalles en las <a href="../condiciones-de-venta/">condiciones de venta</a>.</p>'''),
 'condiciones-de-venta':('Condiciones de venta',f'''<p class="entradilla">Estas condiciones se aplican a las compras hechas en esta web. Léelas antes de pagar.</p>
 <h2>1. Quién vende</h2>
 <p>{P} (NIF {P}), con domicilio en {DIR1}, {DIR2}. Teléfono {TEL}. Correo {CORREO}.</p>
 <h2>2. Precios</h2>
-<p>Los precios están en euros e incluyen el IVA. La recogida en la tienda es gratuita. No hay gastos de envío porque, por ahora, no hacemos envíos a domicilio.</p>
+<p>Los precios están en euros e incluyen el IVA. La recogida en la tienda es gratuita. El envío a domicilio en la Península cuesta {euros(ENVIO_PRECIO)} y es gratis en pedidos desde {ENVIO_GRATIS} €. Por ahora no enviamos a Baleares, Canarias, Ceuta ni Melilla: escríbenos y buscamos una solución.</p>
 <h2>3. Cómo se compra</h2>
-<ol><li>Añade productos a la cesta.</li><li>Pulsa «Tramitar pedido y pagar», rellena tus datos y acepta estas condiciones.</li><li>Paga con tarjeta de débito o crédito o con PayPal. El contrato se perfecciona cuando el pago se completa; verás un número de pedido en pantalla.</li></ol>
+<ol><li>Añade productos a la cesta.</li><li>Pulsa «Tramitar pedido y pagar», rellena tus datos, elige recogida o envío y acepta estas condiciones.</li><li>Elige cómo pagar. Verás un número de pedido en pantalla.</li><li>Comprobamos que tenemos todo. Si falta algún producto, te avisamos <strong>antes de cobrar</strong> y decides si quieres el resto.</li></ol>
 <h2>4. Pago</h2>
-<p>El pago lo procesa PayPal de forma segura. Admite tarjetas Visa, Mastercard y otras, sin necesidad de tener cuenta de PayPal. No guardamos los datos de tu tarjeta.</p>
-<h2>5. Recogida</h2>
-<p>Te avisamos por teléfono o correo cuando el pedido esté listo, normalmente en 1 o 2 días laborables. Puedes recogerlo en {DIR1} en horario de tienda ({HORARIO_CORTO}) durante 30 días. Si algún producto no estuviera disponible, te lo diremos y te devolveremos su importe.</p>
+<p><strong>Tarjeta o PayPal:</strong> lo procesa PayPal de forma segura, sin necesidad de tener cuenta. Al pagar solo se <em>reserva</em> el importe; el cobro se hace cuando confirmamos el pedido. Si no podemos servirlo, la reserva se anula y no se te cobra nada. No guardamos los datos de tu tarjeta.</p>
+<p><strong>Bizum:</strong> cuando confirmamos el pedido por WhatsApp, haces el Bizum al {BIZUM_TEL} indicando el número de pedido.</p>
+<h2>5. Recogida y envío</h2>
+<p><strong>Recogida:</strong> te avisamos por teléfono cuando el pedido esté listo, normalmente en 1 o 2 días laborables. Puedes recogerlo en {DIR1} en horario de tienda ({HORARIO_CORTO}) durante 30 días.</p>
+<p><strong>Envío:</strong> en la Península lo entregamos en {PLAZO_ENVIO} si pides antes de las 14:00 de un día laborable. Te mandamos el número de seguimiento. Si hay algún retraso, te avisamos.</p>
 <h2>6. Derecho de desistimiento</h2>
-<p>Tienes 14 días naturales desde la recogida para devolver los productos sin dar explicaciones. Tráelos a la tienda en el mismo estado o avísanos por correo. Te devolveremos el importe por el mismo medio de pago en un plazo máximo de 14 días.</p>
+<p>Tienes 14 días naturales desde que recibes o recoges el pedido para devolver los productos sin dar explicaciones. Tráelos a la tienda o envíanoslos en el mismo estado; avísanos antes por WhatsApp o correo. Si nos lo envías, el coste de la devolución corre de tu cuenta, salvo que el producto sea defectuoso o no sea el que pediste. Te devolvemos el importe por el mismo medio de pago en un plazo máximo de 14 días.</p>
 <p>Por motivos de higiene, no se admite la devolución de ropa interior, lencería, medias ni calcetines si se ha abierto su precinto o envoltorio. Tampoco de productos cortados a medida (cintas, puntillas o gomas por metros).</p>
 <h2>7. Garantía</h2>
 <p>Los productos tienen la garantía legal de 3 años por falta de conformidad. Si algo llega defectuoso, tráelo a la tienda y lo cambiamos o te devolvemos el dinero.</p>
@@ -493,7 +554,7 @@ legales={
 <h2>Enlaces externos</h2>
 <p>Los enlaces a Instagram, TikTok, Facebook, WhatsApp y Google Maps te llevan a esos servicios, que tienen sus propias políticas de cookies.</p>''')}
 for slug,(t,body) in legales.items():
-    etiqueta='Accesibilidad' if slug=='accesibilidad' else ('Compras' if slug=='condiciones-de-venta' else 'Información legal')
+    etiqueta='Accesibilidad' if slug=='accesibilidad' else ('Compras' if slug in ('condiciones-de-venta','envios-y-devoluciones') else 'Información legal')
     w(f'{slug}/index.html',doc('../',f'{t} · La Valenciana',f'{t} de la web de La Valenciana.',f'<div class="envoltura legal-texto"><nav class="migas" aria-label="Estás aquí"><ol><li><a href="../">Inicio</a></li><li><span aria-current="page">{t}</span></li></ol></nav><p class="etiqueta">{etiqueta}</p><h1>{t}</h1>{body}</div>',slug))
 
 # 404 (GitHub Pages lo sirve desde cualquier ruta: enlaces absolutos al subdirectorio)

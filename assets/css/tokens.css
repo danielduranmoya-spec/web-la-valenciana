@@ -1,22 +1,28 @@
-/* La Valenciana · tokens de marca (paso 3, revisados para accesibilidad) */
+/* La Valenciana · tokens de marca. Paleta 2026-11-11: blanco principal; rosa pastel y morado pastel secundarios.
+   Los nombres de variable se mantienen para no tocar todo el CSS: rosa-polvo = rosa muy claro, perla = lavanda clara,
+   niebla = morado pastel, malva = morado medio, malva-texto = morado oscuro (textos), crema = blanco. */
 :root {
-  /* Paleta de marca (sin cambios) */
-  --rosa-polvo: #F6E4E7;   /* fondo principal y bandas */
-  --rosa: #E9BCC6;         /* tarjetas de Mercería */
-  --rosa-antiguo: #C98C9C; /* detalles decorativos (nunca texto) */
-  --malva: #9C5A6C;        /* acento: rellenos y textos grandes */
-  --perla: #EEECEF;        /* fondo alterno, tarjetas de Complementos */
-  --niebla: #C9C4CC;       /* líneas decorativas */
-  --grafito: #4A4450;      /* texto principal */
+  /* Paleta de marca */
+  --rosa-polvo: #FDF1F5;   /* rosa muy claro: bandas */
+  --rosa: #F5D0DC;         /* tarjetas de Mercería */
+  --rosa-antiguo: #E2A3B9; /* detalles decorativos (nunca texto) */
+  --malva: #8B6AB5;        /* morado pastel medio: acentos */
+  --perla: #F3EEFA;        /* lavanda clara: Complementos */
+  --niebla: #D8CBEC;       /* morado pastel */
+  --grafito: #3E3848;      /* texto principal */
   --kraft: #C8A27A;        /* solo la caja del hero */
 
   /* Derivados para accesibilidad (mismos tonos, más contraste) */
-  --malva-texto: #7E4556;  /* enlaces y textos pequeños: 6:1 sobre rosa polvo */
-  --grafito-suave: #5E5864;/* texto secundario: 5,6:1 sobre rosa polvo */
-  --crema: #FBF7F8;        /* sustituye al blanco puro en fondos */
+  --malva-texto: #6B4A94;  /* enlaces y textos pequeños: 6,9:1 sobre blanco */
+  --grafito-suave: #625B6C;/* texto secundario: 5,6,9:1 sobre blanco */
+  --crema: #FFFFFF;        /* blanco */
   --blanco: #FFFFFF;       /* solo texto sobre fondos oscuros */
   --borde: color-mix(in srgb, var(--grafito) 22%, transparent);
   --borde-fuerte: color-mix(in srgb, var(--grafito) 55%, transparent);
+
+  --fondo: #FFFFFF;        /* fondo principal */
+  --rosa-texto: #A0466A;   /* costuras y detalles rosas (5,9:1 sobre blanco) */
+  --morado-oscuro: #524070;/* rellenos de botones (9:1 con texto blanco) */
 
   /* Tipografía */
   --fuente-display: "Playfair Display", Georgia, "Times New Roman", serif; /* titulares, 500/700 */

@@ -12,8 +12,24 @@ La web cobra con PayPal, que funciona en una web estática como GitHub Pages sin
 4. En `assets/js/pago-config.js` pon ese Client ID en `clientId` y cambia `prueba` a `false`.
 5. Completa el titular y el NIF en `docs/generar.py` (aviso legal, privacidad y condiciones de venta) y ejecuta `python3 docs/generar.py`.
 
+## Cómo funciona el cobro (autorizar y después cobrar)
+La web **no cobra al momento**: al pagar con tarjeta o PayPal solo se *autoriza* (reserva) el importe. Así podéis comprobar que tenéis todo antes de cobrar.
+1. Entra en PayPal → *Actividad*. El pedido aparece como **«Autorizado»** (o «Pendiente»).
+2. Comprueba stock y que el importe coincide con los productos.
+3. Si está todo: abre el pago y pulsa **«Cobrar»** (Capture). Hazlo en los **3 días** siguientes; la autorización caduca a los 29 días.
+4. Si falta algo: avisa al cliente por WhatsApp. Puedes cobrar solo una parte (cobro parcial) o **anular** la autorización y no se cobra nada.
+
+## Bizum
+Si el cliente elige Bizum, se abre WhatsApp con su pedido (número LV-…). Comprobáis el stock, le confirmáis el total y él hace el Bizum al número indicado en la web (`BIZUM_TEL` en `docs/generar.py`, ahora el 633 930 935). Entregad o enviad el pedido cuando llegue el Bizum.
+
+## Envíos
+Precio y umbral en `docs/generar.py`: `ENVIO_PRECIO` (4,95 €), `ENVIO_GRATIS` (50 €) y `PLAZO_ENVIO`. Solo Península (los CP de Baleares, Canarias, Ceuta y Melilla se rechazan). La dirección llega en el detalle del pago de PayPal.
+
+## Stock
+El estado de cada producto (En stock / Últimas unidades / Agotado) se edita en `STOCK` de `docs/generar.py`. Lo agotado no se puede añadir a la cesta.
+
 ## Cuando entra un pedido
-- PayPal envía un correo a la tienda con: número de pedido (LV-…), productos, cantidades, importe, y en la descripción el nombre y teléfono del cliente; el correo del cliente y sus indicaciones van en el campo «custom».
+- PayPal envía un correo a la tienda con: número de pedido (LV-…), productos, cantidades, importe, dirección de envío si la hay, y en la descripción el nombre y teléfono del cliente; el correo del cliente y sus indicaciones van en el campo «custom».
 - **Comprueba siempre en PayPal que el importe cobrado coincide con los productos** antes de entregar (el cálculo se hace en el navegador).
 - Prepara el pedido y avisa al cliente para que lo recoja.
 - Devoluciones: desde PayPal → actividad → reembolsar.
