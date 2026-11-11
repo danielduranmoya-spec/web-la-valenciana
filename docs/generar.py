@@ -29,6 +29,10 @@ COMP=[('medias-y-pantis','Medias y pantis','Medias, pantis y leggins para el dí
  ('panuelos-y-bufandas','Pañuelos y bufandas','Pañuelos, fulares y bufandas para dar el toque final.',['Pañuelos','Fulares','Bufandas']),
  ('bolsos-y-bisuteria','Bolsos y bisutería','Bolsos, carteras y bisutería para completar tu estilo o para hacer un regalo.',['Bolsos','Carteras','Bisutería'])]
 
+# Cápsulas: selecciones cerradas que combinan productos de la tienda (kits y colecciones de temporada). EJEMPLOS.
+CAPS=[('para-empezar','Para empezar','Todo lo necesario para tu primera labor, elegido por nosotras y con instrucciones sencillas.',['Punto','Ganchillo','Punto de cruz','Costura']),
+ ('de-temporada','De temporada','Colecciones cortas que cambian con la estación. Cuando se acaban, no vuelven.',['Otoño','Invierno','Edición limitada']),
+ ('para-regalar','Para regalar','Cajas listas para regalar, con lazo y tarjeta escrita a mano si nos lo pides.',['Regalo','Con lazo','Tarjeta'])]
 # Catálogo de ejemplo (nombre, detalle, precio en euros). EDITAR con productos y precios reales.
 PRODUCTOS={
  'hilos-y-lanas':[('Hilo de coser poliéster','Bobina de 100 m · varios colores',1.50),('Madeja de mouliné','Algodón para bordar · 8 m',1.20),('Algodón para ganchillo','Ovillo de 50 g',3.50),('Lana merino','Ovillo de 50 g',4.90)],
@@ -40,10 +44,13 @@ PRODUCTOS={
  'calcetines':[('Calcetín de algodón','Pack de 3',7.50),('Calcetín de lana','Par',4.90),('Pinkies','Pack de 3',4.50),('Calcetín infantil','Pack de 3',5.90)],
  'lenceria':[('Sujetador sin aros','Algodón · tallas 85 a 110',19.90),('Braguita de algodón','Tallas S a XXL',4.90),('Camiseta interior','Tirantes · algodón',8.90),('Camisón','Algodón estampado',24.90)],
  'panuelos-y-bufandas':[('Pañuelo estampado','70 × 70 cm',9.90),('Fular liso','Varios colores',12.90),('Bufanda de punto','Suave y cálida',14.90)],
+ 'para-empezar':[('Cápsula Primer punto','Agujas de bambú 5 mm, 2 ovillos de lana y patrón de bufanda',16.90),('Cápsula Ganchillo fácil','Ganchillo 4 mm, 3 ovillos de algodón y patrón de posavasos',14.50),('Cápsula Punto de cruz','Tela Aida, bastidor, 6 madejas de mouliné y diseño',18.90),('Cápsula Costurero básico','Tijeras, agujas, alfileres, dedal, cinta métrica y 6 hilos',24.90)],
+ 'de-temporada':[('Cápsula Otoño cálido','Calcetines de lana, panty tupido 40 den y fular liso',24.50),('Cápsula Invierno en casa','Leggins térmicos, calcetines de lana y bufanda de punto',27.90)],
+ 'para-regalar':[('Cápsula Detalle','Pañuelo estampado y pendientes, en caja con lazo',15.90),('Cápsula Para tejer en compañía','2 juegos de agujas, 4 ovillos y patrón para dos',29.90)],
  'bolsos-y-bisuteria':[('Bolso bandolera','Polipiel',29.90),('Monedero cartera','Con cremallera',12.90),('Pendientes','Bisutería',6.90),('Collar','Bisutería',9.90)],
 }
 # Stock de EJEMPLO por nombre de producto: 'si' (por defecto), 'pocas' o 'agotado'. EDITAR con el stock real.
-STOCK={'Lana merino':'pocas','Tijeras de costura':'pocas','Bastidor de bordado':'agotado','Medias de descanso':'agotado','Camisón':'pocas','Bolso bandolera':'pocas'}
+STOCK={'Cápsula Otoño cálido':'pocas','Cápsula Para tejer en compañía':'pocas','Lana merino':'pocas','Tijeras de costura':'pocas','Bastidor de bordado':'agotado','Medias de descanso':'agotado','Camisón':'pocas','Bolso bandolera':'pocas'}
 # Productos que se eligen por color: se pide la referencia del fabricante para acertar con el tono.
 CON_COLOR={'Hilo de coser poliéster','Madeja de mouliné','Algodón para ganchillo','Lana merino','Botones de nácar','Cremallera invisible','Cinta de raso','Bies de algodón','Puntilla de algodón','Panty transparente','Panty tupido','Fular liso'}
 ESTADO_TXT={'si':'En stock','pocas':'Últimas unidades','agotado':'Agotado'}
@@ -70,7 +77,7 @@ def productos_html(slug,seccion,gris):
         out+=f'''<li class="producto" id="{pid}"><div class="muestra{' gris' if gris else ''}" aria-hidden="true"></div><div class="producto-texto"><h3>{n}</h3><p class="secundario">{d}</p><p class="stock stock-{st}"><span class="punto" aria-hidden="true"></span>{ESTADO_TXT[st]}</p><p class="precio num">{euros(pr)}</p>{color}</div><div class="producto-accion">{accion}</div></li>'''
     return f'<ul class="productos" aria-label="Productos de ejemplo">{out}</ul>'
 
-NAV=[('merceria/','Mercería','merceria'),('complementos/','Complementos','complementos'),('#como-comprar','Cómo comprar',''),('#visitanos','Horario y dirección','')]
+NAV=[('merceria/','Mercería','merceria'),('complementos/','Complementos','complementos'),('capsulas/','Cápsulas','capsulas'),('#como-comprar','Cómo comprar',''),('#visitanos','Horario y dirección','')]
 def cab(p,actual):
     items=[]
     for href,t,clave in NAV:
@@ -117,7 +124,7 @@ def pie(p):
 <dialog class="cesta" id="cesta" aria-labelledby="titulo-cesta" data-wa="{WA}" data-correo-m="{PED_M}" data-correo-c="{PED_C}">
   <div class="cesta-cabeza"><h2 id="titulo-cesta">Tu cesta</h2><button class="control cerrar-cesta" type="button">Cerrar<span class="vh"> la cesta</span> <span aria-hidden="true">✕</span></button></div>
   <div class="cesta-cuerpo">
-    <p class="cesta-vacia">Tu cesta está vacía. Entra en <a href="{p}merceria/">Mercería</a> o en <a href="{p}complementos/">Complementos</a> y pulsa «Añadir a la cesta».</p>
+    <p class="cesta-vacia">Tu cesta está vacía. Entra en <a href="{p}merceria/">Mercería</a>, <a href="{p}complementos/">Complementos</a> o <a href="{p}capsulas/">Cápsulas</a> y pulsa «Añadir a la cesta».</p>
     <ul class="cesta-lista"></ul>
     <p class="cesta-envio" data-gratis="{ENVIO_GRATIS}"></p>
     <div class="cesta-total"><span>Total <span class="secundario">(IVA incluido)</span></span><strong class="num cesta-importe">0,00 €</strong></div>
@@ -176,13 +183,13 @@ def tabla_horario():
 
 # Objetos de la tienda que salen de la caja (SVG planos con la paleta). x,y,z en px respecto al centro de la caja; r = giro.
 OBJETOS=[
- ('carrete',-290,-70,20,-12,'<svg viewBox="0 0 60 80"><rect x="6" y="2" width="48" height="10" rx="3" fill="#C8A27A"/><rect x="6" y="68" width="48" height="10" rx="3" fill="#B48D64"/><rect x="12" y="12" width="36" height="56" fill="#9C5A6C"/><g stroke="#7E4556" stroke-width="1.6" opacity=".7"><path d="M12 20h36M12 28h36M12 36h36M12 44h36M12 52h36M12 60h36"/></g><path d="M12 16l36 4M12 58l36-6" stroke="#C98C9C" stroke-width="1.2"/><path d="M48 40c8 2 10 10 6 16" fill="none" stroke="#9C5A6C" stroke-width="1.6"/></svg>',62),
- ('ovillo',290,-50,30,8,'<svg viewBox="0 0 80 80"><circle cx="40" cy="40" r="34" fill="#E9BCC6"/><g fill="none" stroke="#C98C9C" stroke-width="2.2" stroke-linecap="round"><path d="M10 34c18-10 42-12 60 2"/><path d="M8 46c20-8 46-6 64 6"/><path d="M22 12c-6 18-4 42 10 60"/><path d="M40 6c-10 20-10 46 4 68"/><path d="M58 10c-12 16-16 40-6 62"/></g><circle cx="40" cy="40" r="34" fill="none" stroke="#9C5A6C" stroke-opacity=".35" stroke-width="2"/><path d="M70 52c8 6 6 14-2 18" fill="none" stroke="#C98C9C" stroke-width="2.2" stroke-linecap="round"/></svg>',78),
- ('boton-obj',-300,-215,40,0,'<svg viewBox="0 0 60 60"><circle cx="30" cy="30" r="27" fill="#EEECEF"/><circle cx="30" cy="30" r="27" fill="none" stroke="#C9C4CC" stroke-width="3"/><circle cx="30" cy="30" r="18" fill="none" stroke="#C9C4CC" stroke-width="2"/><g fill="#5E5864"><circle cx="24" cy="24" r="3.2"/><circle cx="36" cy="24" r="3.2"/><circle cx="24" cy="36" r="3.2"/><circle cx="36" cy="36" r="3.2"/></g><path d="M24 24l12 12M36 24L24 36" stroke="#9C5A6C" stroke-width="1.8"/></svg>',44),
- ('tijeras',300,-220,40,-28,'<svg viewBox="0 0 90 60"><g fill="none" stroke="#4A4450" stroke-width="5"><circle cx="16" cy="16" r="10"/><circle cx="16" cy="44" r="10"/></g><path d="M24 22L86 40l-4 4L22 30z" fill="#C9C4CC" stroke="#5E5864" stroke-width="1.5"/><path d="M24 38L86 20l-4-4L22 30z" fill="#EEECEF" stroke="#5E5864" stroke-width="1.5"/><circle cx="40" cy="30" r="3" fill="#5E5864"/></svg>',74),
- ('dedal',-170,-365,-20,10,'<svg viewBox="0 0 50 60"><path d="M8 54V24C8 10 16 4 25 4s17 6 17 20v30z" fill="#C9C4CC"/><rect x="5" y="50" width="40" height="8" rx="3" fill="#9C5A6C"/><g fill="#7E7684"><circle cx="17" cy="18" r="1.8"/><circle cx="25" cy="14" r="1.8"/><circle cx="33" cy="18" r="1.8"/><circle cx="15" cy="27" r="1.8"/><circle cx="23" cy="24" r="1.8"/><circle cx="31" cy="24" r="1.8"/><circle cx="37" cy="29" r="1.8"/><circle cx="17" cy="35" r="1.8"/><circle cx="25" cy="33" r="1.8"/><circle cx="33" cy="36" r="1.8"/><circle cx="20" cy="43" r="1.8"/><circle cx="29" cy="42" r="1.8"/></g><path d="M12 22c2-8 6-12 10-13" stroke="#fff" stroke-opacity=".7" stroke-width="2" fill="none"/></svg>',40),
- ('cinta-metrica',175,-370,-20,-6,'<svg viewBox="0 0 100 70"><path d="M44 36h52v14H44z" fill="#F2D27A"/><g stroke="#4A4450" stroke-width="1.2"><path d="M52 36v5M60 36v8M68 36v5M76 36v8M84 36v5M92 36v8"/></g><circle cx="34" cy="38" r="30" fill="#E9BCC6"/><circle cx="34" cy="38" r="30" fill="none" stroke="#C98C9C" stroke-width="3"/><circle cx="34" cy="38" r="9" fill="#F6E4E7" stroke="#9C5A6C" stroke-width="2"/></svg>',84),
- ('calcetin',0,-380,-40,14,'<svg viewBox="0 0 60 80"><path d="M14 2h28v40c0 6 2 10 8 14 8 6 8 20-4 22-6 1-12-2-18-6L10 62C4 58 2 52 6 46l8-12z" fill="#EEECEF" stroke="#C9C4CC" stroke-width="2"/><path d="M14 2h28v10H14z" fill="#C98C9C"/><path d="M14 16h28M14 20h28" stroke="#E9BCC6" stroke-width="2"/><path d="M36 70c4 3 10 5 14 4 4-2 6-8 4-12" fill="#E9BCC6"/></svg>',52),
+ ('carrete',-305,-60,20,-12,'<svg viewBox="0 0 60 80"><rect x="6" y="2" width="48" height="10" rx="3" fill="#C8A27A"/><rect x="6" y="68" width="48" height="10" rx="3" fill="#B48D64"/><rect x="12" y="12" width="36" height="56" fill="#9C5A6C"/><g stroke="#7E4556" stroke-width="1.6" opacity=".7"><path d="M12 20h36M12 28h36M12 36h36M12 44h36M12 52h36M12 60h36"/></g><path d="M12 16l36 4M12 58l36-6" stroke="#C98C9C" stroke-width="1.2"/><path d="M48 40c8 2 10 10 6 16" fill="none" stroke="#9C5A6C" stroke-width="1.6"/></svg>',62),
+ ('ovillo',305,-40,30,8,'<svg viewBox="0 0 80 80"><circle cx="40" cy="40" r="34" fill="#E9BCC6"/><g fill="none" stroke="#C98C9C" stroke-width="2.2" stroke-linecap="round"><path d="M10 34c18-10 42-12 60 2"/><path d="M8 46c20-8 46-6 64 6"/><path d="M22 12c-6 18-4 42 10 60"/><path d="M40 6c-10 20-10 46 4 68"/><path d="M58 10c-12 16-16 40-6 62"/></g><circle cx="40" cy="40" r="34" fill="none" stroke="#9C5A6C" stroke-opacity=".35" stroke-width="2"/><path d="M70 52c8 6 6 14-2 18" fill="none" stroke="#C98C9C" stroke-width="2.2" stroke-linecap="round"/></svg>',78),
+ ('boton-obj',-320,-320,40,0,'<svg viewBox="0 0 60 60"><circle cx="30" cy="30" r="27" fill="#EEECEF"/><circle cx="30" cy="30" r="27" fill="none" stroke="#C9C4CC" stroke-width="3"/><circle cx="30" cy="30" r="18" fill="none" stroke="#C9C4CC" stroke-width="2"/><g fill="#5E5864"><circle cx="24" cy="24" r="3.2"/><circle cx="36" cy="24" r="3.2"/><circle cx="24" cy="36" r="3.2"/><circle cx="36" cy="36" r="3.2"/></g><path d="M24 24l12 12M36 24L24 36" stroke="#9C5A6C" stroke-width="1.8"/></svg>',44),
+ ('tijeras',320,-330,40,-28,'<svg viewBox="0 0 90 60"><g fill="none" stroke="#4A4450" stroke-width="5"><circle cx="16" cy="16" r="10"/><circle cx="16" cy="44" r="10"/></g><path d="M24 22L86 40l-4 4L22 30z" fill="#C9C4CC" stroke="#5E5864" stroke-width="1.5"/><path d="M24 38L86 20l-4-4L22 30z" fill="#EEECEF" stroke="#5E5864" stroke-width="1.5"/><circle cx="40" cy="30" r="3" fill="#5E5864"/></svg>',74),
+ ('dedal',-150,-385,-20,10,'<svg viewBox="0 0 50 60"><path d="M8 54V24C8 10 16 4 25 4s17 6 17 20v30z" fill="#C9C4CC"/><rect x="5" y="50" width="40" height="8" rx="3" fill="#9C5A6C"/><g fill="#7E7684"><circle cx="17" cy="18" r="1.8"/><circle cx="25" cy="14" r="1.8"/><circle cx="33" cy="18" r="1.8"/><circle cx="15" cy="27" r="1.8"/><circle cx="23" cy="24" r="1.8"/><circle cx="31" cy="24" r="1.8"/><circle cx="37" cy="29" r="1.8"/><circle cx="17" cy="35" r="1.8"/><circle cx="25" cy="33" r="1.8"/><circle cx="33" cy="36" r="1.8"/><circle cx="20" cy="43" r="1.8"/><circle cx="29" cy="42" r="1.8"/></g><path d="M12 22c2-8 6-12 10-13" stroke="#fff" stroke-opacity=".7" stroke-width="2" fill="none"/></svg>',40),
+ ('cinta-metrica',160,-390,-20,-6,'<svg viewBox="0 0 100 70"><path d="M44 36h52v14H44z" fill="#F2D27A"/><g stroke="#4A4450" stroke-width="1.2"><path d="M52 36v5M60 36v8M68 36v5M76 36v8M84 36v5M92 36v8"/></g><circle cx="34" cy="38" r="30" fill="#E9BCC6"/><circle cx="34" cy="38" r="30" fill="none" stroke="#C98C9C" stroke-width="3"/><circle cx="34" cy="38" r="9" fill="#F6E4E7" stroke="#9C5A6C" stroke-width="2"/></svg>',84),
+ ('calcetin',0,-410,-40,14,'<svg viewBox="0 0 60 80"><path d="M14 2h28v40c0 6 2 10 8 14 8 6 8 20-4 22-6 1-12-2-18-6L10 62C4 58 2 52 6 46l8-12z" fill="#EEECEF" stroke="#C9C4CC" stroke-width="2"/><path d="M14 2h28v10H14z" fill="#C98C9C"/><path d="M14 16h28M14 20h28" stroke="#E9BCC6" stroke-width="2"/><path d="M36 70c4 3 10 5 14 4 4-2 6-8 4-12" fill="#E9BCC6"/></svg>',52),
  ('aguja',-20,-118,95,30,'<svg viewBox="0 0 90 40"><path d="M6 20L76 18l8 2-8 2z" fill="#7E7684"/><ellipse cx="72" cy="20" rx="5" ry="1.6" fill="#F6E4E7"/><path d="M72 20c8-10 16 4 6 10S54 34 40 32 14 30 6 36" fill="none" stroke="#9C5A6C" stroke-width="1.8" stroke-linecap="round"/></svg>',70),
 ]
 def objetos_html():
@@ -193,10 +200,11 @@ def objetos_html():
 
 # ---------- INICIO ----------
 logo_caja='assets/img/marca/logo-grafito.svg'
+CLS={'merceria':'m','complementos':'c','capsulas':'k'}
 def puerta(clave,nombre,txt,subs,gris):
     sub=''.join(f'<li><a href="{clave}/#{s}">{t}</a></li>' for s,t,_,_ in subs)
-    return f'''<article class="puerta {clave[0]}{' cosido' if clave=='merceria' else ''}">
-        <div class="foto{' gris' if gris else ''}"><span>Foto · {nombre.lower()}</span></div>
+    return f'''<article class="puerta {CLS[clave]}{' cosido' if clave=='merceria' else ''}">
+        <div class="foto{' gris' if gris else ''}{' mezcla' if clave=='capsulas' else ''}"><span>Foto · {nombre.lower()}</span></div>
         <div class="texto">
           <h3><a href="{clave}/">{nombre}</a></h3>
           <p>{txt}</p>
@@ -209,7 +217,7 @@ PREGUNTAS=[
  ('¿Puedo preguntar si tenéis algo antes de ir?',f'<p>Sí. Escríbenos por WhatsApp al <a class="num" href="{wa("Hola, quería preguntar si tenéis")}">{WA_TXT}</a> o llámanos al <a class="num" href="{TEL_HREF}">{TEL}</a>. Si nos mandas una foto del botón, el hilo o la prenda, te decimos si lo tenemos.</p>'),
  ('¿Y si no tenéis lo que busco?','<p>Te lo buscamos. Cuéntanos qué necesitas y te avisamos cuando lo tengamos.</p>'),
  ('Estoy empezando a tejer o a bordar. ¿Me ayudáis?','<p>Claro. Te aconsejamos el material para empezar: qué agujas, qué hilo o lana y cuánto vas a necesitar.</p>'),
- ('¿Se puede comprar por internet?',f'<p>Sí. En Mercería y en Complementos pulsa «Añadir a la cesta», abre la cesta y pulsa «Tramitar pedido y pagar». Puedes pagar con tarjeta, PayPal o Bizum, y elegir recogida gratis en la tienda o envío a casa (gratis desde 50 €). Si prefieres, también puedes hacer el encargo por WhatsApp o por correo:</p><ul><li>Mercería: <a href="mailto:{PED_M}">{PED_M}</a></li><li>Complementos: <a href="mailto:{PED_C}">{PED_C}</a></li></ul>'),
+ ('¿Se puede comprar por internet?',f'<p>Sí. En Mercería, Complementos o Cápsulas pulsa «Añadir a la cesta», abre la cesta y pulsa «Tramitar pedido y pagar». Puedes pagar con tarjeta, PayPal o Bizum, y elegir recogida gratis en la tienda o envío a casa (gratis desde 50 €). Si prefieres, también puedes hacer el encargo por WhatsApp o por correo:</p><ul><li>Mercería: <a href="mailto:{PED_M}">{PED_M}</a></li><li>Complementos: <a href="mailto:{PED_C}">{PED_C}</a></li></ul>'),
  ('¿Cuánto cuesta el envío y cuánto tarda?',f'<p>{euros(ENVIO_PRECIO)} en la Península y <strong>gratis desde {ENVIO_GRATIS} €</strong>. Llega en {PLAZO_ENVIO} si pides antes de las 14:00. Recoger en la tienda es siempre gratis. <a href="envios-y-devoluciones/">Más detalles</a>.</p>'),
  ('¿Puedo devolver algo?','<p>Sí, tienes 14 días. No se pueden devolver los productos cortados a medida ni la ropa interior, medias o calcetines con el precinto abierto.</p>'),
  ('¿Cómo acierto con el color de un hilo o un botón?','<p>Indica el número de color del fabricante en tu pedido, o pídenos por WhatsApp una foto real con luz natural antes de comprar.</p>'),
@@ -228,6 +236,7 @@ inicio=f'''<section class="hero" aria-labelledby="titulo-inicio">
       <div class="botones">
         <a class="boton lleno cosido" href="merceria/">Ver Mercería {FLECHA}</a>
         <a class="boton lleno" href="complementos/">Ver Complementos {FLECHA}</a>
+        <a class="boton lleno" href="capsulas/">Ver Cápsulas {FLECHA}</a>
       </div>
     </div>
     <div class="escenario" aria-hidden="true">
@@ -241,6 +250,7 @@ inicio=f'''<section class="hero" aria-labelledby="titulo-inicio">
         <div class="cara der"><span class="borde-carton"></span></div>
         {objetos_html()}
         <a class="tarjeta m cosido" href="merceria/" tabindex="-1"><span class="t">Mercería</span><span class="s">Hilos, lanas, botones y labores</span><span class="ir">Entrar →</span></a>
+        <a class="tarjeta k" href="capsulas/" tabindex="-1"><span class="t">Cápsulas</span><span class="s">Kits y colecciones</span><span class="ir">Entrar →</span></a>
         <a class="tarjeta c" href="complementos/" tabindex="-1"><span class="t">Complementos</span><span class="s">Medias, lencería y detalles</span><span class="ir">Entrar →</span></a>
         <div class="cara frente"><span class="borde-carton"></span><span class="cinta"></span><span class="datos-caja">lavalencianamerceria.com · lavalencianacomplementos.com<br>@_lavalenciana · 633 930 935</span></div>
         <div class="seda-ala"></div>
@@ -264,10 +274,11 @@ inicio=f'''<section class="hero" aria-labelledby="titulo-inicio">
 
 <section class="bloque" id="secciones" aria-labelledby="titulo-secciones">
   <div class="envoltura">
-    <div class="cabeza-bloque"><p class="etiqueta">Una tienda, dos secciones</p><h2 id="titulo-secciones">¿Qué estás buscando hoy?</h2><p class="entradilla">Elige una sección o ve directamente a lo que necesitas.</p></div>
+    <div class="cabeza-bloque"><p class="etiqueta">Una tienda, tres secciones</p><h2 id="titulo-secciones">¿Qué estás buscando hoy?</h2><p class="entradilla">Elige una sección o ve directamente a lo que necesitas.</p></div>
     <div class="puertas">
       {puerta('merceria','Mercería','Hilos, lanas, botones, cremalleras, cintas y todo lo necesario para coser, tejer y bordar.',MERC,False)}
       {puerta('complementos','Complementos','Medias, calcetines, lencería, pañuelos y bolsos para el día a día y para las ocasiones especiales.',COMP,True)}
+      {puerta('capsulas','Cápsulas','Selecciones cerradas con lo justo para empezar una labor, pasar la temporada o hacer un regalo.',CAPS,False)}
     </div>
   </div>
 </section>
@@ -276,8 +287,8 @@ inicio=f'''<section class="hero" aria-labelledby="titulo-inicio">
   <div class="envoltura">
     <div class="cabeza-bloque"><p class="etiqueta">Cómo comprar</p><h2 id="titulo-comprar">Fácil, como en la tienda de toda la vida</h2></div>
     <ol class="pasos">
-      <li><h3>Llena tu cesta</h3><p>Entra en Mercería o en Complementos y pulsa «Añadir a la cesta» en lo que quieras. Si no lo encuentras, pregúntanos por WhatsApp.</p><div class="botones"><a class="boton cosido" href="merceria/">Ver Mercería {FLECHA}</a><a class="boton" href="complementos/">Ver Complementos {FLECHA}</a></div></li>
-      <li><h3>Paga como prefieras</h3><p>Tarjeta, PayPal o Bizum. Solo cobramos cuando comprobamos que tenemos todo: si falta algo, te avisamos antes.</p></li>
+      <li><h3>Llena tu cesta</h3><p>Entra en Mercería, Complementos o Cápsulas y pulsa «Añadir a la cesta» en lo que quieras. Si no lo encuentras, pregúntanos por WhatsApp.</p><div class="botones"><button class="boton boton-buscar" type="button" aria-haspopup="dialog" aria-controls="buscador">{LUPA_ICO}Buscar un producto</button></div></li>
+      <li><h3>Paga como prefieras</h3><p>Tarjeta, PayPal o Bizum. Solo cobramos cuando comprobamos que tenemos todo: si falta algo, te avisamos antes.</p><div class="botones"><a class="boton" href="envios-y-devoluciones/">Envíos y devoluciones {FLECHA}</a></div></li>
       <li><h3>Recógelo o te lo enviamos</h3><p>Recogida gratis en la Plaza de Espronceda 2, o envío a casa en {PLAZO_ENVIO} (gratis desde {ENVIO_GRATIS} €).</p><div class="botones"><a class="boton" href="{MAPS}">{MAPA_ICO}Cómo llegar</a></div></li>
     </ol>
   </div>
@@ -383,14 +394,16 @@ w('merceria/index.html',doc('../','Mercería · La Valenciana','Hilos, lanas, bo
   seccion('merceria','Mercería','seccion-merceria','Todo lo que necesitas para coser, tejer y bordar, y el consejo de quien sabe.',MERC,'complementos','Complementos','Medias, calcetines, lencería, pañuelos y bolsos.',PED_M,False),'merceria'))
 w('complementos/index.html',doc('../','Complementos · La Valenciana','Medias, pantis, calcetines, lencería, pañuelos, bolsos y bisutería en La Valenciana, Plaza de Espronceda 2, Almendralejo.',
   seccion('complementos','Complementos','seccion-complementos','Medias, lencería y detalles elegidos con mimo para el día a día y para las ocasiones especiales.',COMP,'merceria','Mercería','Hilos, lanas, botones, cintas y labores.',PED_C,True),'complementos'))
+w('capsulas/index.html',doc('../','Cápsulas · La Valenciana','Kits para empezar a tejer, bordar o coser, colecciones de temporada y cajas para regalar en La Valenciana, Almendralejo.',
+  seccion('capsulas','Cápsulas','seccion-capsulas','Selecciones cerradas que combinan productos de la tienda: lo justo para empezar una labor, pasar la temporada o hacer un regalo. Cuando se agotan, no vuelven.',CAPS,'merceria','Mercería','Hilos, lanas, botones, cintas y labores.',PED_M,False),'capsulas'))
 
 # ---------- CATÁLOGO PARA EL PAGO (precios de referencia) ----------
 catalogo={}
-for sec,subs in (('merceria',MERC),('complementos',COMP)):
+for sec,subs in (('merceria',MERC),('complementos',COMP),('capsulas',CAPS)):
     for slug_,*_ in subs:
         for n,d,pr in PRODUCTOS.get(slug_,[]):
             catalogo[slug_+'--'+slugify(n)]={'n':n,'d':d,'p':pr,'s':sec,'a':slug_,'st':STOCK.get(n,'si')}
-apartados={s_:t_ for s_,t_,*_ in MERC+COMP}
+apartados={s_:t_ for s_,t_,*_ in MERC+COMP+CAPS}
 w('assets/js/catalogo.js','/* Generado por docs/generar.py: no editar a mano */\nwindow.LV_CATALOGO='+json.dumps(catalogo,ensure_ascii=False)+';\nwindow.LV_APARTADOS='+json.dumps(apartados,ensure_ascii=False)+';\nwindow.LV_ENVIO='+json.dumps({'gratis':ENVIO_GRATIS,'precio':ENVIO_PRECIO})+';\n')
 
 # ---------- PEDIDO (pago con tarjeta) ----------

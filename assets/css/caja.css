@@ -109,3 +109,14 @@
 /* costura de la tarjeta de Mercería dentro de la caja */
 .tarjeta.cosido::after{border-color:var(--rosa-texto)}
 @media (max-width:640px){.hero{--sx:.82}}
+.fase-abanico .tarjeta.k{transform:translate3d(0,-330px,-20px) rotateY(8deg) rotateX(18deg)}
+.fase-abanico .tarjeta.k:hover,.fase-abanico .tarjeta.k:focus-visible{transform:translate3d(0,-345px,0) rotateY(8deg) rotateX(18deg)}
+/* tres tarjetas en abanico */
+.tarjeta{width:184px;margin-left:-92px;padding:16px 18px 14px}
+.tarjeta .t{font-size:1.3rem}
+.fase-abanico .tarjeta.m{transform:translate3d(-200px,-215px,40px) rotateY(8deg) rotateX(18deg) rotateZ(-6deg)}
+.fase-abanico .tarjeta.c{transform:translate3d(200px,-215px,40px) rotateY(8deg) rotateX(18deg) rotateZ(6deg)}
+.fase-abanico .tarjeta.k{transform:translate3d(0,-265px,60px) rotateY(8deg) rotateX(18deg)}
+.fase-abanico .tarjeta.m:hover{transform:translate3d(-200px,-230px,60px) rotateY(8deg) rotateX(18deg) rotateZ(-3deg)}
+.fase-abanico .tarjeta.c:hover{transform:translate3d(200px,-230px,60px) rotateY(8deg) rotateX(18deg) rotateZ(3deg)}
+.fase-abanico .tarjeta.k:hover{transform:translate3d(0,-280px,80px) rotateY(8deg) rotateX(18deg)}

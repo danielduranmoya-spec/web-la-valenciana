@@ -553,3 +553,32 @@ body{background-image:radial-gradient(40vmax 40vmax at 95% 6%, rgba(245,208,220,
 .menu-principal a[aria-current="page"]{background:var(--vidrio-oscuro);color:var(--crema)}
 .progreso li[aria-current],.paso-num,.marca-ok,.tabla-horario .marca-hoy{background:var(--morado-oscuro)}
 @media (max-width:480px){.marca-texto{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}.marca img{width:44px;height:44px}}
+
+/* ---------- 2026-11-11 (2) · Alineación, costuras al pulsar, precios legibles, Cápsulas ---------- */
+/* «¿Qué estás buscando hoy?»: tarjetas a la misma altura y botones alineados abajo */
+.puertas{grid-template-columns:repeat(3,minmax(0,1fr));align-items:stretch}
+.puerta.c{margin-top:0}
+.puerta{grid-template-rows:auto 1fr auto}
+.puerta .boton{align-self:end}
+.puerta.k{background:linear-gradient(135deg, rgba(245,208,220,.75), rgba(216,203,236,.75))}
+.foto.mezcla,.seccion-capsulas .foto,.seccion-capsulas .producto .muestra{background:linear-gradient(140deg, var(--rosa) 0%, var(--niebla) 100%)}
+@media (max-width:1000px){.puertas{grid-template-columns:repeat(2,minmax(0,1fr))}.puerta.k{grid-column:1 / -1;grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-rows:auto auto;align-items:center}.puerta.k .boton{grid-column:2}}
+@media (max-width:640px){.puertas{grid-template-columns:1fr}.puerta.k{grid-template-columns:1fr}.puerta.k .boton{grid-column:auto}}
+/* «Fácil, como en la tienda de toda la vida»: pasos a la misma altura y botones alineados */
+.pasos li:nth-child(n){margin-top:0}
+.pasos li{grid-template-rows:auto auto 1fr auto;align-content:stretch}
+.pasos li .botones{align-self:end;margin-top:var(--e3)}
+/* Costuras: al pulsar, la costura se ciñe al perímetro del botón */
+.cosido::after,.seccion-merceria .boton::after,.seccion-merceria .indice a::after{transition:inset .18s cubic-bezier(.3,.7,.3,1),border-width .18s ease}
+.cosido:active::after,.seccion-merceria .boton:active::after,.seccion-merceria .indice a:active::after{inset:2px;border-width:2px}
+.puerta.cosido:active::after,.cambio.cosido:active::after,.tarjeta.cosido:active::after{inset:4px;border-radius:calc(var(--r) - 2px)}
+.boton.lleno.cosido:active::after,.seccion-merceria .boton.lleno:active::after{border-color:rgba(255,255,255,.85)}
+/* Precios: fuente sin adornos, cifras tabulares y buen tamaño */
+.precio,.producto .precio,.cesta-total strong,.resumen-totales .total dd,.ok-total,.r-p,.r-precio,.cesta-lista .subtotal{
+  font-family:var(--fuente-texto)!important;font-weight:500;font-variant-numeric:tabular-nums lining-nums;letter-spacing:0;color:var(--grafito)}
+.producto .precio{font-size:1.5rem;line-height:1.2}
+.cesta-total strong,.resumen-totales .total dd{font-size:1.75rem}
+.ok-total{font-size:1.5rem}
+/* Cápsulas en la caja: tercera tarjeta, arriba en el centro */
+.tarjeta.k{background:linear-gradient(135deg, rgba(249,222,231,.95), rgba(216,203,236,.92));--x:0px}
+.puerta .texto{align-content:start}
