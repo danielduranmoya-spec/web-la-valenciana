@@ -584,3 +584,6 @@ body{background-image:radial-gradient(40vmax 40vmax at 95% 6%, rgba(245,208,220,
 .puerta .texto{align-content:start}
 /* Mercería en el menú: la costura marca el borde del botón también en móvil */
 @media (max-width:1000px){.menu-principal a.cosido{border-radius:var(--r);padding:0 var(--e4);margin:6px 0}.menu-principal a.cosido::after{content:"";border-radius:inherit}}
+/* Mercería del menú: relleno rosa (también al pulsar y en la página actual) para que la costura contraste */
+.menu-principal a.cosido:hover,.menu-principal a.cosido:active,.menu-principal a.cosido[aria-current="page"]{background:#FBE3EA;color:var(--grafito)}
+.menu-principal a.cosido::after{border-color:var(--rosa-texto)}

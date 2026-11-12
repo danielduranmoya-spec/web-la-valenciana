@@ -179,7 +179,7 @@
       var CAT=window.LV_CATALOGO||{}, AP=window.LV_APARTADOS||{}, palabras=t.split(/\s+/), n=0;
       Object.keys(AP).forEach(function(a){ if(palabras.every(function(w){return norm(AP[a]).indexOf(w)>=0})){
         var sec=(Object.keys(CAT).filter(function(k){return CAT[k].a===a}).map(function(k){return CAT[k].s})[0])||'merceria';
-        var li=document.createElement('li'); li.innerHTML='<a><span class="r-tipo">Apartado</span><span class="r-n"></span></a>'; li.querySelector('a').href=base+sec+'/#'+a; li.querySelector('.r-n').textContent=AP[a]; res.appendChild(li); n++ } });
+        var li=document.createElement('li'); li.innerHTML='<a><span class="r-n"></span><span class="r-p" aria-hidden="true">→</span></a>'; li.querySelector('a').href=base+sec+'/#'+a; li.querySelector('.r-n').textContent=AP[a]; res.appendChild(li); n++ } });
       Object.keys(CAT).forEach(function(k){ var x=CAT[k], txt=norm(x.n+' '+x.d+' '+(AP[x.a]||'')); if(n<30&&palabras.every(function(w){return txt.indexOf(w)>=0})){
         var li=document.createElement('li'); li.innerHTML='<a><span class="r-n"></span><span class="r-d"></span><span class="r-p num"></span></a>';
         var a=li.querySelector('a'); a.href=base+x.s+'/#'+k; li.querySelector('.r-n').textContent=x.n; li.querySelector('.r-d').textContent=x.d+' · '+(ST[x.st]||'');
