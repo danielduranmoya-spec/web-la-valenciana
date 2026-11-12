@@ -1,0 +1,77 @@
+/* =====================================================================
+   LA VALENCIANA v3 · colores.css — Buscar por color, tira de portada,
+   «Lo último que ha mirado» y barra inferior del móvil.
+   ===================================================================== */
+.col-punto { display: inline-block; width: var(--t, 22px); height: var(--t, 22px); border-radius: 50%; flex: none;
+  box-shadow: inset 0 0 0 1px rgba(47,42,38,.18), inset -3px -4px 6px rgba(0,0,0,.08), inset 3px 3px 5px rgba(255,255,255,.45); }
+
+/* ---------- página ---------- */
+.col-cab { padding-block: var(--s-7) var(--s-7); display: grid; gap: var(--s-4); }
+.col-cab h1 { max-width: 18ch; }
+.col-cab__txt { max-width: 52ch; margin: 0; }
+.col-paleta { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 250px), 1fr)); gap: var(--s-4); }
+.col-grupo { display: grid; gap: .5rem; min-height: 100%; padding: 1.1rem 1.25rem 1.2rem; border-radius: var(--r-tarjeta); text-decoration: none; color: var(--c-tinta);
+  background: linear-gradient(160deg, #fff, var(--c-rosa-velo)); border: 1px solid var(--c-filete);
+  box-shadow: 0 16px 34px -28px rgba(90,56,32,.6); transition: transform .4s var(--ease-salida), box-shadow .4s, border-color .3s; }
+.col-grupo:hover, .col-grupo:focus-visible { transform: translateY(-4px); box-shadow: 0 22px 40px -26px rgba(90,56,32,.65); border-color: var(--c-kraft); }
+.col-grupo--activo { border: 2px solid var(--c-acento); background: linear-gradient(160deg, #fff, var(--c-rosa)); }
+.col-grupo__puntos { display: flex; }
+.col-grupo__puntos .col-punto + .col-punto { margin-left: -8px; }
+.col-grupo:hover .col-grupo__puntos .col-punto { transform: translateY(-3px); }
+.col-grupo__puntos .col-punto { transition: transform .35s var(--ease-rebote); }
+.col-grupo__puntos .col-punto:nth-child(2) { transition-delay: .03s; } .col-grupo__puntos .col-punto:nth-child(3) { transition-delay: .06s; }
+.col-grupo__puntos .col-punto:nth-child(4) { transition-delay: .09s; } .col-grupo__puntos .col-punto:nth-child(5) { transition-delay: .12s; }
+.col-grupo__n { font: 500 1.35rem/1.2 var(--f-titulo); }
+.col-grupo__cuenta { color: var(--c-tinta-suave); font-size: 1rem; }
+.col-resultados { padding-block: var(--s-8) var(--s-seccion); }
+.col-res__t { margin-bottom: var(--s-4); }
+.col-chips { margin-bottom: var(--s-4); }
+.col-chip { gap: .5rem; }
+.col-res__n { color: var(--c-tinta-suave); margin: 0 0 var(--s-6); }
+.col-vacio { padding: var(--s-6); border-radius: var(--r-tarjeta); background: var(--c-rosa-velo); }
+
+/* ---------- tira de portada ---------- */
+.col-tira { padding-block: var(--s-seccion); background: radial-gradient(50% 80% at 15% 50%, rgba(243,217,214,.35), transparent 70%); }
+.col-tira__in { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: var(--s-8); align-items: center; }
+.col-tira__txt { display: grid; gap: var(--s-3); }
+.col-tira__txt h2, .col-tira__txt p { margin: 0; }
+.col-tira__txt > p:last-child { color: var(--c-tinta-suave); max-width: 32ch; }
+.col-tira__lista { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--s-5) var(--s-4); }
+.col-gota { display: grid; justify-items: center; gap: .6rem; text-align: center; text-decoration: none; color: var(--c-tinta); font-weight: 600; min-height: 48px; }
+.col-gota__mancha { width: clamp(64px, 7vw, 92px); aspect-ratio: 1; border-radius: 46% 54% 52% 48% / 52% 44% 56% 48%;
+  box-shadow: inset -6px -8px 14px rgba(0,0,0,.12), inset 6px 6px 10px rgba(255,255,255,.45), 0 14px 24px -16px rgba(47,42,38,.6);
+  transition: transform .5s var(--ease-rebote), border-radius .8s var(--ease-salida); }
+.col-gota:hover .col-gota__mancha, .col-gota:focus-visible .col-gota__mancha { transform: scale(1.1) rotate(-8deg); border-radius: 50%; }
+.col-gota__n { font-size: 1rem; line-height: 1.25; }
+@media (max-width: 900px) {
+  .col-tira__in { grid-template-columns: 1fr; gap: var(--s-6); }
+  .col-tira__lista { grid-template-columns: repeat(4, 1fr); gap: var(--s-4) var(--s-2); }
+  .col-gota__n { font-size: .95rem; }
+}
+.col-vistos { padding-top: var(--s-8); }
+
+/* ---------- barra inferior (móvil) ---------- */
+.lv-dock { display: none; }
+@media (max-width: 899px) {
+  .lv-dock { position: fixed; left: 10px; right: 10px; bottom: calc(10px + env(safe-area-inset-bottom)); z-index: 80; display: grid; grid-template-columns: repeat(5, 1fr);
+    padding: 6px; border-radius: 22px; background: rgba(255,255,255,.86); backdrop-filter: saturate(160%) blur(16px); -webkit-backdrop-filter: saturate(160%) blur(16px);
+    border: 1px solid rgba(255,255,255,.9); box-shadow: 0 18px 40px -18px rgba(47,42,38,.55), inset 0 1px 0 #fff; animation: dockEntra .6s var(--ease-salida) both .4s; }
+  .lv-dock[hidden] { display: none; }
+  html.con-dock main { padding-bottom: 96px; }
+  html.con-dock .pie, html.con-dock footer#pie { padding-bottom: 96px; }
+  .lv-dock__b { position: relative; display: grid; justify-items: center; align-content: center; gap: 2px; min-height: 56px; border: 0; border-radius: 16px; background: none;
+    color: var(--c-tinta-suave); font: 600 .78rem/1.1 var(--f-texto); text-decoration: none; cursor: pointer; transition: background .25s, color .25s; }
+  .lv-dock__b svg { width: 26px; height: 26px; }
+  .lv-dock__b[aria-current] { color: var(--c-acento); background: var(--c-rosa); }
+  .lv-dock__b:active { transform: scale(.94); }
+  .lv-dock__n { position: absolute; top: 4px; right: calc(50% - 22px); min-width: 20px; height: 20px; padding: 0 5px; border-radius: 10px; background: var(--c-acento); color: #fff; font-size: .75rem; line-height: 20px; text-align: center; }
+  .lv-dock__n[data-n="0"] { display: none; }
+  .lv-dock__n--late { animation: dockLate .5s var(--ease-rebote); }
+  /* la burbuja de WhatsApp sube para no chocar con la barra */
+  html.con-dock .whats-flotante, html.con-dock .lv-whats, html.con-dock [class*="whats-flot"] { bottom: 96px !important; }
+}
+@keyframes dockEntra { from { transform: translateY(120%); opacity: 0; } }
+@keyframes dockLate { 40% { transform: scale(1.35); } }
+@media (prefers-reduced-motion: reduce) { .lv-dock { animation: none; } .col-gota__mancha, .col-grupo { transition: none; } }
+
+@media (max-width: 899px) { html.con-dock { scroll-padding-bottom: 110px; } }

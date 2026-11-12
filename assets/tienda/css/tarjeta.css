@@ -1,0 +1,257 @@
+/* =========================================================
+   LA VALENCIANA v2 · tarjeta.css · PROPIETARIO: B4
+   Componentes compartidos: .tarjeta (+ .tarjeta-rejilla, .tarjeta-fila),
+   .pildora (+ .pildoras) y .migas. DISENO §6.
+   Nadie más los redefine: pidan cambios en la bitácora.
+   ========================================================= */
+
+/* ---------------------------------------------------------
+   TARJETA DE PRODUCTO — sin caja: lienzo 4:5, nombre, precio, muestras
+   --------------------------------------------------------- */
+.tarjeta {
+  container: tarjeta / inline-size;
+  position: relative;
+  display: flex; flex-direction: column;
+  min-width: 0;
+}
+.tarjeta__enlace {
+  display: block; color: var(--c-tinta); text-decoration: none;
+  border-radius: var(--r-lienzo);
+  -webkit-tap-highlight-color: transparent;
+}
+.tarjeta__enlace:hover { color: var(--c-tinta); }
+.tarjeta__enlace:focus-visible { outline-offset: 6px; }
+
+.tarjeta__lienzo {
+  position: relative; overflow: hidden; isolation: isolate;
+  aspect-ratio: 4 / 5;
+  background: var(--lienzo, var(--c-rosa));
+  border-radius: var(--r-lienzo);
+}
+.tarjeta__capa {
+  position: absolute; inset: 0;
+  transition: opacity 350ms var(--ease-suave), transform 500ms var(--ease-suave);
+  transform-origin: 50% 55%;
+}
+.tarjeta__capa > svg { width: 100%; height: 100%; display: block; }
+.tarjeta__capa--entra { opacity: 0; }
+.tarjeta__capa--sale { opacity: 0; transition-delay: 60ms; }
+.tarjeta__capa--segunda { opacity: 0; z-index: 1; }
+.tarjeta--segunda .tarjeta__capa--segunda { opacity: 1; }
+
+.tarjeta__etiqueta {
+  position: absolute; z-index: 2; top: var(--s-3); left: var(--s-3);
+}
+.tarjeta__etiqueta--blanca { background: var(--c-fondo); color: var(--c-tinta); }
+
+.tarjeta__nombre {
+  margin: var(--s-4) 0 0;
+  font-family: var(--f-titulo); font-optical-sizing: auto;
+  font-size: var(--t-producto); font-weight: 500; line-height: 1.25; letter-spacing: 0;
+  color: var(--c-tinta);
+  text-wrap: balance;
+  display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; line-clamp: 2; overflow: hidden;
+}
+.tarjeta__nombre span {
+  text-decoration-line: underline; text-decoration-thickness: 1px; text-underline-offset: .2em;
+  text-decoration-color: transparent;
+  transition: text-decoration-color var(--dur-rapida) var(--ease-suave);
+}
+.tarjeta__precio {
+  margin: 6px 0 0; max-width: none;
+  font-size: var(--t-precio); color: var(--c-tinta);
+}
+.tarjeta__desde, .tarjeta__unidad {
+  font-size: var(--t-pequeno); font-weight: 500; color: var(--c-tinta-suave); letter-spacing: var(--tr-ui);
+}
+
+/* M10: al pasar el ratón (o con foco de teclado) el dibujo sube 6 px y crece 1.05;
+   con reduced-motion los tokens dejan solo el fundido de la 2.ª vista y el subrayado. */
+@media (hover: hover) {
+  .tarjeta:hover .tarjeta__capa,
+  .tarjeta--segunda .tarjeta__capa {
+    transform: translateY(calc(var(--shift) * -0.1875)) scale(var(--escala-hover));
+  }
+  .tarjeta:hover .tarjeta__nombre span { text-decoration-color: var(--c-acento); }
+}
+.tarjeta__enlace:focus-visible .tarjeta__capa {
+  transform: translateY(calc(var(--shift) * -0.1875)) scale(var(--escala-hover));
+}
+.tarjeta__enlace:focus-visible .tarjeta__nombre span { text-decoration-color: var(--c-acento); }
+.tarjeta__enlace:active .tarjeta__lienzo { transform: scale(.98); transition: transform 150ms var(--ease-suave); }
+
+/* muestras: 28 px visibles dentro de un objetivo de 44 px */
+.tarjeta__muestras {
+  display: flex; flex-wrap: wrap; align-items: center;
+  margin: var(--s-1) 0 0 -8px;
+}
+.tarjeta__muestra {
+  display: grid; place-items: center;
+  width: 44px; height: 44px; padding: 0; margin: 0;
+  background: none; border: 0; border-radius: var(--r-redondo);
+  -webkit-tap-highlight-color: transparent;
+}
+.tarjeta__muestra:focus-visible { outline-offset: -3px; border-radius: var(--r-redondo); }
+.tarjeta__punto {
+  width: 28px; height: 28px; border-radius: var(--r-redondo);
+  border: 1px solid var(--c-borde);
+  box-shadow: inset 0 0 0 2px var(--c-fondo);
+  transition: box-shadow var(--dur-rapida) var(--ease-suave), transform var(--dur-rapida) var(--ease-suave);
+}
+.tarjeta__muestra[aria-checked="true"] .tarjeta__punto {
+  box-shadow: inset 0 0 0 2px var(--c-fondo), 0 0 0 2px var(--c-fondo), 0 0 0 4px var(--c-acento);
+}
+@media (hover: hover) {
+  .tarjeta__muestra:hover .tarjeta__punto { transform: scale(1.1); }
+}
+.tarjeta__mas {
+  display: inline-grid; place-items: center;
+  min-width: 44px; height: 44px; padding: 0 6px;
+  font-size: var(--t-pequeno); font-weight: 700; color: var(--c-tinta-suave);
+  text-decoration: none; letter-spacing: var(--tr-ui);
+}
+.tarjeta__mas:hover { color: var(--c-acento-hondo); text-decoration: underline; text-decoration-thickness: 2px; }
+.tarjeta__mas--estrecho { display: none; }
+.tarjeta__versiones {
+  margin: var(--s-2) 0 0; font-size: var(--t-pequeno); font-weight: 600; color: var(--c-tinta-suave);
+  line-height: 1.5; letter-spacing: var(--tr-ui);
+}
+/* tarjetas estrechas (2 columnas en móvil): 3 muestras + «+N» */
+@container tarjeta (max-width: 262px) {   /* SUP-A: entre 231 y 262 px las 5 muestras + «+N» saltaban de línea */
+  .tarjeta__muestra { width: 40px; }
+  .tarjeta__muestra--extra, .tarjeta__mas--ancho { display: none; }
+  .tarjeta__mas--estrecho { display: inline-grid; }
+  .tarjeta__muestras { margin-left: -6px; }
+  .tarjeta__etiqueta { top: var(--s-2); left: var(--s-2); }
+}
+
+/* ---------------------------------------------------------
+   REJILLA: 4 / 3 / 2 columnas según el sitio que tenga
+   --------------------------------------------------------- */
+.tarjeta-rejilla-marco { container: rejilla / inline-size; }
+.tarjeta-rejilla {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: var(--hueco);
+  row-gap: var(--hueco-filas);
+}
+@container rejilla (min-width: 660px) { .tarjeta-rejilla { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@container rejilla (min-width: 980px) { .tarjeta-rejilla:not(.tarjeta-rejilla--3) { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+
+/* ---------------------------------------------------------
+   FILA (carrusel con scroll-snap y botones con texto)
+   --------------------------------------------------------- */
+.tarjeta-fila { position: relative; }
+.tarjeta-fila__cab {
+  display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between;
+  gap: var(--s-5) var(--s-6);
+  margin-bottom: var(--s-titulo-contenido);
+}
+.tarjeta-fila__textos { display: grid; gap: var(--s-3); max-width: 40rem; }
+.tarjeta-fila__titulo { font-size: var(--t-h2); }
+h3.tarjeta-fila__titulo { font-size: var(--t-h3); }
+.tarjeta-fila__botones { display: flex; gap: var(--s-2); }
+.tarjeta-fila__boton { min-height: var(--tactil); padding: 0 1.25rem; }
+.tarjeta-fila__boton[aria-disabled="true"] {
+  border-color: var(--c-filete); color: var(--c-tinta-suave); background-size: 0% 100%; cursor: default;
+}
+.tarjeta-fila--sin-scroll .tarjeta-fila__botones { display: none; }
+.tarjeta-fila__pista {
+  display: grid; grid-auto-flow: column;
+  grid-auto-columns: clamp(14rem, 42vw, 18.5rem);
+  gap: var(--hueco);
+  overflow-x: auto; overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory; scroll-padding-inline: 4px;
+  padding: 6px 4px var(--s-5);
+  margin: -6px -4px 0;
+  scrollbar-width: thin; scrollbar-color: var(--c-borde) transparent;
+}
+.tarjeta-fila__item { scroll-snap-align: start; min-width: 0; }
+.tarjeta-fila__pie { margin-top: var(--s-4); }
+/* SUP-A: en escritorio las columnas caben exactas (4 / 3): antes la 4.ª tarjeta salía cortada
+   contra el borde del contenedor, que parecía un fallo y no un carrusel */
+@media (min-width: 1100px) { .tarjeta-fila__pista { grid-auto-columns: calc((100% - 8px - 3 * var(--hueco)) / 4); } }
+@media (min-width: 760px) and (max-width: 1099px) { .tarjeta-fila__pista { grid-auto-columns: calc((100% - 8px - 2 * var(--hueco)) / 3); } }
+@media (max-width: 599px) {
+  .tarjeta-fila__pista { grid-auto-columns: 68%; }
+  .tarjeta-fila__botones { width: 100%; }
+  .tarjeta-fila__boton { flex: 1 1 0; min-width: 0; padding: 0 .75rem; }
+  .tarjeta-fila__boton svg { display: none; }
+}
+
+/* ---------------------------------------------------------
+   PÍLDORAS de subcategoría / filtro
+   --------------------------------------------------------- */
+.pildoras {
+  display: flex; flex-wrap: wrap; gap: var(--s-2);
+  margin: 0; padding: 0; list-style: none;
+}
+.pildoras > li { display: contents; }
+.pildora {
+  display: inline-flex; align-items: center; gap: .45em; flex: none;
+  min-height: var(--tactil); padding: 0 1.25rem;
+  font-family: var(--f-texto); font-size: 1.0625rem; font-weight: 600; line-height: 1.2;
+  letter-spacing: var(--tr-ui); white-space: nowrap;
+  color: var(--c-tinta); background: var(--c-fondo);
+  border: 1px solid var(--c-borde); border-radius: var(--r-control);
+  text-decoration: none;
+  transition: background-color var(--dur-rapida) var(--ease-suave), color var(--dur-rapida) var(--ease-suave), border-color var(--dur-rapida) var(--ease-suave);
+  -webkit-tap-highlight-color: transparent;
+}
+.pildora__n { color: var(--c-tinta-suave); font-weight: 500; font-variant-numeric: tabular-nums; }
+.pildora__check { display: none; width: 16px; height: 16px; }
+.pildora__check svg { width: 16px; height: 16px; stroke-width: 2.25; }
+@media (hover: hover) {
+  .pildora:hover { background: var(--c-rosa-velo); color: var(--c-acento-hondo); border-color: var(--c-acento); }
+}
+.pildora:active { transform: scale(.98); }
+.pildora[aria-current="page"], .pildora[aria-current="true"], .pildora[aria-pressed="true"] {
+  background: var(--c-tinta); color: var(--c-fondo); border-color: var(--c-tinta);
+}
+.pildora[aria-current="page"] .pildora__n, .pildora[aria-current="true"] .pildora__n, .pildora[aria-pressed="true"] .pildora__n { color: var(--c-fondo); }
+.pildora[aria-current="page"] .pildora__check, .pildora[aria-current="true"] .pildora__check, .pildora[aria-pressed="true"] .pildora__check { display: inline-block; }
+@media (max-width: 759px) {
+  .pildoras--desliza {
+    flex-wrap: nowrap; overflow-x: auto; scroll-snap-type: x proximity;
+    margin-inline: calc(-1 * var(--margen)); padding: 4px var(--margen) var(--s-3);
+    scroll-padding-inline: var(--margen); scrollbar-width: none;
+  }
+  .pildoras--desliza::-webkit-scrollbar { display: none; }
+  .pildoras--desliza .pildora { scroll-snap-align: start; }
+}
+
+/* ---------------------------------------------------------
+   MIGAS
+   --------------------------------------------------------- */
+.migas ol { display: flex; flex-wrap: wrap; align-items: center; margin: 0; padding: 0; list-style: none; }
+.migas li {
+  display: inline-flex; align-items: center;
+  font-size: var(--t-pequeno); font-weight: 500; line-height: 48px; letter-spacing: var(--tr-ui);
+  color: var(--c-tinta-suave);
+}
+.migas li + li::before { content: "/"; margin: 0 var(--s-2); color: var(--c-borde); }
+.migas a {
+  display: inline-flex; align-items: center; min-height: 48px;
+  color: var(--c-tinta-suave); text-decoration: none;
+  background: linear-gradient(currentColor, currentColor) left calc(50% + .75em) / 0% 1px no-repeat;
+  transition: background-size 300ms var(--ease-salida), color var(--dur-rapida) var(--ease-suave);
+}
+.migas a:hover, .migas a:focus-visible { color: var(--c-acento-hondo); background-size: 100% 1px; }
+.migas [aria-current="page"] { font-weight: 700; color: var(--c-tinta); }
+@media (max-width: 759px) {
+  .migas li { display: none; }
+  .migas li:nth-last-child(2) { display: inline-flex; }
+  .migas li + li::before { content: none; }
+  .migas li:nth-last-child(2) a::before {
+    content: ""; flex: none; width: 20px; height: 20px; margin-right: var(--s-2);
+    background: currentColor;
+    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.75' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M19 12H5M11 6l-6 6 6 6'/%3E%3C/svg%3E") center / contain no-repeat;
+            mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.75' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M19 12H5M11 6l-6 6 6 6'/%3E%3C/svg%3E") center / contain no-repeat;
+  }
+  .migas li:nth-last-child(2) a { font-weight: 600; color: var(--c-tinta); }
+  /* «Volver a Mercería»: el texto «Volver a» se coloca delante con order (el enlace es flex) */
+  .migas li:nth-last-child(2) a::before { order: -2; }
+  .migas li:nth-last-child(2) a::after { content: "Volver a\00a0"; order: -1; }
+  .migas li:nth-last-child(2) a[href="#/"] { text-transform: lowercase; }
+  .migas li:nth-last-child(2) a[href="#/"]::after { content: "Volver al\00a0"; text-transform: none; }
+}

@@ -1,0 +1,187 @@
+/* =====================================================================
+   La Valenciana v2 · movimiento.css · PROPIETARIO: B7
+   Último CSS de la concatenación: sus estados iniciales/finales mandan.
+   - Estados iniciales SOLO bajo html.js (sin JS todo se ve).
+   - Si mov.js no llega a arrancar (html.js sin .mov-activo), un seguro
+     de CSS lo muestra todo a los 2,5 s.
+   - Reduced-motion: los tokens anulan desplazamientos/escalas/recortes y
+     aquí se cambian por fundidos de opacidad, en el mismo orden.
+     Nunca se apaga todo.
+   Atributos: [data-r] (="fundir"|"escala"|"caer"|"izquierda"|"derecha"),
+   [data-r-grupo], data-r-retardo, [data-titular] (.ln > span), .rev,
+   [data-hilo] (="scroll"), [data-contador], .in
+   ===================================================================== */
+
+/* ---------- M6 · aparecer ---------- */
+html.js [data-r] {
+  transition:
+    opacity var(--dur-lenta) var(--ease-salida),
+    transform var(--dur-lenta) var(--ease-salida);
+  transition-delay: calc(var(--i, 0) * var(--stagger) + var(--mov-retardo, 0ms));
+}
+html.js [data-r]:not(.in) { opacity: 0; transform: translate3d(0, var(--shift), 0); }
+html.js [data-r="fundir"]:not(.in) { transform: none; }
+html.js [data-r="escala"]:not(.in) { transform: scale(.92); }
+html.js [data-r="izquierda"]:not(.in) { transform: translate3d(calc(var(--shift) * -1), 0, 0); }
+html.js [data-r="derecha"]:not(.in) { transform: translate3d(var(--shift), 0, 0); }
+/* M4 · objetos que caen sobre el mostrador */
+html.js [data-r="caer"] { transition-duration: 700ms, 700ms; }
+html.js [data-r="caer"]:not(.in) { transform: translate3d(0, calc(var(--shift) * -.75), 0) rotate(6deg); }
+/* piezas dentro de un SVG: se transforman sobre su propia caja */
+html.js svg [data-r] { transform-box: fill-box; transform-origin: 50% 50%; }
+
+/* ---------- M2 · titular por líneas con máscara ---------- */
+html.js [data-titular]:not(.mov-partido):not(.in) { opacity: 0; }
+[data-titular] .mov-lineas { display: block; }
+[data-titular] .ln {
+  display: block; overflow: hidden;
+  /* holgura para tildes de mayúsculas y descendentes, sin mover la línea */
+  padding-block: .14em .1em; margin-block: -.14em -.1em;
+}
+[data-titular] .ln > span { display: block; }
+html.js [data-titular] .ln > span {
+  transform: translate3d(0, 112%, 0);
+  transition: transform var(--dur-hero) var(--ease-salida), opacity var(--dur-hero) var(--ease-salida);
+  transition-delay: calc(var(--mov-retardo, 0ms) + var(--l, 0) * 120ms);
+}
+html.js [data-titular].in .ln > span { transform: none; }
+
+/* ---------- M3 · lienzo que se descubre ---------- */
+html.js .rev {
+  clip-path: inset(0);
+  transition: clip-path var(--dur-hero) var(--ease-entre), opacity 600ms var(--ease-suave);
+  transition-delay: var(--mov-retardo, 0ms);
+}
+html.js .rev:not(.in) { clip-path: var(--clip-inicial); }
+/* la imagen de dentro se asienta mientras se descubre (un solo gesto: escala leve) */
+html.js .rev > svg, html.js .rev > img {
+  transition: transform calc(var(--dur-hero) + 300ms) var(--ease-salida);
+  transition-delay: var(--mov-retardo, 0ms);
+}
+html.js .rev:not(.in) > svg, html.js .rev:not(.in) > img { transform: scale(1.08); }
+
+/* ---------- M5 / M17 · hilo que se cose ---------- */
+.hilo { overflow: visible; }
+.hilo :is(path, line, polyline):not(.mov-mascara) {
+  fill: none; stroke: var(--c-hilo); stroke-width: var(--pespunte-grosor); stroke-linecap: round;
+  stroke-dasharray: var(--pespunte-puntada) var(--pespunte-hueco);
+}
+.hilo.hilo--continuo :is(path, line, polyline):not(.mov-mascara) { stroke-dasharray: none; }
+[data-hilo] mask .mov-trazo { stroke: white; fill: none; }
+html.js [data-hilo] .mov-trazo {
+  stroke-dasharray: calc(var(--mov-len) * 1px) calc(var(--mov-len) * 1px + 4px);
+  stroke-dashoffset: calc(var(--mov-len) * 1px);
+  transition: stroke-dashoffset var(--dur-hilo) var(--ease-entre);
+  transition-delay: var(--mov-retardo, 0ms);
+}
+html.js [data-hilo].in .mov-trazo { stroke-dashoffset: 0; }
+/* ligado al scroll: el JS pone el desplazamiento en línea, sin transición */
+html.js [data-hilo="scroll"] .mov-trazo { transition: none; }
+
+/* ---------- contador ---------- */
+[data-contador] { font-variant-numeric: lining-nums tabular-nums; }
+
+/* ---------- M1 · entrada de la cabecera (t = 0 de la coreografía) ---------- */
+html.js.mov-activo:not(.mov-t0) #cabecera { opacity: 0; }
+html.mov-t0 #cabecera { animation: mov-cab-entra 400ms var(--ease-salida) backwards; }
+html.mov-ya #cabecera { animation: none; }
+@keyframes mov-cab-entra {
+  from { opacity: 0; transform: translate3d(0, calc(var(--shift-corto) * -1), 0); }
+}
+
+/* ---------- M7 · transición entre páginas ---------- */
+html.mov-vt #contenido { view-transition-name: lv-contenido; }
+::view-transition-old(root), ::view-transition-new(root) { animation: none; }
+::view-transition-group(lv-contenido) { animation: none; }
+::view-transition-old(lv-contenido) { animation: mov-sale 200ms var(--ease-suave) both; }
+/* la nueva entra cuando la anterior ya casi se ha ido: sin textos superpuestos */
+::view-transition-new(lv-contenido) { animation: mov-entra 450ms var(--ease-salida) 120ms both; }
+/* alternativa sin View Transitions */
+html.mov-sale #contenido { opacity: 0; transition: opacity 200ms var(--ease-suave); }
+html.mov-entra #contenido { animation: mov-entra 450ms var(--ease-salida); }
+@keyframes mov-sale { to { opacity: 0; } }
+@keyframes mov-entra { from { opacity: 0; transform: translate3d(0, var(--shift-corto), 0); } }
+
+/* ---------- vuelo a la cesta (copia del dibujo que viaja hasta «Mi cesta») ---------- */
+.mov-vuelo {
+  position: fixed; z-index: 180; pointer-events: none;
+  border-radius: 12px; overflow: hidden;
+  box-shadow: 0 10px 24px rgba(47, 42, 38, .22), 0 2px 6px rgba(47, 42, 38, .14);
+  transform-origin: 50% 50%; will-change: transform, opacity; opacity: 0;
+}
+.mov-vuelo > svg { display: block; width: 100%; height: 100%; }
+
+/* ---------- M9 · subrayado que se dibuja (utilidad para nav, migas, enlaces sueltos) ---------- */
+.mov-subrayado {
+  text-decoration: none;
+  background-image: linear-gradient(currentColor, currentColor);
+  background-repeat: no-repeat; background-position: left 100%; background-size: 0% 2px;
+  transition: background-size 300ms var(--ease-salida);
+}
+.mov-subrayado[aria-current] { background-size: 100% 2px; }
+@media (hover: hover) { .mov-subrayado:hover { background-size: 100% 2px; } }
+.mov-subrayado:focus-visible { background-size: 100% 2px; }
+
+/* ---------- respuesta táctil ---------- */
+@media (hover: none) {
+  .mov-pulsar { transition: transform 150ms var(--ease-suave); }
+  .mov-pulsar:active { transform: scale(.98); }
+}
+
+/* ---------- fotogramas reutilizables (para B1, B5, B6…) ----------
+   Úsenlos con sus propios tiempos: animation: mov-subir-entrar var(--dur-base) var(--ease-salida) both;
+   Con reduced-motion los tokens ponen --shift/--shift-corto/--panel-desde a 0: queda el fundido. */
+@keyframes mov-fundir-entrar { from { opacity: 0; } }
+@keyframes mov-subir-entrar { from { opacity: 0; transform: translate3d(0, var(--shift-corto), 0); } }
+@keyframes mov-bajar-entrar { from { opacity: 0; transform: translate3d(0, calc(var(--shift-corto) * -1), 0); } }
+@keyframes mov-desde-derecha { from { opacity: 0; transform: translate3d(var(--panel-desde), 0, 0); } }
+@keyframes mov-desde-izquierda { from { opacity: 0; transform: translate3d(calc(var(--panel-desde) * -1), 0, 0); } }
+@keyframes mov-cortina { from { clip-path: var(--clip-inicial); opacity: .4; } }
+
+/* =====================================================================
+   REDUCED-MOTION: mismos elementos, mismo orden, con fundidos 400–600 ms
+   ===================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  html.js [data-r] { transition-duration: var(--dur-fundido), var(--dur-fundido); }
+  html.js [data-r]:not(.in),
+  html.js [data-r="escala"]:not(.in),
+  html.js [data-r="caer"]:not(.in),
+  html.js [data-r="izquierda"]:not(.in),
+  html.js [data-r="derecha"]:not(.in) { transform: none; }
+
+  html.js [data-titular] .ln > span { transform: none; opacity: 0; transition-duration: 600ms, 600ms; }
+  html.js [data-titular].in .ln > span { opacity: 1; }
+
+  html.js .rev:not(.in) { opacity: 0; }
+  html.js .rev:not(.in) > svg, html.js .rev:not(.in) > img { transform: none; }
+
+  /* el hilo no se dibuja: aparece entero con un fundido */
+  html.js [data-hilo] { transition: opacity 600ms var(--ease-suave); transition-delay: var(--mov-retardo, 0ms); }
+  html.js [data-hilo]:not(.in) { opacity: 0; }
+  html.js [data-hilo] .mov-trazo,
+  html.js [data-hilo]:not(.in) .mov-trazo { stroke-dashoffset: 0; transition: none; }
+
+  html.js [data-contador] { transition: opacity var(--dur-fundido) var(--ease-suave); transition-delay: var(--mov-retardo, 0ms); }
+  html.js [data-contador]:not(.in) { opacity: 0; }
+
+  /* fundido visible y ordenado: la página anterior se va (250 ms) y la nueva llega (400 ms) */
+  ::view-transition-old(lv-contenido) { animation-duration: 250ms; }
+  ::view-transition-new(lv-contenido) { animation: mov-fundir-entrar 400ms var(--ease-suave) 150ms both; }
+  html.mov-entra #contenido { animation: mov-fundir-entrar 300ms var(--ease-suave); }
+  html.mov-t0 #cabecera { animation-name: mov-fundir-entrar; }
+}
+
+/* =====================================================================
+   mostrarTodo(): estado final al instante (capturas de probar.js)
+   ===================================================================== */
+html.mov-ya :is([data-r], .rev, .rev > svg, .rev > img, [data-hilo], [data-contador], [data-titular] .ln > span, [data-hilo] .mov-trazo) {
+  transition-duration: 0s; transition-delay: 0s;
+}
+
+/* =====================================================================
+   SEGURO SIN JS: si mov.js no arranca, todo se ve a los 2,5 s
+   ===================================================================== */
+html.js:not(.mov-activo) :is([data-r], [data-titular], .rev, [data-hilo], [data-contador], [data-titular] .ln > span) {
+  animation: mov-seguro 1ms 2.5s forwards;
+}
+@keyframes mov-seguro { to { opacity: 1; transform: none; clip-path: none; } }

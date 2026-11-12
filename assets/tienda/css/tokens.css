@@ -1,0 +1,362 @@
+/* =====================================================================
+   La Valenciana v2 · tokens.css  (Dirección creativa · SUP-A)
+   Variables de diseño + base mínima compartida. Lo usan TODOS.
+   Reglas: no redefinir estos tokens en otros archivos; si falta uno,
+   pedirlo en la BITACORA con el prefijo de tu rol.
+   Fuentes (en <head>, antes de este CSS):
+   <link rel="preconnect" href="https://fonts.googleapis.com">
+   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..600&family=Atkinson+Hyperlegible+Next:wght@400..700&display=swap">
+   ===================================================================== */
+
+:root {
+  /* ---------- COLOR (v3: blanco + beis/kraft) ---------- */
+  --c-kraft: #C8A27A;
+  --c-kraft-hondo: #9E7A55;
+  --c-arena: #DCC8AA;
+  --c-rubor: #F3D9D6;   /* toque rosado del papel de seda */
+  --r-tarjeta: 18px;
+  --r-campo: 14px;
+  --c-fondo:        #FFFFFF;  /* página: el mostrador blanco (≈75 % de cada pantalla) */
+  --c-rosa-velo:    #F8F3EB;  /* v3: crema */  /* bandas grandes, pie, cabecera de Mercería */
+  --c-rosa:         #EFE5D5;  /* v3: beis */  /* lienzos de ilustración, etiquetas, estado seleccionado suave */
+  --c-rosa-palo:    #DCC8AA;  /* v3: arena */  /* SOLO decoración/ilustración (1,67:1, nunca texto ni borde de control) */
+  --c-lavanda:      #F4E9E3;  /* v3: beis rosado (Complementos) */  /* lienzo y cabecera de Complementos */
+  --c-salvia:       #E5EEE7;  /* «disponible», «envío gratis», éxito suave */
+  --c-mantequilla:  #F7EEDC;  /* «novedad», avisos suaves */
+  --c-tinta:        #2F2A26;  /* texto: 14,3:1 sobre blanco */
+  --c-tinta-suave:  #5E554D;  /* texto secundario: 8,06:1 sobre blanco, 6,19:1 sobre rosa */
+  --c-acento:       #7A4E2D;  /* ciruela: botón principal, enlaces, foco, precio en ficha. 8,18:1 */
+  --c-acento-hondo: #5A3820;  /* hover/pulsado del acento. Blanco encima: 10,93:1 */
+  --c-exito:        #2D6A45;  /* 6,44:1 sobre blanco, 5,44:1 sobre salvia */
+  --c-error:        #A3282E;  /* 7,24:1 sobre blanco */
+  --c-error-velo:   #FBEDEB;  /* fondo de aviso de error */
+  --c-filete:       #E8DFD2;  /* filetes 1px decorativos (separadores). NO límite de control */
+  --c-borde:        #8A6A4A;  /* borde de controles: 4,02:1 sobre blanco (≥3:1) */
+  --c-hilo:         #B08A62;  /* el pespunte / hilo (decorativo, se lee bien sobre blanco y rosa) */
+  --c-desactivado:  #F3EFE9;  /* fondo de control no disponible (con texto que lo explique) */
+  --c-velo-modal:   rgba(47, 42, 38, .42); /* velo tras panel lateral / menú */
+
+  /* ---------- TIPOGRAFÍA ---------- */
+  --f-titulo: "Playfair Display", "Iowan Old Style", Georgia, serif;
+  --f-texto:  "Jost", "Helvetica Neue", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+
+  /* tamaños (html = 100 % = 16px; todo en rem para que escale con el control de letra) */
+  --t-display:    clamp(2.625rem, 1.35rem + 5.2vw, 5.5rem);    /* 42 → 88px  hero */
+  --t-h1:         clamp(2.25rem, 1.5rem + 3vw, 3.75rem);       /* 36 → 60px  títulos de página */
+  --t-h1-ficha:   clamp(2rem, 1.5rem + 1.6vw, 2.75rem);        /* 32 → 44px  nombre de producto en ficha */
+  --t-h2:         clamp(1.875rem, 1.4rem + 1.9vw, 2.75rem);    /* 30 → 44px */
+  --t-h3:         clamp(1.375rem, 1.2rem + .7vw, 1.75rem);     /* 22 → 28px */
+  --t-entradilla: clamp(1.25rem, 1.1rem + .6vw, 1.5rem);       /* 20 → 24px  Newsreader */
+  --t-cuerpo:     1.1875rem;                                   /* 19px; 20px desde 1024px */
+  --t-producto:   1.3125rem;                                   /* 21px  nombre en tarjeta (Newsreader 500) */
+  --t-precio:     1.375rem;                                    /* 22px  precio en tarjeta */
+  --t-precio-ficha: 2rem;                                      /* 32px */
+  --t-boton:      1.125rem;                                    /* 18px */
+  --t-nav:        1.125rem;                                    /* 18px */
+  --t-pequeno:    1rem;                                        /* 16px: MÍNIMO absoluto de texto útil */
+  --t-anio:       clamp(2.5rem, 2rem + 2vw, 3.5rem);           /* años de la cronología */
+
+  --lh-display: 1.04;
+  --lh-titulo:  1.12;
+  --lh-h3:      1.25;
+  --lh-cuerpo:  1.65;
+  --lh-ui:      1.3;
+
+  --tr-display: -0.022em;
+  --tr-titulo:  -0.012em;
+  --tr-ui:       0.01em;
+
+  --medida-texto: 62ch;   /* línea de lectura */
+  --medida-entradilla: 46ch;
+
+  /* ---------- ESPACIADO (base 8) ---------- */
+  --s-1: .25rem;   /*  4 */
+  --s-2: .5rem;    /*  8 */
+  --s-3: .75rem;   /* 12 */
+  --s-4: 1rem;     /* 16 */
+  --s-5: 1.5rem;   /* 24 */
+  --s-6: 2rem;     /* 32 */
+  --s-7: 2.5rem;   /* 40 */
+  --s-8: 3.5rem;   /* 56 */
+  --s-9: 4.5rem;   /* 72 */
+  --s-10: 6rem;    /* 96 */
+  --s-11: 8rem;    /* 128 */
+  --s-12: 10rem;   /* 160 */
+  --s-seccion: clamp(4.5rem, 2rem + 7vw, 9rem);      /* 72 → 144: padding vertical de sección */
+  --s-titulo-contenido: clamp(2rem, 1.5rem + 2vw, 3.5rem); /* 32 → 56: de título a contenido */
+
+  /* ---------- REJILLA ---------- */
+  --ancho-max: 1240px;
+  --ancho-estrecho: 760px;   /* páginas de texto: Cómo comprar, Legal */
+  --margen: clamp(16px, 4vw, 56px);
+  --hueco: clamp(16px, 2.2vw, 32px);         /* gutter de columnas */
+  --hueco-filas: clamp(40px, 4vw, 64px);     /* entre filas de productos */
+  --alto-cabecera: 168px;                    /* escritorio completa (anuncio 40 + fila 80 + nav 48) */
+  --alto-cabecera-mini: 72px;                /* escritorio encogida y móvil */
+
+  /* ---------- FORMA ---------- */
+  --r-0: 0;           /* superficies, bandas, paneles, tarjetas */
+  --r-lienzo: 18px;    /* lienzos de ilustración */
+  --r-control: 999px;   /* botones, campos, píldoras, medidas */
+  --r-redondo: 50%;   /* muestras de color */
+  --r-capsula: 999px; /* SOLO el contador de la cesta */
+  --borde-control: 2px solid var(--c-borde);
+  --filete: 1px solid var(--c-filete);
+  --tactil: 48px;     /* objetivo táctil mínimo */
+  --tactil-grande: 56px;
+
+  /* ---------- SOMBRAS (solo elementos que flotan) ---------- */
+  --sombra-panel:    0 24px 64px -24px rgba(90, 56, 32, .30), 0 2px 6px rgba(47, 42, 38, .06);
+  --sombra-flotante: 0 18px 40px -18px rgba(90, 56, 32, .28), 0 1px 3px rgba(47, 42, 38, .08);
+  --sombra-cabecera: 0 1px 0 var(--c-filete), 0 8px 24px -16px rgba(90, 56, 32, .22);
+
+  /* ---------- TEXTURA (lino, solo en bandas rosas, pie y lienzos grandes) ---------- */
+  --tx-lino: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260'%3E%3Cfilter id='a'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.02 .9' numOctaves='2' seed='2'/%3E%3CfeColorMatrix values='0 0 0 0 .45 0 0 0 0 .25 0 0 0 0 .32 0 0 0 .55 -.12'/%3E%3C/filter%3E%3Cfilter id='b'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9 .02' numOctaves='2' seed='7'/%3E%3CfeColorMatrix values='0 0 0 0 .45 0 0 0 0 .25 0 0 0 0 .32 0 0 0 .55 -.12'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23a)' opacity='.5'/%3E%3Crect width='100%25' height='100%25' filter='url(%23b)' opacity='.5'/%3E%3C/svg%3E");
+  --tx-lino-opacidad: .35;
+
+  /* ---------- PESPUNTE (la firma; ver DISENO.md §5 para dónde SÍ y dónde NO) ---------- */
+  --pespunte-puntada: 9px;
+  --pespunte-hueco: 6px;
+  --pespunte-grosor: 2px;
+
+  /* ---------- MOVIMIENTO ---------- */
+  --dur-rapida: 200ms;
+  --dur-base: 450ms;
+  --dur-lenta: 750ms;
+  --dur-hero: 1000ms;
+  --dur-hilo: 1600ms;
+  --dur-fundido: 500ms;      /* fundidos (también con reduced-motion) */
+  --ease-salida: cubic-bezier(.22, 1, .36, 1);   /* entradas */
+  --ease-entre:  cubic-bezier(.65, 0, .35, 1);   /* clip-path, hilo, transiciones de página */
+  --ease-suave:  cubic-bezier(.4, 0, .2, 1);     /* hovers, color */
+  --ease-rebote: cubic-bezier(.34, 1.56, .64, 1);/* solo el latido del contador */
+  --stagger: 90ms;
+  --shift: 32px;             /* desplazamiento de entrada (reveal) */
+  --shift-corto: 12px;       /* transición de página, mini-panel, megamenú */
+  --escala-hover: 1.05;      /* ilustración de tarjeta al pasar */
+  --escala-latido: 1.3;
+  --clip-inicial: inset(0 0 100% 0); /* lienzo que se descubre de arriba abajo */
+  --panel-desde: 100%;       /* translateX inicial del panel lateral */
+}
+
+/* Escritorio: cuerpo a 20px */
+@media (min-width: 1024px) {
+  :root { --t-cuerpo: 1.25rem; }
+}
+
+/* Movimiento reducido: NO se apaga todo. Se quitan desplazamientos, escalas y
+   recortes; se mantienen los fundidos de opacidad (400–600 ms) para que el
+   cliente siga viendo que la página «responde». */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --shift: 0px;
+    --shift-corto: 0px;
+    --escala-hover: 1;
+    --escala-latido: 1;
+    --clip-inicial: inset(0);
+    --panel-desde: 0%;
+    --stagger: 60ms;
+    --dur-hero: 600ms;
+    --dur-lenta: 500ms;
+    --dur-hilo: 600ms;       /* el hilo aparece con fundido, no se dibuja */
+  }
+}
+
+/* ---------- CONTROL DE LETRA: <html data-texto="grande|muygrande"> ---------- */
+html[data-texto="grande"]    { font-size: 118.75%; }  /* cuerpo ≈ 23–24px */
+html[data-texto="muygrande"] { font-size: 137.5%; }   /* cuerpo ≈ 26–27,5px */
+/* Los títulos grandes NO crecen en proporción (romperían el hero): se compensan. */
+html[data-texto="grande"] {
+  --t-display: clamp(2.25rem, 1.1rem + 4.4vw, 4.75rem);
+  --t-h1: clamp(2rem, 1.3rem + 2.5vw, 3.25rem);
+  --t-h2: clamp(1.75rem, 1.3rem + 1.5vw, 2.4rem);
+}
+html[data-texto="muygrande"] {
+  --t-display: clamp(2rem, 1rem + 3.6vw, 4rem);
+  --t-h1: clamp(1.75rem, 1.2rem + 2vw, 2.75rem);
+  --t-h2: clamp(1.6rem, 1.2rem + 1.2vw, 2.1rem);
+  --t-h3: clamp(1.3rem, 1.15rem + .5vw, 1.5rem);
+  --t-producto: 1.1875rem;
+}
+
+/* =====================================================================
+   BASE MÍNIMA
+   ===================================================================== */
+*, *::before, *::after { box-sizing: border-box; }
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  scroll-padding-top: calc(var(--alto-cabecera-mini) + 16px);
+}
+body {
+  margin: 0;
+  background: var(--c-fondo);
+  color: var(--c-tinta);
+  font-family: var(--f-texto);
+  font-size: var(--t-cuerpo);
+  line-height: var(--lh-cuerpo);
+  letter-spacing: .005em;
+  font-variant-numeric: lining-nums;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+img, svg, video { display: block; max-width: 100%; }
+button, input, select, textarea { font: inherit; color: inherit; letter-spacing: inherit; }
+button { cursor: pointer; }
+p, ul, ol, dl, figure, blockquote { margin: 0; }
+p { text-wrap: pretty; max-width: var(--medida-texto); }
+p + p { margin-top: 1em; }
+
+h1, h2, h3, h4 {
+  margin: 0;
+  font-family: var(--f-titulo);
+  font-optical-sizing: auto;
+  font-weight: 500;
+  color: var(--c-tinta);
+  text-wrap: balance;
+}
+h1 { font-size: var(--t-h1); line-height: var(--lh-titulo); letter-spacing: var(--tr-titulo); }
+h2 { font-size: var(--t-h2); line-height: 1.16; letter-spacing: var(--tr-titulo); }
+h3 { font-size: var(--t-h3); line-height: var(--lh-h3); font-weight: 600; }
+h4 { font-family: var(--f-texto); font-size: var(--t-cuerpo); font-weight: 700; line-height: var(--lh-ui); }
+
+/* utilidades tipográficas */
+.t-display {
+  font-family: var(--f-titulo); font-weight: 400; font-optical-sizing: auto;
+  font-size: var(--t-display); line-height: var(--lh-display); letter-spacing: var(--tr-display);
+  -webkit-font-smoothing: antialiased;
+}
+.t-entradilla {
+  font-family: var(--f-titulo); font-size: var(--t-entradilla); line-height: 1.45;
+  font-weight: 400; color: var(--c-tinta-suave); max-width: var(--medida-entradilla);
+}
+.t-pequeno { font-size: var(--t-pequeno); line-height: 1.5; letter-spacing: var(--tr-ui); }
+.t-suave { color: var(--c-tinta-suave); }
+.t-precio {
+  font-family: var(--f-texto); font-weight: 700; font-size: var(--t-precio);
+  line-height: 1.1; font-variant-numeric: lining-nums tabular-nums; color: var(--c-tinta);
+}
+.t-anio { font-family: var(--f-titulo); font-variant-numeric: oldstyle-nums; }
+
+/* enlaces de párrafo */
+a { color: var(--c-acento); text-decoration-line: underline; text-decoration-thickness: 1px; text-underline-offset: .22em; }
+a:hover { color: var(--c-acento-hondo); text-decoration-thickness: 2px; }
+
+/* foco visible: anillo ciruela 3px separado 3px (el blanco del fondo hace de separación) */
+:focus { outline: none; }
+:focus-visible { outline: 3px solid var(--c-acento); outline-offset: 3px; border-radius: 2px; }
+.sobre-acento :focus-visible, .boton--primario:focus-visible { outline-color: var(--c-tinta); }
+
+::selection { background: var(--c-rosa); color: var(--c-tinta); }
+
+.visualmente-oculto {
+  position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; border: 0;
+}
+.saltar {
+  position: absolute; left: 16px; top: -100px; z-index: 1000;
+  background: var(--c-tinta); color: #fff; padding: 12px 20px; border-radius: var(--r-control);
+  font-weight: 700; text-decoration: none;
+}
+.saltar:focus { top: 16px; }
+
+/* contenedores y secciones */
+.contenedor { width: min(100% - 2 * var(--margen), var(--ancho-max)); margin-inline: auto; }
+.contenedor--estrecho { width: min(100% - 2 * var(--margen), var(--ancho-estrecho)); margin-inline: auto; }
+.rejilla { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--hueco); }
+.seccion { padding-block: var(--s-seccion); }
+.seccion--rosa { background: var(--c-rosa-velo); position: relative; isolation: isolate; }
+.seccion--rosa::before, .con-lino::before {
+  content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+  background-image: var(--tx-lino); opacity: var(--tx-lino-opacidad); mix-blend-mode: multiply;
+}
+.con-lino { position: relative; isolation: isolate; }
+.filete { border: 0; border-top: var(--filete); margin: 0; }
+
+/* =====================================================================
+   PRIMITIVAS COMPARTIDAS (todas las usan; nadie las redefine)
+   ===================================================================== */
+
+/* Botones: .boton + variante. Texto SIEMPRE visible, sin flechas «→». */
+.boton {
+  display: inline-flex; align-items: center; justify-content: center; gap: .6em;
+  min-height: var(--tactil-grande); padding: .5rem 1.75rem;   /* SUP-A: aire arriba/abajo si el texto se parte (letra muy grande) */
+  font-family: var(--f-texto); font-size: var(--t-boton); font-weight: 700; line-height: 1.2;
+  letter-spacing: var(--tr-ui); text-align: center; text-decoration: none;
+  border: 2px solid transparent; border-radius: var(--r-control);
+  background-repeat: no-repeat; background-position: left center; background-size: 0% 100%;
+  transition: background-size var(--dur-base) var(--ease-suave), color var(--dur-rapida) var(--ease-suave),
+              border-color var(--dur-rapida) var(--ease-suave), transform 150ms var(--ease-suave);
+  -webkit-tap-highlight-color: transparent;
+}
+.boton svg { width: 1.25em; height: 1.25em; flex: none; }
+.boton:active { transform: scale(.98); }
+.boton--primario {
+  background-color: var(--c-acento); color: #fff;
+  background-image: linear-gradient(var(--c-acento-hondo), var(--c-acento-hondo));
+}
+.boton--secundario {
+  background-color: var(--c-fondo); color: var(--c-tinta); border-color: var(--c-tinta);
+  background-image: linear-gradient(var(--c-rosa-velo), var(--c-rosa-velo));
+}
+.boton--primario:hover, .boton--secundario:hover,
+.boton--primario:focus-visible, .boton--secundario:focus-visible { background-size: 100% 100%; color: inherit; }
+.boton--primario:hover, .boton--primario:focus-visible { color: #fff; }
+.boton--secundario:hover, .boton--secundario:focus-visible { color: var(--c-acento-hondo); border-color: var(--c-acento); }
+.boton--texto {
+  min-height: var(--tactil); padding: 0 .25rem; color: var(--c-acento); background-color: transparent;
+  background-image: linear-gradient(currentColor, currentColor), linear-gradient(currentColor, currentColor);
+  background-size: 100% 1px, 0% 2px; background-position: left calc(50% + .8em), left calc(50% + .8em);
+}
+.boton--texto:hover, .boton--texto:focus-visible { color: var(--c-acento-hondo); background-size: 100% 1px, 100% 2px; }
+.boton--grande { min-height: 64px; font-size: 1.25rem; padding: 0 2rem; }
+.boton--ancho { display: flex; width: 100%; }
+.boton[disabled], .boton[aria-disabled="true"] {
+  background: var(--c-desactivado); color: var(--c-tinta-suave); border-color: var(--c-filete); cursor: not-allowed; transform: none;
+}
+@media (hover: none) { .boton:hover { background-size: 0% 100%; } }
+
+/* Etiqueta (estado del producto, «Próximamente», «Envío gratis») */
+.etiqueta {
+  display: inline-flex; align-items: center; gap: .4em; padding: .2em .6em;
+  font-size: var(--t-pequeno); font-weight: 600; line-height: 1.4; letter-spacing: var(--tr-ui);
+  border-radius: var(--r-control); background: var(--c-rosa); color: var(--c-tinta);
+}
+.etiqueta--salvia { background: var(--c-salvia); color: var(--c-exito); }
+.etiqueta--mantequilla { background: var(--c-mantequilla); }
+.etiqueta--borde { background: var(--c-fondo); border: 1px solid var(--c-borde); color: var(--c-tinta-suave); }
+
+/* Campo de formulario: etiqueta visible arriba, campo de 56px, blanco SIEMPRE */
+.campo { display: grid; gap: var(--s-2); }
+.campo__etiqueta { font-weight: 700; font-size: 1.0625rem; line-height: var(--lh-ui); }
+.campo__control {
+  width: 100%; min-height: var(--tactil-grande); padding: 0 1rem;
+  background: #fff; color: var(--c-tinta); border: var(--borde-control); border-radius: var(--r-control);
+  font-size: var(--t-cuerpo); transition: border-color var(--dur-rapida) var(--ease-suave);
+}
+textarea.campo__control { min-height: 8rem; padding-block: .75rem; line-height: 1.5; }
+.campo__control:hover { border-color: var(--c-tinta-suave); }
+.campo__control:focus-visible { border-color: var(--c-acento); outline-offset: 2px; }
+.campo__ayuda { font-size: var(--t-pequeno); color: var(--c-tinta-suave); line-height: 1.5; }
+.campo--error .campo__control { border-color: var(--c-error); }
+.campo__error { display: flex; gap: .5em; align-items: flex-start; font-size: var(--t-pequeno); font-weight: 600; color: var(--c-error); }
+
+/* Aviso: filete izquierdo de 4px + icono + texto. Nunca solo color. */
+.aviso {
+  display: grid; grid-template-columns: auto 1fr; gap: var(--s-3); align-items: start;
+  padding: var(--s-4) var(--s-5); border-left: 4px solid var(--c-acento); background: var(--c-rosa-velo);
+  font-size: var(--t-pequeno); line-height: 1.55;
+}
+.aviso > svg { width: 24px; height: 24px; color: var(--c-acento); margin-top: 1px; }
+.aviso p { max-width: none; }
+.aviso--exito { border-left-color: var(--c-exito); background: var(--c-salvia); }
+.aviso--exito > svg { color: var(--c-exito); }
+.aviso--error { border-left-color: var(--c-error); background: var(--c-error-velo); }
+.aviso--error > svg { color: var(--c-error); }
+
+/* Pespunte estático (separador): ver dónde se permite en DISENO.md §5 */
+.pespunte {
+  height: var(--pespunte-grosor); border: 0; margin: 0;
+  background: repeating-linear-gradient(90deg, var(--c-hilo) 0 var(--pespunte-puntada), transparent var(--pespunte-puntada) calc(var(--pespunte-puntada) + var(--pespunte-hueco)));
+}

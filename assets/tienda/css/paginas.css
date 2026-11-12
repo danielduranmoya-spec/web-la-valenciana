@@ -1,0 +1,145 @@
+/* =========================================================
+   LA VALENCIANA v2 · paginas.css · PROPIETARIO: B3
+   Cómo comprar, Visítenos, Legal y 404 (DISENO §7.7–7.10). Prefijo .pag-
+   Mapa, horario, estado y contacto: portada.css (.ed-).
+   ========================================================= */
+.pag { padding-top: var(--s-7); }
+.pag-cabeza { padding-block: var(--s-7) var(--s-9); }
+.pag-cabeza h1 { max-width: 18ch; }
+.pag-cabeza__entradilla { margin-top: var(--s-5); }
+@media (min-width: 1024px) { .pag { padding-top: var(--s-9); } }
+
+/* ---------- Cómo comprar ---------- */
+.pag-pasos { list-style: none; margin: 0; padding: 0; border-bottom: var(--filete); }
+.pag-paso { display: grid; grid-template-columns: 1fr; gap: var(--s-3); padding-block: var(--s-7); border-top: var(--filete); }
+.pag-paso__num { font-family: var(--f-titulo); font-size: 3rem; line-height: .9; color: var(--c-acento); font-variant-numeric: lining-nums; }
+.pag-paso__titulo { font-size: var(--t-h3); font-weight: 600; line-height: var(--lh-h3); letter-spacing: 0; }
+.pag-paso p { margin-top: var(--s-3); }
+@media (min-width: 640px) {
+  .pag-paso { grid-template-columns: 6rem 1fr; gap: var(--s-5); }
+  .pag-paso__num { font-size: 4.5rem; margin-top: -.2rem; }
+}
+
+.pag-indice { margin-block: var(--s-8) var(--s-4); }
+.pag-indice__titulo { font-size: var(--t-pequeno); font-weight: 600; color: var(--c-tinta-suave); margin-bottom: var(--s-2); }
+.pag-indice ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; column-gap: var(--s-5); }
+.pag-indice .boton--texto { margin-left: -.25rem; justify-content: flex-start; text-align: left; }
+
+.pag-bloque { padding-block: var(--s-8); border-top: var(--filete); }
+.pag-indice + .pag-bloque { border-top: 0; }
+.pag-bloque > h2 { margin-bottom: var(--s-5); }
+.pag-bloque .aviso { margin-block: var(--s-2) var(--s-5); }
+.pag-lista { margin: var(--s-4) 0 0; padding-left: 1.25em; max-width: var(--medida-texto); }
+.pag-lista li + li { margin-top: var(--s-2); }
+.pag-lista li::marker { color: var(--c-acento); }
+.pag-horario { margin-top: var(--s-5); max-width: 32rem; }
+.pag-horario > * + * { margin-top: var(--s-4); }
+
+.pag-guias { display: grid; gap: var(--s-7); }
+.pag-guia { display: grid; grid-template-columns: 5.5rem 1fr; gap: var(--s-5); align-items: start; }
+.pag-guia__dibujo { aspect-ratio: 1; border-radius: var(--r-lienzo); overflow: hidden; }
+.pag-guia__dibujo svg { width: 100%; height: 100%; }
+.pag-guia p { margin-top: var(--s-2); }
+@media (min-width: 640px) { .pag-guia { grid-template-columns: 8rem 1fr; gap: var(--s-6); } }
+.pag-preguntas { margin-top: var(--s-2); }
+
+/* banda final de contacto (la única banda rosa de la página) */
+.pag-banda { margin-top: var(--s-seccion);
+  /* R2: la banda es lo último de la página; sin esto quedaba una franja blanca de ≈144 px
+     entre dos rosas (banda y pie). Se une al pie: el pespunte del pie hace de costura. */
+  margin-bottom: calc(-1 * var(--s-seccion)); }
+.pag-banda__rejilla { display: grid; gap: var(--s-6); align-items: center; }
+.pag-banda__rejilla h2 { max-width: 18ch; }
+.pag-banda__texto { margin-top: var(--s-4); color: var(--c-tinta-suave); max-width: 44ch; }
+.pag-banda__botones { display: flex; flex-wrap: wrap; gap: var(--s-3); }
+@media (max-width: 639px) { .pag-banda__botones .boton { width: 100%; } }
+@media (min-width: 1024px) {
+  .pag-banda__rejilla { grid-template-columns: 7fr 5fr; gap: var(--hueco); }
+  .pag-banda__botones { justify-content: flex-end; }
+}
+
+/* ---------- Visítenos ---------- */
+.pag-visita { row-gap: var(--s-8); align-items: start; }
+.pag-visita__mapa, .pag-visita__datos { grid-column: 1 / -1; }
+.pag-visita__datos > section + section { margin-top: var(--s-8); }
+.pag-visita__datos > section > * + * { margin-top: var(--s-4); }
+.pag-visita__h { font-size: var(--t-h3); font-weight: 600; line-height: var(--lh-h3); letter-spacing: 0; }
+@media (min-width: 1024px) {
+  .pag-visita__mapa { grid-column: 1 / 8; position: sticky; top: calc(var(--alto-cabecera-mini) + var(--s-6)); }
+  .pag-visita__datos { grid-column: 9 / 13; }
+}
+
+/* ---------- Legal ---------- */
+.pag-legal { display: grid; gap: 0; }
+.pag-legal__indice { margin-top: 0; }
+.pag-legal__texto { max-width: var(--medida-texto); }
+.pag-legal__texto .pag-bloque:first-child { border-top: 0; padding-top: var(--s-6); }
+.pag-legal__fecha { padding-top: var(--s-6); border-top: var(--filete); }
+@media (min-width: 1100px) {
+  .pag-legal { grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--hueco); align-items: start; }
+  .pag-legal__indice { grid-column: 1 / 4; position: sticky; top: calc(var(--alto-cabecera-mini) + var(--s-6)); padding-top: var(--s-6); }
+  .pag-legal__indice ul { flex-direction: column; }
+  .pag-legal__texto { grid-column: 5 / 12; }
+}
+
+/* ---------- 404 ---------- */
+.pag--404 { overflow-x: clip; }
+.pag-404 { min-height: 60vh; display: grid; justify-items: center; align-content: center; text-align: center; padding-block: var(--s-6) var(--s-10); }
+.pag-404 h1 { max-width: 14ch; }
+.pag-404__texto { margin: var(--s-4) auto 0; }
+.pag-404__boton { position: relative; width: clamp(8.5rem, 22vw, 12.5rem); aspect-ratio: 1; margin-bottom: var(--s-6); }
+.pag-404__rueda, .pag-404__rueda svg { width: 100%; height: 100%; }
+.pag-404__sombra { position: absolute; left: 18%; right: 18%; bottom: 2%; height: 8%; border-radius: 50%; background: var(--c-acento-hondo); opacity: .12; filter: blur(6px); z-index: -1; }
+html.js .pag-404__rueda { animation: pag-rodar 1200ms var(--ease-salida) 150ms both; }
+html.js .pag-404__sombra { animation: pag-sombra 1200ms var(--ease-salida) 150ms both; }
+@keyframes pag-rodar {
+  from { opacity: 0; transform: translateX(-42vw) rotate(-540deg); }
+  20% { opacity: 1; }
+  to { opacity: 1; transform: none; }
+}
+@keyframes pag-sombra { from { opacity: 0; transform: translateX(-42vw); } to { opacity: .12; transform: none; } }
+@media (prefers-reduced-motion: reduce) {
+  html.js .pag-404__rueda, html.js .pag-404__sombra { animation: pag-fundir 600ms var(--ease-suave) 150ms both; }
+}
+@keyframes pag-fundir { from { opacity: 0; } }
+.pag-404__buscar { width: min(100%, 34rem); margin-top: var(--s-7); display: grid; gap: var(--s-2); text-align: left; }
+.pag-404__fila { display: flex; gap: var(--s-2); }
+.pag-404__fila .campo__control { flex: 1; min-width: 0; }
+.pag-404__fila .boton { flex: none; padding-inline: 1.25rem; }
+.pag-404__botones { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--s-3); margin-top: var(--s-6); }
+@media (max-width: 480px) { .pag-404__botones .boton { width: 100%; } .pag-404__fila { flex-direction: column; } }
+
+/* ===== Horario (apartado propio) ===== */
+.pag-hor { display: grid; gap: var(--s-8); align-items: start; }
+@media (min-width: 960px) { .pag-hor { grid-template-columns: 7fr 5fr; gap: var(--s-9); } }
+.pag-hor__h { font-size: var(--t-h3, 1.5rem); margin-bottom: var(--s-4); }
+.pag-hor__estado { margin-bottom: var(--s-5); }
+.pag-hor__t { width: 100%; border-collapse: collapse; font-size: 1.0625rem; }
+.pag-hor__t th, .pag-hor__t td { text-align: left; padding: .95rem .5rem; border-bottom: 1px solid var(--c-filete); }
+.pag-hor__t thead th { font-size: .95rem; font-weight: 700; color: var(--c-tinta-suave); border-bottom-color: var(--c-tinta); }
+.pag-hor__t tbody th { font-weight: 700; }
+.pag-hor__t td { font-variant-numeric: tabular-nums; }
+.pag-hor__hoy th, .pag-hor__hoy td { background: var(--c-rosa-velo, #FBF0F0); color: var(--c-acento); }
+.pag-hor__marca { display: inline-block; margin-left: .4rem; padding: .05rem .5rem; border: 1px solid currentColor; border-radius: 2px; font-size: .8rem; font-weight: 700; vertical-align: middle; }
+.pag-hor__lado { display: grid; gap: var(--s-4); }
+.pag-hor__tarjeta { padding: var(--s-5) var(--s-6); background: var(--c-rosa-velo, #FBF0F0); border-left: 3px solid var(--c-acento); }
+.pag-hor__tarjeta--cerrado { background: #fff; border: 1px solid var(--c-filete); border-left: 3px solid var(--c-tinta-suave); }
+.pag-hor__franja { font-weight: 700; color: var(--c-tinta-suave); margin: 0; }
+.pag-hor__horas { font-family: var(--f-titulo); font-size: clamp(2rem, 1.4rem + 2vw, 2.75rem); line-height: 1.1; margin: .25rem 0 .35rem; font-variant-numeric: lining-nums tabular-nums; color: var(--c-tinta); }
+.pag-hor__horas--texto { font-size: clamp(1.6rem, 1.2rem + 1.4vw, 2.1rem); }
+.pag-hor__nota { margin: 0; color: var(--c-tinta-suave); font-size: 1rem; }
+.pag-hor__aviso { margin-top: var(--s-8); max-width: 62ch; color: var(--c-tinta-suave); }
+
+/* ===== Redes sociales (apartado propio) ===== */
+.pag-redes { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--s-5); }
+@media (min-width: 760px) { .pag-redes { grid-template-columns: repeat(3, 1fr); gap: var(--s-6); } }
+.pag-red { display: flex; flex-direction: column; padding: var(--s-6); background: #fff; border: 1px solid var(--c-filete); border-top: 3px solid var(--c-acento);
+  transition: transform var(--dur-base, .3s) var(--ease-salida, ease), box-shadow var(--dur-base, .3s) var(--ease-salida, ease); }
+@media (hover: hover) { .pag-red:hover { transform: translateY(-4px); box-shadow: 0 14px 34px rgba(47,42,38,.09); } }
+.pag-red__icono { display: grid; place-items: center; width: 72px; height: 72px; border-radius: 50%; background: var(--c-rosa-velo, #FBF0F0); color: var(--c-acento); margin-bottom: var(--s-5); }
+.pag-red__icono svg { width: 40px; height: 40px; }
+.pag-red__nombre { font-size: clamp(1.6rem, 1.3rem + 1vw, 2rem); margin: 0; }
+.pag-red__usuario { margin: .3rem 0 0; font-weight: 700; color: var(--c-acento); overflow-wrap: anywhere; }
+.pag-red__texto { margin: var(--s-4) 0 var(--s-6); color: var(--c-tinta-suave); flex: 1; }
+.pag-red__boton { margin-top: auto; }
+@media (prefers-reduced-motion: reduce) { .pag-red:hover { transform: none; } }

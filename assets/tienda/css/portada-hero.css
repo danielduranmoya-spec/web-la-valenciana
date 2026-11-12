@@ -1,0 +1,297 @@
+/* =========================================================
+   LA VALENCIANA v2 · portada-hero.css · PROPIETARIO: B2
+   Hero (titular + hilo + puertas + bodegón) y mosaico de categorías.
+   Prefijo .por-  · componente compartido: .puerta
+   Coreografía (DISENO §8): .por-hero.por-vivo dispara todo; los
+   retardos de cada pieza están aquí, medidos desde t = 0.
+   ========================================================= */
+
+/* ---------------- HERO: maquetación ---------------- */
+.por-hero {
+  position: relative;
+  overflow-x: clip;
+  isolation: isolate;
+  --por-sangre: max(var(--margen), (100vw - var(--ancho-max)) / 2);   /* lo que falta hasta el borde derecho */
+  --por-giro: 6deg;                                                     /* giro de entrada de las piezas (M4) */
+}
+.por-hero__rejilla {
+  min-height: clamp(640px, 82vh, 880px);
+  align-items: center;
+}
+.por-hero__texto {
+  grid-column: 1 / span 7;
+  position: relative; z-index: 1;
+  padding-block: var(--s-8) var(--s-9);
+  container-type: inline-size;
+}
+.por-hero__titular {
+  color: var(--c-tinta);
+  font-size: min(var(--t-display), 11.6cqi);   /* siempre 3 líneas: cada línea cabe en la columna */
+  max-width: none;
+  text-wrap: initial;
+}
+.por-hero__titular .por-ln { display: block; overflow-x: visible; overflow-y: clip; padding-block: .14em .24em; margin-block: 0 -.38em; }
+.por-hero__titular .por-ln:first-child { margin-top: -.14em; }
+.por-hero__titular .por-ln:last-child { margin-bottom: -.24em; }
+/* terminada la entrada, la línea ya no recorta nada (tildes, «y», comas) */
+.por-hero.por-ya .por-hero__titular .por-ln,
+html:not(.js) .por-hero__titular .por-ln { overflow: visible; }
+.por-hero__titular .por-ln > span { display: inline-block; white-space: nowrap; }
+
+/* hueco por donde pasa la costura (el SVG del hilo la dibuja encima) */
+.por-hero__costura { height: var(--s-8); }
+
+.por-hero__entradilla { max-width: 44ch; }
+
+/* bodegón: cols 8-12 y sangra hasta el borde derecho; ocupa el alto del hero */
+.por-bodegon {
+  grid-column: 8 / -1;
+  align-self: stretch;
+  margin: 0 calc(-1 * var(--por-sangre)) 0 0;
+  background: var(--c-rosa);
+  border-radius: var(--r-lienzo) 0 0 var(--r-lienzo);
+  overflow: hidden;
+  min-height: 560px;
+}
+.por-bodegon__svg { width: 100%; height: 100%; position: absolute; inset: 0; }
+
+/* el hilo: un SVG a todo el hero, encima de todo, sin capturar clics */
+.por-hilo {
+  position: absolute; left: 0; top: 0; z-index: 2;
+  overflow: visible; pointer-events: none;
+}
+.por-hilo__todo { opacity: 0; }
+.por-hilo__suelto,
+.por-hilo__costura {
+  stroke: var(--c-hilo); stroke-width: var(--pespunte-grosor); stroke-linecap: round;
+}
+.por-hilo__costura { stroke-dasharray: var(--pespunte-puntada) var(--pespunte-hueco); }
+.por-hilo--fundido { animation: por-fundido var(--dur-hilo) var(--ease-suave) both; }
+
+/* ---------------- PUERTAS (.puerta, componente de B2) ---------------- */
+.por-puertas {
+  display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-4);
+  margin-top: var(--s-7);
+  max-width: 40rem;
+}
+.puerta {
+  display: flex; align-items: center; gap: var(--s-4);
+  min-height: 112px; padding: var(--s-4) var(--s-5) var(--s-4) var(--s-4);
+  background: var(--c-rosa-velo); color: var(--c-tinta);
+  border-radius: var(--r-control);
+  border-bottom: 3px solid var(--c-acento);
+  text-decoration: none;
+  transition: background-color var(--dur-base) var(--ease-suave);
+  -webkit-tap-highlight-color: transparent;
+}
+.puerta--complementos { background: var(--c-lavanda); }
+.puerta__dibujo {
+  width: 64px; height: 64px; flex: none; overflow: visible;
+  transition: transform var(--dur-base) var(--ease-salida);
+}
+.puerta__textos { display: grid; gap: var(--s-1); min-width: 0; }
+.puerta__titulo {
+  font-family: var(--f-titulo); font-size: 1.875rem; font-weight: 500;
+  line-height: 1.1; letter-spacing: var(--tr-titulo);
+}
+.puerta__linea {
+  font-size: var(--t-pequeno); line-height: 1.4; color: var(--c-tinta-suave); font-weight: 500;
+}
+.puerta:hover { color: var(--c-tinta); }
+@media (hover: hover) {
+  .puerta--merceria:hover { background: var(--c-rosa); }
+  .puerta--complementos:hover { background: color-mix(in srgb, var(--c-lavanda) 82%, var(--c-acento) 10%); }
+  .puerta:hover .puerta__dibujo { transform: translateY(-4px) rotate(-4deg); }
+  .puerta:hover .puerta__titulo { text-decoration: underline 1px var(--c-acento); text-underline-offset: .18em; }
+}
+.puerta:active { transform: scale(.98); }
+.puerta:focus-visible { outline-offset: 4px; }
+
+.por-hero__llame { margin-top: var(--s-5); font-size: var(--t-cuerpo); color: var(--c-tinta-suave); }
+.por-hero__llame a {
+  display: inline-flex; align-items: center; min-height: var(--tactil);
+  font-weight: 700; white-space: nowrap; color: var(--c-acento);
+}
+
+/* ---------------- HERO: móvil y tableta ---------------- */
+@media (max-width: 899px) {
+  .por-hero__rejilla { min-height: 0; }
+  .por-hero__texto { grid-column: 1 / -1; padding-block: var(--s-5) var(--s-5); }
+  .por-hero__costura { height: var(--s-5); }
+  .por-bodegon {
+    grid-column: 1 / -1;
+    margin: 0 calc(-1 * var(--margen));
+    border-radius: 0; min-height: 0; aspect-ratio: 1 / 1; max-height: 640px; width: auto;
+    position: relative;
+  }
+}
+@media (max-width: 599px) {
+  .por-puertas { grid-template-columns: 1fr; gap: var(--s-2); margin-top: var(--s-4); }
+  .puerta { min-height: 88px; padding: var(--s-2) var(--s-3); gap: var(--s-3); }
+  .puerta__dibujo { width: 48px; height: 48px; }
+  .puerta__linea { font-size: var(--t-pequeno); letter-spacing: 0; }
+  .puerta__titulo { font-size: 1.75rem; }
+  .por-hero__entradilla { font-size: 1.1875rem; line-height: 1.5; }
+  .por-hero__llame { font-size: var(--t-pequeno); margin-top: var(--s-3); }
+}
+@media (min-width: 900px) { .por-bodegon { position: relative; } }
+/* R2: «Complementos» se salía de su puerta cuando la columna de texto es estrecha
+   (900–1279 px, o letra grande / muy grande). Primero se compacta la puerta; si aun así
+   la columna mide menos de 33rem (rem = tamaño de letra elegido), las puertas se apilan. */
+@container (max-width: 33rem) {
+  .por-puertas { grid-template-columns: minmax(0, 1fr); gap: var(--s-3); }
+}
+@media (min-width: 900px) and (max-width: 1279px) {
+  .por-puertas { gap: var(--s-3); }
+  .puerta { gap: var(--s-3); padding-inline: var(--s-3) var(--s-4); }
+  .puerta__dibujo { width: 52px; height: 52px; }
+  .puerta__titulo { font-size: 1.5rem; }
+}
+
+/* ---------------- COREOGRAFÍA DE LA PORTADA (DISENO §8) ----------------
+   Estados iniciales SOLO con JS (html.js). El JS de B2 pone .por-vivo en t = 0
+   y tiene su propio seguro (todo visible a los 3,2 s como mucho). */
+/* M2 · titular por líneas: 150 / 270 / 390 ms, 1000 ms, salida */
+html.js .por-hero .por-hero__titular .por-ln > span {
+  transform: translateY(105%);
+  transition: transform var(--dur-hero) var(--ease-salida), opacity var(--dur-hero) var(--ease-salida);
+  transition-delay: calc(150ms + var(--i, 0) * 120ms);
+}
+/* M3 · el lienzo se descubre de arriba abajo: 250 ms, 1000 ms, entre */
+html.js .por-hero .por-bodegon {
+  clip-path: var(--clip-inicial);
+  transition: clip-path var(--dur-hero) var(--ease-entre) 250ms, opacity var(--dur-hero) var(--ease-entre) 250ms;
+}
+/* M4 · las piezas caen una a una: desde 700 ms, 90 ms entre piezas, 700 ms */
+html.js .por-hero .por-pieza {
+  opacity: 0;
+  transform: translateY(calc(var(--shift) * -.75)) rotate(var(--por-giro));
+  transform-box: fill-box; transform-origin: 50% 50%;
+  transition: opacity 700ms var(--ease-salida), transform 700ms var(--ease-salida);
+  transition-delay: calc(700ms + var(--i, 0) * var(--stagger));
+}
+/* M6 · entradilla 750, puertas 900 y 1000, teléfono 1100 */
+html.js .por-hero .por-hero__entradilla,
+html.js .por-hero .puerta,
+html.js .por-hero .por-hero__llame {
+  opacity: 0; transform: translateY(var(--shift));
+  transition: opacity 700ms var(--ease-salida), transform 700ms var(--ease-salida),
+              background-color var(--dur-base) var(--ease-suave);
+}
+html.js .por-hero .por-hero__entradilla { transition-delay: 750ms, 750ms, 0s; }
+html.js .por-hero .puerta--merceria     { transition-delay: 900ms, 900ms, 0s; }
+html.js .por-hero .puerta--complementos { transition-delay: 1000ms, 1000ms, 0s; }
+html.js .por-hero .por-hero__llame      { transition-delay: 1100ms, 1100ms, 0s; }
+
+/* estado final */
+html.js .por-hero.por-vivo .por-hero__titular .por-ln > span { transform: none; opacity: 1; }
+html.js .por-hero.por-vivo .por-bodegon { clip-path: inset(0); opacity: 1; }
+html.js .por-hero.por-vivo .por-pieza { opacity: 1; transform: none; }
+html.js .por-hero.por-vivo .por-hero__entradilla,
+html.js .por-hero.por-vivo .puerta,
+html.js .por-hero.por-vivo .por-hero__llame { opacity: 1; transform: none; }
+/* tras la entrada, las puertas responden sin retardo */
+html.js .por-hero.por-vivo .puerta { transition-delay: 900ms, 900ms, 0s; }
+html.js .por-hero.por-ya .puerta,
+html.js .por-hero.por-ya .por-hero__titular .por-ln > span,
+html.js .por-hero.por-ya .por-bodegon,
+html.js .por-hero.por-ya .por-pieza,
+html.js .por-hero.por-ya .por-hero__entradilla,
+html.js .por-hero.por-ya .por-hero__llame { transition-delay: 0s; transition-duration: 1ms; }
+
+/* Reduced motion: el mismo orden, solo fundidos (DISENO §8). */
+@media (prefers-reduced-motion: reduce) {
+  .por-hero { --por-giro: 0deg; }
+  html.js .por-hero .por-hero__titular .por-ln > span { transform: none; opacity: 0; transition-duration: 600ms; }
+  html.js .por-hero .por-bodegon { opacity: 0; transition-duration: 600ms; }
+  html.js .por-hero .por-pieza,
+  html.js .por-hero .por-hero__entradilla,
+  html.js .por-hero .puerta,
+  html.js .por-hero .por-hero__llame { transform: none; transition-duration: 500ms; }
+  html.js .por-hero.por-vivo .por-hero__titular .por-ln > span,
+  html.js .por-hero.por-vivo .por-bodegon { opacity: 1; }
+}
+
+/* M21 · parallax suave de las piezas al bajar (solo si se admite y sin movimiento reducido) */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .por-hero .por-par {
+      transform-box: fill-box; transform-origin: 50% 50%;
+      animation: por-paralaje linear both;
+      animation-timeline: view();
+      animation-range: exit 0% exit 100%;
+    }
+    .por-hero .por-pieza:nth-child(odd) .por-par { animation-name: por-paralaje-b; }
+  }
+}
+@keyframes por-paralaje { to { transform: translateY(-4%); } }
+@keyframes por-paralaje-b { to { transform: translateY(4%); } }
+@keyframes por-fundido { from { opacity: 0; } to { opacity: 1; } }
+
+/* ---------------- MOSAICO DE CATEGORÍAS ---------------- */
+.por-mosaico { padding-block: var(--s-6) calc(var(--s-seccion) * .5); }
+/* R2: las dos teselas a la misma altura (antes Complementos bajaba 80 px y dejaba
+   huecos vacíos arriba a la derecha y abajo a la izquierda); el botón se asienta abajo. */
+.por-mosaico__rejilla { align-items: stretch; row-gap: var(--s-5); }
+.por-tesela {
+  display: flex; flex-direction: column;
+  background: var(--c-rosa);
+  padding: var(--s-6) var(--s-7) var(--s-7);
+  border-radius: var(--r-0);
+}
+.por-tesela--merceria { grid-column: 1 / span 7; }
+.por-tesela--complementos { grid-column: 8 / -1; background: var(--c-lavanda); }
+.por-tesela__lienzo { margin-inline: calc(-1 * var(--s-4)); }
+.por-tesela__svg { width: 100%; height: auto; overflow: visible; }
+.por-tesela--merceria .por-tesela__svg { aspect-ratio: 7 / 3; }
+.por-tesela--complementos .por-tesela__svg { aspect-ratio: 26 / 15; }
+.por-tesela__cuerpo { position: relative; flex: 1; display: flex; flex-direction: column; align-items: flex-start; }
+.por-tesela__subs { align-self: stretch; }
+.por-tesela__titulo { font-size: var(--t-h2); margin-top: var(--s-4); }
+.por-tesela__titulo a { color: var(--c-tinta); text-decoration: none; }
+.por-tesela__titulo a:hover { color: var(--c-acento-hondo); text-decoration: underline 1px; text-underline-offset: .14em; }
+.por-tesela__frase { margin-top: var(--s-3); color: var(--c-tinta-suave); max-width: 42ch; }
+.por-tesela__subs {
+  list-style: none; padding: 0; margin: var(--s-6) 0 var(--s-6);
+  display: grid; grid-template-columns: 1fr 1fr; column-gap: var(--s-6);
+}
+.por-tesela__subs li { border-top: 1px solid color-mix(in srgb, var(--c-borde) 32%, transparent); }
+.por-sub {
+  display: flex; align-items: center; gap: .35em; min-height: var(--tactil);
+  padding-block: var(--s-2);
+  color: var(--c-tinta); text-decoration: none;
+  font-size: var(--t-nav); font-weight: 600; line-height: 1.3;
+}
+.por-sub__n {
+  background: linear-gradient(currentColor, currentColor) left 100% / 0% 2px no-repeat;
+  transition: background-size 300ms var(--ease-salida);
+}
+.por-sub__cuenta { color: var(--c-tinta-suave); font-weight: 500; }
+.por-sub:hover { color: var(--c-acento-hondo); }
+.por-sub:hover .por-sub__n, .por-sub:focus-visible .por-sub__n { background-size: 100% 2px; }
+.por-tesela__boton { background-color: transparent; margin-top: auto; }
+
+/* SUP-A: los dos lienzos a la misma altura para que «Mercería» y «Complementos» queden en la misma línea */
+@media (min-width: 900px) {
+  .por-tesela--merceria .por-tesela__svg, .por-tesela--complementos .por-tesela__svg { aspect-ratio: auto; height: clamp(12rem, 21vw, 19rem); }
+}
+@media (max-width: 1099px) {
+  .por-tesela { padding: var(--s-5) var(--s-5) var(--s-6); }
+  .por-tesela__subs { grid-template-columns: 1fr; }
+}
+@media (max-width: 899px) {
+  .por-mosaico { padding-top: var(--s-7); }
+  .por-tesela--merceria, .por-tesela--complementos { grid-column: 1 / -1; margin-top: 0; }
+  .por-tesela--complementos { margin-top: var(--s-2); }
+  .por-tesela__subs { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 599px) {
+  .por-mosaico__rejilla { width: 100%; }
+  .por-tesela { padding: var(--s-4) var(--margen) var(--s-6); }
+  .por-tesela__lienzo { margin-inline: 0; }
+  .por-tesela__subs { grid-template-columns: 1fr; margin-block: var(--s-5); }
+  .por-tesela__boton { display: flex; width: 100%; }
+}
+
+/* SUP-A · letra muy grande: una columna de subcategorías (en dos, «Accesorios para el pelo» ocupaba 3 líneas) */
+html[data-texto="muygrande"] .por-tesela__subs { grid-template-columns: 1fr; }

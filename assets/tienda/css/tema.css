@@ -1,0 +1,80 @@
+/* =====================================================================
+   LA VALENCIANA v3 · tema.css — blanco + beis/kraft, Playfair + Jost,
+   píldoras brillantes, cristal y tarjetas redondeadas.
+   Va después de los módulos y antes de movimiento.css.
+   ===================================================================== */
+body { font-family: var(--f-texto); color: var(--c-tinta); }
+h1, h2, h3, .t-display { font-weight: 500; }
+::selection { background: #EADCC6; color: var(--c-tinta); }
+
+/* ---------- botones: píldoras con brillo ---------- */
+.boton { border-radius: 999px; position: relative; overflow: hidden; isolation: isolate; font-weight: 600; letter-spacing: .01em; }
+.boton--primario {
+  background-color: #4A3426; color: #fff; border-color: transparent;
+  background-image: linear-gradient(180deg, #6B4A33 0%, #4A3426 55%, #3B2A1F 100%);
+  background-size: 100% 100%;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.28), 0 10px 22px -10px rgba(59,42,31,.75), 0 2px 4px rgba(59,42,31,.2);
+  transition: transform .25s var(--ease-salida), box-shadow .3s var(--ease-suave), filter .3s;
+}
+.boton--primario:hover, .boton--primario:focus-visible { filter: brightness(1.08); box-shadow: inset 0 1px 0 rgba(255,255,255,.3), 0 16px 30px -12px rgba(59,42,31,.8), 0 2px 4px rgba(59,42,31,.2); }
+.boton--primario::after { content: ""; position: absolute; inset: -2px; z-index: -1; background: linear-gradient(110deg, transparent 30%, rgba(255,255,255,.35) 48%, transparent 66%); transform: translateX(-120%); transition: transform .9s var(--ease-salida); pointer-events: none; }
+.boton--primario:hover::after, .boton--primario:focus-visible::after { transform: translateX(120%); }
+.boton--secundario {
+  background: rgba(255,255,255,.72); color: var(--c-tinta); border: 1.5px solid var(--c-tinta);
+  backdrop-filter: blur(8px); background-image: none;
+  transition: background-color .3s var(--ease-suave), color .2s, border-color .2s, transform .25s var(--ease-salida);
+}
+.boton--secundario:hover, .boton--secundario:focus-visible { background-color: var(--c-rosa); color: var(--c-tinta); border-color: var(--c-tinta); }
+.fx-onda { position: absolute; border-radius: 50%; background: rgba(255,255,255,.45); transform: scale(0); animation: fxOnda .7s ease-out forwards; pointer-events: none; z-index: -1; }
+.boton--secundario .fx-onda { background: rgba(200,162,122,.35); }
+@keyframes fxOnda { to { transform: scale(2.6); opacity: 0; } }
+
+/* campos: cápsula para una línea, esquinas suaves para textos largos */
+textarea, .campo textarea, .campo__control textarea { border-radius: var(--r-campo) !important; }
+
+/* ---------- cabecera de cristal ---------- */
+.cab-anuncio { background: linear-gradient(90deg, #F4ECE0, #F8F1E6 50%, #F3E8DE); }
+.cab-barra { background: rgba(255,255,255,.78); backdrop-filter: saturate(160%) blur(16px); -webkit-backdrop-filter: saturate(160%) blur(16px); }
+.cab-logo { transition: transform .4s var(--ease-salida); }
+.cab-logo:hover { transform: scale(1.03); }
+.megamenu { background: rgba(255,255,255,.9); backdrop-filter: blur(18px); border-radius: 0 0 22px 22px; }
+
+/* ---------- tarjetas y lienzos redondeados ---------- */
+.tarjeta__lienzo { border-radius: var(--r-tarjeta); overflow: hidden; box-shadow: 0 1px 2px rgba(90,56,32,.06), 0 18px 36px -26px rgba(90,56,32,.45); transform-style: preserve-3d; }
+.tarjeta__lienzo, .fic-lienzo, .mm-lienzo, .por-tesela, .pag-visita__mapa svg { border-radius: var(--r-tarjeta); }
+.fic-lienzo { overflow: hidden; box-shadow: 0 30px 60px -40px rgba(90,56,32,.55); }
+.por-tesela { overflow: hidden; background: linear-gradient(160deg, #FBF7F1, var(--c-rosa)); box-shadow: inset 0 1px 0 #fff, 0 24px 50px -36px rgba(90,56,32,.5); }
+.por-tesela--complementos { background: linear-gradient(160deg, #FBF6F3, var(--c-lavanda)); }
+.pag-red, .pag-hor__tarjeta { border-radius: var(--r-tarjeta); }
+.pag-red { border-top-width: 1px; box-shadow: 0 24px 50px -40px rgba(90,56,32,.55); }
+.pag-red__icono { background: linear-gradient(145deg, #F8F1E6, var(--c-rosa)); }
+.pag-hor__tarjeta { border-left: 0; background: linear-gradient(150deg, #FBF7F1, var(--c-rosa)); }
+.pag-hor__tarjeta--cerrado { background: #fff; border: 1px solid var(--c-filete); }
+.panel, .ces-panel, #ces-panel { border-radius: 24px 0 0 24px; }
+.anadido { border-radius: 18px; }
+.acordeon, .ped-paso, .ped-resumen { border-radius: var(--r-tarjeta); }
+.pildora { border-radius: 999px; }
+.muestra { transition: transform .3s var(--ease-rebote); }
+.muestra:hover { transform: scale(1.1); }
+
+/* ---------- bandas color crema con auras ---------- */
+.seccion--rosa { background: radial-gradient(60% 80% at 85% 10%, rgba(232,214,188,.55), transparent 70%), radial-gradient(50% 70% at 10% 95%, rgba(243,217,214,.45), transparent 70%), var(--c-rosa-velo); }
+.seccion--rosa::before { opacity: .22; }
+
+/* encabezados de sección con trazo kraft que se dibuja */
+.fx-subraya { position: relative; }
+.fx-subraya::after { content: ""; position: absolute; left: 0; bottom: -.35em; width: min(3.5em, 60%); height: 3px; border-radius: 3px;
+  background: linear-gradient(90deg, var(--c-kraft), #E3C9A6); transform: scaleX(0); transform-origin: left; transition: transform 1s var(--ease-salida) .25s; }
+.fx-subraya.fx-visto::after { transform: scaleX(1); }
+
+/* pie */
+.pie, footer#pie { background: linear-gradient(180deg, var(--c-rosa-velo), #F2E8DA); }
+
+/* ---------- mosaico con tres secciones: Cápsulas a lo ancho, como una caja ---------- */
+.por-tesela--capsulas { grid-column: 1 / -1; background: linear-gradient(160deg, #FBF7EE, var(--c-mantequilla)); display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); align-items: center; }
+.por-tesela--capsulas .por-tesela__lienzo { order: 2; }
+.por-tesela--capsulas .por-tesela__svg { aspect-ratio: 62 / 26; }
+@media (max-width: 900px) { .por-tesela--capsulas { grid-template-columns: 1fr; } .por-tesela--capsulas .por-tesela__lienzo { order: 0; } .por-tesela--capsulas .por-tesela__svg { aspect-ratio: auto; height: clamp(11rem, 40vw, 16rem); } }
+.etiqueta--pocas, .lv-pocas { display: inline-flex; align-items: center; gap: .4rem; padding: .2rem .7rem; border-radius: 999px; background: #FBEFE2; color: #7A4E2D; font-weight: 700; font-size: .9rem; border: 1px solid #E8D2B8; }
+.lv-pocas::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: #C8742E; animation: latePunto 2s ease-out infinite; }
+.cab--encogida .cab-barra { background: rgba(255,255,255,.93); }

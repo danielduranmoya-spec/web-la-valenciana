@@ -1,0 +1,394 @@
+/* =========================================================
+   LA VALENCIANA v2 · cabecera.css · PROPIETARIO: B1
+   .cab-* (cabecera) · .megamenu / .mm-* · .menu-movil / .mnu-* · .letra / .letra-*
+   Modos (los pone cabecera.js en #cabecera):
+     .cab--ancha    escritorio: anuncio + fila de logo + fila de navegación
+     .cab--estrecha móvil/tableta (o letra grande sin sitio): barra de 72 px + buscador
+     .cab--encogida escritorio tras bajar 120 px: barra fija de 72 px (M18)
+     .cab--fija     estrecha con barra fija arriba
+   ========================================================= */
+
+.cab .ico { flex: none; }
+.cab {
+  position: relative; z-index: 100; display: block;
+  background: var(--c-fondo);
+  animation: cab-m1 400ms var(--ease-salida) both;           /* M1 */
+}
+@keyframes cab-m1 { from { opacity: 0; transform: translateY(calc(-1 * var(--shift-corto))); } }
+
+/* ---------- botones propios de la cabecera (Menú, Buscar, Mi cesta, Cerrar) ---------- */
+.cab-boton, .mnu-cerrar {
+  display: inline-flex; align-items: center; gap: .5rem; flex: none;
+  min-height: var(--tactil); padding: 0 .875rem;
+  font-family: var(--f-texto); font-size: var(--t-nav); font-weight: 700; line-height: 1.2; letter-spacing: var(--tr-ui);
+  color: var(--c-tinta); background: transparent;
+  border: 2px solid transparent; border-radius: var(--r-control);
+  white-space: nowrap; -webkit-tap-highlight-color: transparent;
+  transition: background-color var(--dur-rapida) var(--ease-suave), border-color var(--dur-rapida) var(--ease-suave), color var(--dur-rapida) var(--ease-suave);
+}
+.cab-boton .ico, .mnu-cerrar .ico { width: 1.375rem; height: 1.375rem; flex: none; }
+.cab-boton:active, .mnu-cerrar:active { transform: scale(.98); }
+@media (hover: hover) {
+  .cab-boton:hover, .mnu-cerrar:hover { background: var(--c-rosa-velo); color: var(--c-acento-hondo); }
+}
+.cab-buscar-btn[aria-expanded="true"] { background: var(--c-rosa-velo); color: var(--c-acento); border-color: var(--c-acento); }
+
+/* Mi cesta: el único botón con borde de la barra + cápsula (objetivo de M13) */
+.cab-cesta { border-color: var(--c-tinta); padding-inline: .875rem .625rem; }
+@media (hover: hover) { .cab-cesta:hover { border-color: var(--c-acento); } }
+.cab-cesta__corto { display: none; }
+.cab-cesta__n {
+  display: inline-grid; place-items: center;
+  min-width: 1.5em; height: 1.5em; padding: 0 .4em; margin-left: .1rem;
+  font-size: var(--t-pequeno); font-weight: 700; line-height: 1; font-variant-numeric: tabular-nums;
+  color: var(--c-fondo); background: var(--c-acento); border-radius: var(--r-capsula);
+  transform-origin: center;
+}
+.cab-cesta__n[data-n="0"] { background: transparent; color: var(--c-tinta-suave); box-shadow: inset 0 0 0 1px var(--c-borde); }
+
+/* ---------- barra de anuncio ---------- */
+.cab-anuncio { background: var(--c-rosa-velo); }
+.cab-anuncio__in {
+  display: flex; align-items: center; justify-content: space-between; gap: var(--s-5);
+  min-height: 56px; padding-block: 4px;
+}
+.cab-anuncio__txt { font-size: var(--t-pequeno); font-weight: 600; line-height: 1.4; color: var(--c-tinta); max-width: none; }
+.cab-anuncio__txt a { color: var(--c-acento); font-weight: 700; white-space: nowrap; }
+
+/* ---------- barra principal ---------- */
+.cab-barra { position: relative; background: var(--c-fondo); border-bottom: var(--filete); }
+.cab-barra__in { display: grid; align-items: center; }
+
+/* logotipo (DISENO §2) */
+.cab-logo {
+  grid-area: logo; display: flex; flex-direction: column; align-items: center; text-align: center;
+  color: var(--c-tinta); text-decoration: none; line-height: 1; border-radius: var(--r-control);
+  padding: var(--s-2) var(--s-3);
+}
+.cab-logo:hover { color: var(--c-tinta); }
+.cab-logo__nombre {
+  font-family: var(--f-titulo); font-weight: 500; font-size: 2rem; letter-spacing: -0.015em;
+  font-optical-sizing: auto; font-variation-settings: "opsz" 72; white-space: nowrap;
+  transition: font-size var(--dur-rapida) var(--ease-suave);
+}
+.cab-logo__lema {
+  margin-top: .45rem; font-family: var(--f-titulo); font-style: italic; font-weight: 400;
+  font-size: 1rem; line-height: 1.2; color: var(--c-tinta-suave);
+}
+
+/* buscador */
+.cab-busca { grid-area: busca; display: flex; align-items: stretch; width: 100%; }
+.cab-busca__campo {
+  flex: 1 1 auto; min-width: 0; min-height: var(--tactil); padding: 0 1rem;
+  font-family: var(--f-texto); font-size: 1.0625rem; color: var(--c-tinta); background: var(--c-fondo);
+  border: var(--borde-control); border-right: 0; border-radius: var(--r-control) 0 0 var(--r-control);
+  -webkit-appearance: none; appearance: none;
+  transition: border-color var(--dur-rapida) var(--ease-suave);
+}
+.cab-busca__campo::placeholder { color: var(--c-tinta-suave); opacity: 1; }
+.cab-busca__campo:hover { border-color: var(--c-tinta-suave); }
+.cab-busca__campo:focus-visible { border-color: var(--c-acento); outline-offset: 2px; position: relative; z-index: 1; }
+.cab-busca .cab-busca__boton { min-height: var(--tactil); padding: 0 1.125rem; border-radius: 0 var(--r-control) var(--r-control) 0; gap: .5rem; }
+.cab-busca .cab-busca__boton .ico { width: 1.25rem; height: 1.25rem; }
+
+/* teléfono */
+.cab-tel {
+  display: inline-flex; align-items: center; gap: .5rem; min-height: var(--tactil); padding: 0 .25rem;
+  font-weight: 700; font-size: var(--t-nav); color: var(--c-tinta); text-decoration: none; white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+.cab-tel .ico { width: 1.25rem; height: 1.25rem; color: var(--c-acento); }
+.cab-tel:hover { color: var(--c-acento-hondo); text-decoration: underline; text-decoration-thickness: 2px; }
+
+.cab-acciones { grid-area: acciones; display: flex; align-items: center; justify-content: flex-end; gap: var(--s-3); }
+
+/* navegación principal */
+.cab-nav { grid-area: nav; }
+.cab-nav__lista { display: flex; justify-content: center; align-items: center; gap: var(--s-7); list-style: none; margin: 0; padding: 0; }
+.cab-nav__raiz, .cab-nav__enlace {
+  display: inline-flex; align-items: center; gap: .3rem; min-height: var(--tactil); padding: 0 .25rem;
+  font-family: var(--f-texto); font-size: var(--t-nav); font-weight: 600; line-height: 1.2; letter-spacing: var(--tr-ui);
+  color: var(--c-tinta); background: none; border: 0; border-radius: var(--r-control); text-decoration: none; white-space: nowrap;
+}
+.cab-nav__raiz > span, .cab-nav__enlace > span {
+  padding-block: .3em;
+  background: linear-gradient(currentColor, currentColor) left bottom / 0% 2px no-repeat;      /* M9 */
+  transition: background-size 300ms var(--ease-salida);
+}
+.cab-nav__raiz .ico { width: 1.125rem; height: 1.125rem; transition: transform 300ms var(--ease-salida); }
+.cab-nav__raiz[aria-expanded="true"] { color: var(--c-acento); }
+.cab-nav__raiz[aria-expanded="true"] .ico { transform: rotate(180deg); }
+.cab-nav__raiz[aria-expanded="true"] > span,
+.cab-nav__raiz[aria-current] > span, .cab-nav__enlace[aria-current] > span { background-size: 100% 2px; }
+.cab-nav__raiz[aria-current], .cab-nav__enlace[aria-current] { color: var(--c-acento); }
+@media (hover: hover) {
+  .cab-nav__raiz:hover, .cab-nav__enlace:hover { color: var(--c-acento-hondo); }
+  .cab-nav__raiz:hover > span, .cab-nav__enlace:hover > span { background-size: 100% 2px; }
+}
+.cab-nav__raiz:focus-visible > span, .cab-nav__enlace:focus-visible > span { background-size: 100% 2px; }
+
+.cab-busca-movil { display: none; }
+
+/* =========================================================
+   MODO ANCHO (escritorio)
+   ========================================================= */
+.cab--ancha .cab-menu, .cab--ancha .cab-buscar-btn { display: none; }
+.cab--ancha .cab-barra__in {
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  grid-template-areas: "busca logo acciones" "nav nav nav";
+  column-gap: var(--s-6);
+}
+.cab--ancha .cab-busca--barra { justify-self: start; max-width: 26rem; }
+html[data-texto] .cab--ancha:not(.cab--encogida) .cab-busca__boton .ico { display: none; }
+.cab--ancha .cab-logo { padding-block: var(--s-5) var(--s-4); }
+.cab--ancha .cab-nav { padding-bottom: var(--s-2); }
+
+/* encogida: barra fija de 72 px (M18). El hueco de la completa se conserva (cabecera.js) */
+.cab--ancha.cab--encogida .cab-barra {
+  position: fixed; top: 0; left: 0; right: 0;
+  box-shadow: var(--sombra-cabecera); border-bottom-color: transparent;
+}
+.cab--ancha.cab--encogida .cab-barra__in {
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  grid-template-areas: "logo nav acciones";
+  min-height: var(--alto-cabecera-mini);
+}
+.cab--encogida .cab-logo { padding: 0 var(--s-2) 0 0; align-items: flex-start; }
+.cab--encogida .cab-logo__nombre { font-size: 1.5rem; }
+.cab--encogida .cab-logo__lema { display: none; }
+.cab--ancha.cab--encogida .cab-nav { padding: 0; }
+.cab--ancha.cab--encogida .cab-nav__lista { gap: var(--s-5); }
+.cab--encogida .cab-tel { display: none; }
+.cab--ancha.cab--encogida .cab-buscar-btn { display: inline-flex; }
+.cab--ancha.cab--encogida .cab-busca--barra {
+  display: none; position: absolute; left: 0; right: 0; top: 100%; max-width: none;
+  padding: var(--s-4) max(var(--margen), calc((100% - 40rem) / 2)) var(--s-5);
+  background: var(--c-fondo); border-top: var(--filete); box-shadow: var(--sombra-flotante);
+}
+.cab--ancha.cab--encogida.cab--busca-abierta .cab-busca--barra { display: flex; animation: cab-baja 300ms var(--ease-salida) both; }
+.cab-barra--entra { animation: cab-entra 250ms var(--ease-suave) both; }
+@keyframes cab-entra { from { transform: translateY(-100%); } }
+@keyframes cab-baja { from { opacity: 0; transform: translateY(calc(-1 * var(--shift-corto))); } }
+
+/* =========================================================
+   MODO ESTRECHO (móvil, tableta, o letra grande sin sitio)
+   ========================================================= */
+.cab--estrecha .cab-anuncio,
+.cab--estrecha .cab-busca--barra,
+.cab--estrecha .cab-tel,
+.cab--estrecha .cab-nav,
+.cab--estrecha .cab-buscar-btn,
+.cab--estrecha .cab-logo__lema { display: none; }
+.cab--estrecha.cab--fija { padding-top: var(--cab-barra-h, var(--alto-cabecera-mini)); }
+.cab--estrecha.cab--fija .cab-barra { position: fixed; top: 0; left: 0; right: 0; }
+.cab--estrecha.cab--sombra .cab-barra { box-shadow: var(--sombra-cabecera); border-bottom-color: transparent; }
+.cab--estrecha .cab-barra__in {
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  grid-template-areas: "menu logo acciones";
+  column-gap: var(--s-2);
+  min-height: var(--alto-cabecera-mini);
+}
+.cab--estrecha .cab-menu { grid-area: menu; justify-self: start; padding-inline: .5rem .75rem; margin-left: -.5rem; }
+.cab--estrecha .cab-logo { padding: var(--s-1) 0; }
+.cab--estrecha .cab-logo__nombre { font-size: min(1.75rem, 6.4vw); white-space: normal; text-wrap: balance; line-height: 1.02; }
+.cab--estrecha .cab-busca-movil { display: block; padding-block: var(--s-3) var(--s-4); border-bottom: var(--filete); background: var(--c-fondo); }
+.cab-busca--movil .cab-busca__campo, .cab-busca--movil .cab-busca__boton { min-height: var(--tactil-grande); }
+.cab-busca--movil .cab-busca__boton { min-height: var(--tactil-grande); }
+@media (max-width: 759px) {
+  .cab--estrecha .cab-cesta__largo { display: none; }
+  .cab--estrecha .cab-cesta__corto { display: inline; }
+  .cab--estrecha .cab-busca__boton > span { white-space: nowrap; }
+}
+/* Teléfono (< 560 px): «Menú» y «Cesta» se apilan, icono encima y palabra debajo
+   (como en la caja de un mostrador), y el contador se posa en la esquina de la cesta.
+   Así el logotipo «La Valenciana» cabe en UNA línea, centrado de verdad. (rev. R1) */
+@media (max-width: 559px) {
+  .cab--estrecha .cab-barra__in { grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); column-gap: var(--s-1); }
+  .cab--estrecha .cab-boton {
+    position: relative; flex-direction: column; justify-content: center; gap: 3px;
+    min-width: 56px; min-height: 60px; padding: 4px 6px;
+    font-size: var(--t-pequeno); font-weight: 700; line-height: 1.1;
+  }
+  .cab--estrecha .cab-boton .ico { width: 1.625rem; height: 1.625rem; }
+  .cab--estrecha .cab-menu { margin-left: -6px; padding-inline: 6px; }
+  .cab--estrecha .cab-acciones { gap: 0; }
+  .cab--estrecha .cab-cesta { border-color: transparent; margin-right: -6px; padding-inline: 6px; }
+  .cab--estrecha .cab-cesta__n {
+    position: absolute; top: 3px; left: calc(50% + 4px); margin: 0;
+    min-width: 1.5rem; height: 1.5rem; font-size: .875rem;      /* cápsula de 24 px: objetivo de M13 */
+    box-shadow: 0 0 0 2px var(--c-fondo);
+  }
+  /* cesta vacía: sin globo encima del dibujo (el lector sigue oyendo «Cesta 0 artículos») */
+  .cab--estrecha .cab-cesta__n[data-n="0"] { clip-path: inset(50%); width: 1px; min-width: 0; height: 1px; padding: 0; overflow: hidden; }
+  .cab--estrecha .cab-logo { padding-inline: 0; }
+  .cab--estrecha .cab-logo__nombre { font-size: min(1.75rem, 7vw); white-space: nowrap; }
+  .cab--estrecha .cab-busca__boton { padding-inline: .875rem; }
+  .cab--estrecha .cab-busca__boton .ico { display: none; }
+}
+/* letra (muy) grande en teléfono: las palabras de «Menú» y «Cesta» no crecen más que el logotipo */
+@media (max-width: 559px) {
+  html[data-texto] .cab--estrecha .cab-boton { font-size: min(var(--t-pequeno), 1.1875rem); }
+  html[data-texto] .cab--estrecha .cab-cesta__n { font-size: .75rem; }
+}
+
+/* =========================================================
+   MEGAMENÚ (.megamenu) · disclosure · M15
+   ========================================================= */
+.megamenu {
+  position: absolute; left: 0; right: 0; top: 100%; z-index: 110;
+  background: var(--c-fondo); border-top: var(--filete); box-shadow: var(--sombra-flotante);
+  clip-path: inset(0 -60px 100% -60px); opacity: 0;
+  transition: clip-path 350ms var(--ease-salida), opacity 200ms var(--ease-suave);
+  max-height: calc(100vh - var(--alto-cab-actual, 0px) - 40px); overflow-y: auto; overscroll-behavior: contain;
+}
+.megamenu[hidden] { display: none; }
+.megamenu--abierto { clip-path: inset(0 -60px -60px -60px); opacity: 1; }
+.mm-in { padding-block: var(--s-7) var(--s-8); row-gap: var(--s-6); }
+.mm-enlaces { grid-column: 1 / span 8; }
+.mm-intro {
+  font-family: var(--f-titulo); font-size: var(--t-entradilla); line-height: 1.4; color: var(--c-tinta-suave);
+  max-width: 40ch; margin-bottom: var(--s-3);
+}
+.mm-todo { margin-left: -.25rem; }
+.mm-lista {
+  list-style: none; margin: var(--s-5) 0 0; padding: 0;
+  display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: var(--s-7);
+  border-top: var(--filete);
+}
+.mm-lista li {
+  border-bottom: var(--filete);
+  opacity: 0; transform: translateY(calc(-.5 * var(--shift-corto)));
+  transition: opacity 300ms var(--ease-suave), transform 350ms var(--ease-salida);
+  transition-delay: calc(var(--i, 0) * 30ms + 60ms);
+}
+.megamenu--abierto .mm-lista li { opacity: 1; transform: none; }
+.mm-enlace {
+  display: flex; align-items: baseline; justify-content: space-between; gap: var(--s-3);
+  min-height: var(--tactil); padding: .75rem .25rem; text-decoration: none; color: var(--c-tinta);
+  font-size: var(--t-nav); font-weight: 600; line-height: 1.3;
+}
+.mm-nombre {
+  background: linear-gradient(currentColor, currentColor) left bottom / 0% 2px no-repeat;
+  transition: background-size 300ms var(--ease-salida);
+}
+.mm-n { font-weight: 500; color: var(--c-tinta-suave); font-variant-numeric: tabular-nums; }
+.mm-enlace[aria-current] { color: var(--c-acento); }
+.mm-enlace[aria-current] .mm-nombre, .mm-enlace:focus-visible .mm-nombre { background-size: 100% 2px; }
+@media (hover: hover) {
+  .mm-enlace:hover { color: var(--c-acento-hondo); }
+  .mm-enlace:hover .mm-nombre { background-size: 100% 2px; }
+}
+
+/* tarjeta destacada sin caja */
+.mm-destacado {
+  grid-column: 9 / span 4; display: flex; flex-direction: column; align-items: flex-start;
+  color: var(--c-tinta); text-decoration: none; border-radius: var(--r-lienzo);
+}
+.mm-lienzo {
+  display: block; width: 100%; aspect-ratio: 4 / 3; overflow: hidden;
+  background: var(--mm-lienzo, var(--c-rosa)); border-radius: var(--r-lienzo);
+}
+.mm-lienzo > svg { width: 100%; height: 100%; transition: transform 500ms var(--ease-suave); }
+.mm-destacado__t {
+  margin-top: var(--s-4); font-family: var(--f-titulo); font-size: 1.375rem; font-weight: 500; line-height: 1.25;
+}
+.mm-destacado__frase { margin-top: var(--s-1); font-size: var(--t-pequeno); line-height: 1.5; color: var(--c-tinta-suave); max-width: 34ch; }
+.mm-destacado__ir { margin-top: var(--s-2); margin-left: -.25rem; }
+@media (hover: hover) {
+  .mm-destacado:hover .mm-lienzo > svg { transform: scale(var(--escala-hover)); }
+  .mm-destacado:hover .mm-destacado__ir { color: var(--c-acento-hondo); background-size: 100% 1px, 100% 2px; }
+}
+.mm-destacado:focus-visible .mm-destacado__ir { background-size: 100% 1px, 100% 2px; }
+
+/* =========================================================
+   MENÚ MÓVIL (.menu-movil) · <dialog> a pantalla completa · M22
+   ========================================================= */
+.menu-movil {
+  position: fixed; inset: 0; z-index: 200;
+  width: 100%; height: 100%; max-width: none; max-height: none; margin: 0; padding: 0; border: 0;
+  background: var(--c-fondo); color: var(--c-tinta);
+  overflow: hidden; overscroll-behavior: contain;
+  transform: translateX(-100%); opacity: 0;
+  transition: transform 400ms var(--ease-salida), opacity 250ms var(--ease-suave);
+}
+.menu-movil[open] { display: flex; flex-direction: column; }
+.menu-movil--abierto { transform: none; opacity: 1; }
+.menu-movil::backdrop { background: var(--c-velo-modal); }
+.mnu-cab {
+  flex: none; display: flex; align-items: center; justify-content: space-between; gap: var(--s-4);
+  min-height: var(--alto-cabecera-mini); padding-inline: var(--margen);
+  border-bottom: var(--filete);
+}
+.mnu-titulo { font-family: var(--f-titulo); font-size: 1.75rem; font-weight: 500; line-height: 1.1; }
+.mnu-cerrar { border-color: var(--c-tinta); margin-right: -.25rem; }
+.mnu-cuerpo { flex: 1 1 auto; overflow-y: auto; -webkit-overflow-scrolling: touch; padding: 0 var(--margen) var(--s-9); }
+.mnu-pantalla { max-width: 34rem; }
+.mnu-pantalla[hidden] { display: none; }
+.mnu-lista { list-style: none; margin: 0; padding: 0; }
+.mnu-lista li { border-bottom: var(--filete); }
+.mnu-pantalla--entra .mnu-lista li { animation: mnu-fila 400ms var(--ease-salida) both; animation-delay: calc(var(--i, 0) * 40ms + 120ms); }
+@keyframes mnu-fila { from { opacity: 0; transform: translateX(calc(-2 * var(--shift-corto))); } }
+.mnu-pantalla--sub.mnu-pantalla--entra { animation: mnu-sub 350ms var(--ease-salida) both; }
+@keyframes mnu-sub { from { opacity: 0; transform: translateX(calc(2 * var(--shift-corto))); } }
+.mnu-fila {
+  display: flex; align-items: center; justify-content: space-between; gap: var(--s-4);
+  width: 100%; min-height: 64px; padding: .75rem 0;
+  font-family: var(--f-texto); font-size: 1.25rem; font-weight: 600; line-height: 1.3; text-align: left;
+  color: var(--c-tinta); background: none; border: 0; text-decoration: none;
+}
+.mnu-fila .ico { width: 1.5rem; height: 1.5rem; color: var(--c-acento); flex: none; }
+.mnu-fila .mm-n { font-size: 1.125rem; }
+.mnu-fila[aria-current] { color: var(--c-acento); }
+.mnu-fila[aria-current] > span:first-child { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: .25em; }
+@media (hover: hover) { .mnu-fila:hover { color: var(--c-acento-hondo); } }
+.mnu-fila:active { background: var(--c-rosa-velo); }
+.mnu-volver {
+  display: inline-flex; align-items: center; gap: .375rem; min-height: var(--tactil-grande); margin: var(--s-3) 0 0 -.375rem; padding: 0 .5rem 0 .25rem;
+  font-family: var(--f-texto); font-size: var(--t-nav); font-weight: 700; color: var(--c-acento); background: none; border: 0; border-radius: var(--r-control);
+}
+.mnu-volver .ico { width: 1.375rem; height: 1.375rem; }
+.mnu-sub-t { margin: var(--s-4) 0 var(--s-5); font-size: var(--t-h2); }
+.mnu-todo { margin-bottom: var(--s-5); }
+.mnu-extra { display: grid; gap: var(--s-3); margin-top: var(--s-7); }
+.mnu-extra .letra { margin-bottom: var(--s-3); }
+.mnu-horario { margin-top: var(--s-4); padding-top: var(--s-5); border-top: var(--filete); font-size: var(--t-pequeno); line-height: 1.55; color: var(--c-tinta-suave); }
+.mnu-horario p + p { margin-top: .5em; }
+.mnu-estado { font-weight: 700; color: var(--c-tinta); }
+.mnu-estado--abierto { color: var(--c-exito); }
+
+/* =========================================================
+   CONTROL DE LETRA (.letra)
+   ========================================================= */
+.letra { display: inline-flex; align-items: center; gap: 6px; flex: none; }
+.letra-rotulo { margin-right: var(--s-2); font-size: var(--t-pequeno); font-weight: 600; color: var(--c-tinta); }
+.letra-b {
+  display: inline-grid; place-items: center; min-width: 48px; height: 48px; padding: 0 6px;
+  font-family: var(--f-titulo); font-weight: 500; line-height: 1; color: var(--c-tinta);
+  background: var(--c-fondo); border: 1px solid var(--c-borde); border-radius: var(--r-control);
+  transition: background-color var(--dur-rapida) var(--ease-suave), color var(--dur-rapida) var(--ease-suave), border-color var(--dur-rapida) var(--ease-suave);
+}
+.letra-b--1 span { font-size: 1rem; }
+.letra-b--2 span { font-size: 1.25rem; }
+.letra-b--3 span { font-size: 1.5rem; }
+.letra-b[aria-pressed="true"] { background: var(--c-tinta); color: var(--c-fondo); border-color: var(--c-tinta); }
+@media (hover: hover) { .letra-b[aria-pressed="false"]:hover { background: var(--c-rosa-velo); border-color: var(--c-acento); color: var(--c-acento-hondo); } }
+.cab-anuncio .letra-b { height: 44px; min-width: 44px; }   /* en la barra fina: 44 px (≥ 24 px de WCAG 2.5.8, objetivo AA) */
+
+/* =========================================================
+   MOVIMIENTO REDUCIDO: lo que se deslizaba ahora se funde
+   ========================================================= */
+@media (prefers-reduced-motion: reduce) {
+  .megamenu { clip-path: none; transition: opacity 200ms var(--ease-suave); }
+  .megamenu--abierto { clip-path: none; }
+  .menu-movil { transform: none; transition: opacity 250ms var(--ease-suave); }
+  @keyframes cab-entra { from { opacity: 0; } }
+}
+
+/* Cabecera encogida: con 6 apartados no caben todos junto al logo.
+   Horario y Redes sociales se ocultan SOLO en la barra encogida (siguen en la cabecera completa, el menú y el pie). */
+.cab--ancha.cab--encogida .cab-nav__lista { gap: var(--s-4); }
+.cab--ancha.cab--encogida .cab-nav__item--extra { display: none; }
+
+@media (max-width: 1299px) { .cab--ancha.cab--encogida .cab-nav__item--extra2 { display: none; } }
+html[data-texto] .cab--ancha.cab--encogida .cab-nav__item--extra2 { display: none; }
+.cab--ancha:not(.cab--encogida) .cab-nav__lista { flex-wrap: wrap; row-gap: 0; column-gap: clamp(1rem, 2.4vw, var(--s-7)); }

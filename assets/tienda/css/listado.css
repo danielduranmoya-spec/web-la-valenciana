@@ -1,0 +1,154 @@
+/* =========================================================
+   LA VALENCIANA v2 · listado.css · PROPIETARIO: B4
+   Categoría, subcategoría, novedades (.lis-*) y búsqueda (.bus-*).
+   DISENO §7.2 y §7.3. La tarjeta, las píldoras y las migas están en tarjeta.css.
+   ========================================================= */
+
+.lis, .bus { padding-bottom: var(--s-4); }
+.lis-migas { padding-top: var(--s-2); }
+
+/* ---------- cabecera editorial: el paño de la categoría ---------- */
+.lis-cab { position: relative; isolation: isolate; margin-top: var(--s-1); }
+.lis-cab__pano {
+  position: absolute; inset: 0; z-index: -1;
+  background: var(--c-rosa-velo);
+}
+.lis-cab__pano::before {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background-image: var(--tx-lino); opacity: var(--tx-lino-opacidad); mix-blend-mode: multiply;
+}
+.lis-cab--complementos .lis-cab__pano { background: var(--c-lavanda); }
+.lis-cab--novedades .lis-cab__pano { background: var(--c-mantequilla); }
+
+.lis-cab__rejilla {
+  display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--hueco);
+  align-items: center;
+  min-height: 320px;
+  padding-block: var(--s-8);
+}
+.lis-cab__texto { grid-column: 1 / span 7; }
+.lis-cab__fila-h1 { display: flex; align-items: center; justify-content: space-between; gap: var(--s-4); }
+.lis-cab__h1 { max-width: 16ch; }
+.lis-cab__entradilla { margin-top: var(--s-4); color: var(--c-tinta-suave); }
+.lis-cab__cuenta {
+  margin-top: var(--s-5);
+  font-size: var(--t-pequeno); font-weight: 700; letter-spacing: var(--tr-ui); color: var(--c-tinta);
+  font-variant-numeric: tabular-nums;
+}
+.lis-bodegon { grid-column: 8 / span 5; align-self: stretch; display: flex; align-items: center; justify-content: flex-end; margin-block: calc(-1 * var(--s-5)); }
+.lis-bodegon__svg { width: 100%; max-width: 30rem; height: auto; overflow: visible; }
+.lis-mini { display: none; flex: none; width: 96px; height: 96px; }
+.lis-mini__svg { width: 100%; height: 100%; overflow: visible; }
+
+@media (max-width: 759px) {
+  .lis-cab__rejilla { display: block; min-height: 0; padding-block: var(--s-6) var(--s-6); }
+  .lis-bodegon { display: none; }
+  .lis-mini { display: block; margin-right: calc(-1 * var(--s-2)); }
+  .lis-cab__h1 { min-width: 0; overflow-wrap: anywhere; hyphens: auto; }
+  .lis-cab__entradilla { margin-top: var(--s-3); }
+  .lis-cab__cuenta { margin-top: var(--s-4); }
+}
+
+/* ---------- píldoras + ordenar ---------- */
+.lis-controles {
+  display: flex; align-items: flex-start; justify-content: space-between; gap: var(--s-5) var(--s-8);
+  padding-block: var(--s-6) var(--s-5);
+  border-bottom: var(--filete);
+}
+.lis-subs { min-width: 0; flex: 1 1 auto; }
+.lis-orden { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-2) var(--s-3); flex: none; }
+.lis-orden__etiqueta { font-weight: 700; font-size: 1.0625rem; }
+.lis-orden__marco { position: relative; display: block; }
+.lis-orden__select {
+  -webkit-appearance: none; appearance: none;
+  min-height: var(--tactil); width: auto; min-width: 15rem; padding: 0 3rem 0 1rem;
+  font-size: var(--t-boton); font-weight: 600; background: var(--c-fondo); cursor: pointer;
+}
+.lis-orden__marco > svg {
+  position: absolute; right: 14px; top: 50%; width: 22px; height: 22px; transform: translateY(-50%);
+  pointer-events: none; color: var(--c-tinta);
+}
+/* SUP-A · escritorio: con 11 píldoras al lado de «Ordenar» salían 4 filas desiguales.
+   Las píldoras ocupan todo el ancho (2 filas) y «Ordenar» queda debajo, a la derecha, sobre la rejilla. */
+@media (min-width: 760px) {
+  .lis-controles { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: var(--s-4) var(--s-6); }
+  .lis-subs { grid-column: 1 / -1; }
+  .lis-orden { grid-column: 2; }
+}
+@media (max-width: 759px) {
+  .lis-controles { flex-direction: column; align-items: stretch; padding-block: var(--s-4) var(--s-4); gap: var(--s-3); }
+  .lis-orden { width: 100%; }
+  .lis-orden__marco { flex: 1 1 13rem; }
+  .lis-orden__select { width: 100%; min-width: 0; }
+}
+
+/* ---------- productos ---------- */
+.lis-productos { margin-top: var(--s-8); }
+.lis-productos--sin-controles { margin-top: var(--s-titulo-contenido); }
+.lis-productos .tarjeta-rejilla { transition: opacity var(--dur-rapida) var(--ease-suave); }
+.lis-productos--sale .tarjeta-rejilla { opacity: 0; }
+.lis-vacio { padding-block: var(--s-8); color: var(--c-tinta-suave); }
+
+/* ---------- ver más ---------- */
+.lis-mas {
+  display: grid; justify-items: center; gap: var(--s-3);
+  margin-top: var(--s-10); text-align: center;
+}
+.lis-mas[hidden] { display: none; }
+.lis-mas__cuenta { font-size: var(--t-pequeno); font-weight: 600; color: var(--c-tinta-suave); font-variant-numeric: tabular-nums; }
+.lis-mas__barra { width: min(14rem, 60%); height: 2px; background: var(--c-filete); margin-bottom: var(--s-3); }
+.lis-mas__barra span {
+  display: block; height: 100%; width: var(--p, 50%); background: var(--c-acento);
+  transition: width var(--dur-lenta) var(--ease-salida);
+}
+.lis-mas__boton { min-width: 18rem; }
+@media (max-width: 599px) { .lis-mas__boton { width: 100%; min-width: 0; } }
+
+/* ---------- «¿No lo encuentra?» ---------- */
+.lis-ayuda {
+  display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: var(--s-5) var(--s-8);
+  margin-top: var(--s-seccion); padding-block: var(--s-8) var(--s-6);
+  border-top: var(--filete);
+}
+.lis-ayuda__titulo { font-size: var(--t-h3); font-weight: 500; }
+.lis-ayuda__texto p { margin-top: var(--s-2); color: var(--c-tinta-suave); }
+.lis-ayuda__acciones { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-3) var(--s-5); }
+.lis-ayuda__tel { font-size: var(--t-pequeno); color: var(--c-tinta-suave); }
+.lis-ayuda__tel a { display: inline-block; padding-block: 12px; font-weight: 700; }
+@media (max-width: 759px) {
+  .lis-ayuda { grid-template-columns: 1fr; }
+  .lis-ayuda__acciones .boton { width: 100%; }
+}
+
+/* =========================================================
+   BÚSQUEDA
+   ========================================================= */
+.bus-cab { padding-top: var(--s-8); }
+.bus-cab__h1 { max-width: 22ch; overflow-wrap: anywhere; }
+.bus-cab__entradilla { margin-top: var(--s-4); }
+.bus-form { margin-top: var(--s-6); max-width: 52rem; }
+.bus-form__etiqueta { display: block; margin-bottom: var(--s-2); font-weight: 700; font-size: 1.0625rem; }
+.bus-form__fila { display: flex; gap: var(--s-2); }
+.bus-form__campo { flex: 1; min-width: 0; min-height: 64px; font-size: 1.25rem; padding-inline: 1.25rem; }
+.bus-form__campo::placeholder { color: var(--c-tinta-suave); opacity: 1; }
+.bus-form__boton { min-height: 64px; padding-inline: 2rem; flex: none; }
+@media (max-width: 599px) {
+  .bus-form__fila { flex-direction: column; }
+  .bus-form__boton { width: 100%; }
+}
+.bus-cab__cuenta { margin-top: var(--s-6); font-weight: 700; font-size: 1.0625rem; font-variant-numeric: tabular-nums; }
+.bus-parcial { margin-top: var(--s-4); max-width: 52rem; }
+.bus-filtros { margin-top: var(--s-5); }
+.bus--con .lis-productos { margin-top: var(--s-6); padding-top: var(--s-8); border-top: var(--filete); }
+.bus--con .bus-filtros + * { margin-top: 0; }
+
+.bus-sin__texto { margin-top: var(--s-5); font-family: var(--f-titulo); font-size: var(--t-entradilla); line-height: 1.45; color: var(--c-tinta-suave); max-width: var(--medida-entradilla); }
+.bus-sin__acciones { display: flex; flex-wrap: wrap; gap: var(--s-3); margin-top: var(--s-6); }
+@media (max-width: 599px) { .bus-sin__acciones .boton { width: 100%; } }
+.bus--sin .bus-form { margin-top: var(--s-9); }
+
+.bus-pruebe { margin-top: var(--s-7); }
+.bus-pruebe__titulo { margin-bottom: var(--s-3); font-family: var(--f-texto); font-size: 1.0625rem; font-weight: 700; line-height: var(--lh-ui); }
+
+.bus-destacados { margin-top: var(--s-seccion); padding-top: var(--s-8); border-top: var(--filete); }
+.bus-destacados__titulo { margin-bottom: var(--s-titulo-contenido); }

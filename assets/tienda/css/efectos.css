@@ -1,0 +1,37 @@
+/* =====================================================================
+   LA VALENCIANA v3 · efectos.css — animaciones extra
+   ===================================================================== */
+/* barra de lectura */
+.fx-progreso { position: fixed; left: 0; top: 0; z-index: 9999; height: 3px; width: 100%; transform-origin: 0 50%; transform: scaleX(var(--p, 0));
+  background: linear-gradient(90deg, #C8A27A, #E7CBA6 50%, #B08A62); pointer-events: none; }
+
+
+/* luz que sigue al puntero sobre tarjetas */
+.fx-luz { position: relative; }
+.fx-luz::before { content: ""; position: absolute; inset: 0; z-index: 2; border-radius: inherit; pointer-events: none; opacity: 0; transition: opacity .4s;
+  background: radial-gradient(260px circle at var(--mx, 50%) var(--my, 50%), rgba(255,255,255,.42), transparent 60%); }
+.fx-luz:hover::before { opacity: 1; }
+.fx-inclina { transition: transform .5s var(--ease-salida); will-change: transform; }
+
+/* pespunte que corre alrededor al pasar */
+.fx-costura { position: absolute; inset: 6px; z-index: 3; pointer-events: none; overflow: visible; opacity: 0; transition: opacity .3s; }
+.fx-costura rect { fill: none; stroke: var(--c-kraft-hondo); stroke-width: 1.6; stroke-dasharray: 7 6; animation: fxCostura 1.6s linear infinite; }
+:hover > .fx-costura, :focus-visible > .fx-costura, :focus-within > .fx-costura { opacity: 1; }
+@keyframes fxCostura { to { stroke-dashoffset: -26; } }
+
+/* piezas que flotan en las bandas */
+.fx-flotante { position: absolute; z-index: 0; width: var(--t, 56px); height: var(--t, 56px); opacity: .55; pointer-events: none; animation: fxFlota var(--dur, 9s) ease-in-out infinite; animation-delay: var(--ret, 0s); }
+.fx-flotante svg { width: 100%; height: 100%; }
+@keyframes fxFlota { 0%, 100% { transform: translate(0, 0) rotate(var(--g, 0deg)); } 50% { transform: translate(var(--dx, 10px), -18px) rotate(calc(var(--g, 0deg) + 14deg)); } }
+
+/* imágenes de producto: leve deriva al hacer scroll */
+.fx-deriva svg { transform: translateY(var(--dy, 0)) scale(1.04); transition: transform .2s linear; }
+
+@media (prefers-reduced-motion: reduce) {
+  .fx-flotante { display: none; }
+  .fx-costura rect { animation: none; }
+  .fx-inclina { transform: none !important; }
+  .fx-deriva svg { transform: none; }
+}
+.seccion--rosa { overflow-x: clip; }
+@media (max-width: 600px) { .fx-flotante { --t: 34px !important; opacity: .4; } }

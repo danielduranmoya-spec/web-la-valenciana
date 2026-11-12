@@ -1,44 +1,42 @@
-/* La Valenciana · tokens de marca. Paleta 2026-11-11: blanco principal; rosa pastel y morado pastel secundarios.
-   Los nombres de variable se mantienen para no tocar todo el CSS: rosa-polvo = rosa muy claro, perla = lavanda clara,
-   niebla = morado pastel, malva = morado medio, malva-texto = morado oscuro (textos), crema = blanco. */
+/* La Valenciana · tokens de las páginas de texto (legales, accesibilidad, 404).
+   Paleta 2026-11-12 (la de la v3): blanco, crema, beis y kraft, con marrón como acento.
+   Los nombres de variable se mantienen para no tocar estilos.css. La tienda usa assets/tienda/css/tokens.css. */
 :root {
   /* Paleta de marca */
-  --rosa-polvo: #FDF1F5;   /* rosa muy claro: bandas */
-  --rosa: #F5D0DC;         /* tarjetas de Mercería */
-  --rosa-antiguo: #E2A3B9; /* detalles decorativos (nunca texto) */
-  --malva: #8B6AB5;        /* morado pastel medio: acentos */
-  --perla: #F3EEFA;        /* lavanda clara: Complementos */
-  --niebla: #D8CBEC;       /* morado pastel */
-  --grafito: #3E3848;      /* texto principal */
-  --kraft: #C8A27A;        /* solo la caja del hero */
+  --rosa-polvo: #F8F3EB;   /* crema: bandas */
+  --rosa: #EFE5D5;         /* beis */
+  --rosa-antiguo: #DCC8AA; /* arena: detalles decorativos (nunca texto) */
+  --malva: #9E7A55;        /* kraft hondo: acentos */
+  --perla: #F4E9E3;        /* beis rosado */
+  --niebla: #DCC8AA;       /* arena */
+  --grafito: #2F2A26;      /* texto principal */
+  --kraft: #C8A27A;        /* kraft */
 
-  /* Derivados para accesibilidad (mismos tonos, más contraste) */
-  --malva-texto: #6B4A94;  /* enlaces y textos pequeños: 6,9:1 sobre blanco */
-  --grafito-suave: #625B6C;/* texto secundario: 5,6,9:1 sobre blanco */
-  --crema: #FFFFFF;        /* blanco */
-  --blanco: #FFFFFF;       /* solo texto sobre fondos oscuros */
+  /* Derivados para accesibilidad */
+  --malva-texto: #7A4E2D;  /* enlaces y textos pequeños: 8,2:1 sobre blanco */
+  --grafito-suave: #5E554D;/* texto secundario: 8:1 sobre blanco */
+  --crema: #FFFFFF;
+  --blanco: #FFFFFF;
   --borde: color-mix(in srgb, var(--grafito) 22%, transparent);
   --borde-fuerte: color-mix(in srgb, var(--grafito) 55%, transparent);
 
-  --fondo: #FFFFFF;        /* fondo principal */
-  --rosa-texto: #A0466A;   /* costuras y detalles rosas (5,9:1 sobre blanco) */
-  --morado-oscuro: #524070;/* rellenos de botones (9:1 con texto blanco) */
+  --fondo: #FFFFFF;
+  --rosa-texto: #8A6A4A;   /* costuras y detalles */
+  --morado-oscuro: #5A3820;/* rellenos de botones (texto blanco encima) */
 
   /* Tipografía */
-  --fuente-display: "Playfair Display", Georgia, "Times New Roman", serif; /* titulares, 500/700 */
-  --fuente-texto: "Jost", "Helvetica Neue", Arial, sans-serif;             /* textos, menús y botones, 400/500 */
+  --fuente-display: "Playfair Display", Georgia, "Times New Roman", serif;
+  --fuente-texto: "Jost", "Helvetica Neue", Arial, sans-serif;
 
   /* Espaciado (múltiplos de 4/8) y radios */
   --e1: 4px; --e2: 8px; --e3: 12px; --e4: 16px; --e5: 24px; --e6: 32px; --e7: 48px; --e8: 64px;
   --seccion: clamp(72px, 11vw, 136px);
-  --r: 12px;            /* radio base */
-  --r-s: 6px;           /* radio pequeño */
+  --r: 12px;
+  --r-s: 6px;
   --r-pill: 999px;
 
-  /* Sombras suaves en capas */
-  --sombra: 0 1px 2px rgba(74,68,80,.06), 0 8px 24px -12px rgba(74,68,80,.22);
-  --sombra-alta: 0 2px 4px rgba(74,68,80,.06), 0 24px 48px -24px rgba(74,68,80,.38);
+  --sombra: 0 1px 2px rgba(90,56,32,.06), 0 8px 24px -12px rgba(90,56,32,.22);
+  --sombra-alta: 0 2px 4px rgba(90,56,32,.06), 0 24px 48px -24px rgba(90,56,32,.38);
 
-  /* Objetivo táctil mínimo */
   --toque: 48px;
 }

@@ -1,0 +1,254 @@
+/* =========================================================
+   LA VALENCIANA v2 · portada.css · PROPIETARIO: B3
+   Secciones editoriales de la portada (DISENO §7.1, 3-7) y piezas
+   compartidas entre la portada y las páginas de B3 (mapa, horario,
+   estado, contacto). Prefijo .ed-
+   ========================================================= */
+
+/* ---------- 30 · Lo que más nos piden ---------- */
+.ed-dest { --ed-sangre: var(--margen); overflow: hidden; }
+
+/* R2 · ritmo vertical: dos secciones blancas seguidas sumaban 2 × --s-seccion (≈288 px a 1440).
+   Entre blancas se reparte una sola medida (media por lado); junto a la banda rosa, completa. */
+.ed-dest { padding-block: calc(var(--s-seccion) * .5) calc(var(--s-seccion) * .75); }
+.ed-historia { padding-bottom: calc(var(--s-seccion) * .75); }
+.ed-comprar { padding-bottom: calc(var(--s-seccion) * .5); }
+.ed-visitenos { padding-block: calc(var(--s-seccion) * .5); }
+.ed-dest__rejilla { display: grid; grid-template-columns: minmax(0, 1fr); row-gap: var(--s-6); }
+.ed-dest__cabeza h2 { max-width: 12ch; }
+.ed-dest__frase { margin-top: var(--s-4); color: var(--c-tinta-suave); max-width: 28ch; }
+.ed-dest__cabeza .boton--texto { margin-top: var(--s-4); margin-left: -.25rem; }
+.ed-dest__mandos { display: flex; gap: var(--s-3); flex-wrap: wrap; order: 3; }
+.ed-dest__boton { min-width: 9.5rem; padding-inline: 1.25rem; }
+
+.ed-carril {
+  list-style: none; margin: 0; padding: 4px var(--ed-sangre) var(--s-5) 6px;
+  margin-right: calc(-1 * var(--ed-sangre)); margin-left: -6px;   /* SUP-A: sin esto el anillo de la muestra elegida salía cortado */
+  display: grid; grid-auto-flow: column; grid-auto-columns: 78%;
+  column-gap: var(--hueco);
+  overflow-x: auto; overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory; scroll-padding-inline: 0;
+  scrollbar-width: thin; scrollbar-color: var(--c-borde) transparent;
+}
+.ed-carril__item { scroll-snap-align: start; min-width: 0; }
+.ed-carril:focus-visible { outline-offset: 6px; }
+/* suplente si la tarjeta de B4 aún no está */
+.ed-tarjeta-sup a { text-decoration: none; color: var(--c-tinta); }
+.ed-tarjeta-sup h3 { font-size: var(--t-producto); font-weight: 500; }
+
+@media (min-width: 640px) { .ed-carril { grid-auto-columns: 46%; } }
+@media (min-width: 1024px) {
+  .ed-dest__rejilla { grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--hueco); row-gap: 0; grid-template-rows: auto 1fr; }
+  .ed-dest__cabeza { grid-column: 1 / 4; grid-row: 1; padding-top: var(--s-2); }
+  .ed-dest__mandos { grid-column: 1 / 4; grid-row: 2; align-self: end; order: 0; padding-bottom: calc(var(--s-5) + 7rem); flex-direction: column; align-items: flex-start; }
+  .ed-carril { grid-column: 4 / 13; grid-row: 1 / 3; grid-auto-columns: clamp(15rem, 20vw, 18rem); }
+}
+
+/* ---------- 40 · Banda de encargo (la única banda rosa de la portada) ---------- */
+.ed-encargo { overflow: visible; overflow-x: clip; }
+.ed-encargo__rejilla { row-gap: var(--s-6); align-items: center; position: relative; }
+.ed-encargo__texto, .ed-encargo__accion { grid-column: 1 / -1; }
+.ed-encargo__texto h2 { max-width: 16ch; }
+.ed-encargo__texto p { margin-top: var(--s-4); font-size: var(--t-entradilla); font-family: var(--f-titulo); line-height: 1.45; color: var(--c-tinta-suave); max-width: 38ch; }
+.ed-encargo__accion .boton { width: 100%; }
+.ed-encargo__tel { margin-top: var(--s-4); font-size: 1.125rem; color: var(--c-tinta-suave); }
+.ed-encargo__tel a { font-weight: 700; white-space: nowrap; }
+.ed-encargo__dibujo {
+  position: absolute; right: -.5rem; top: calc(-1 * var(--s-seccion) - 2.75rem);
+  width: 7.5rem; pointer-events: none;
+}
+.ed-encargo__metro { width: 100%; height: auto; overflow: visible; transform: rotate(-14deg); filter: drop-shadow(4px 8px 10px color-mix(in srgb, var(--c-acento-hondo) 18%, transparent)); }
+@media (min-width: 1024px) {
+  .ed-encargo__texto { grid-column: 1 / 8; }   /* SUP-A: alineado con el resto de la portada */
+  .ed-encargo__texto h2 { padding-right: 0; }
+  .ed-encargo__accion { grid-column: 9 / 13; }
+  .ed-encargo__dibujo { right: 0; width: 11rem; top: calc(-1 * var(--s-seccion) - 3.25rem); }
+}
+/* R2: entre 1024 y 1199 px el botón grande se partía en dos líneas: más columnas para la acción */
+@media (min-width: 1024px) and (max-width: 1199px) {
+  .ed-encargo__texto { grid-column: 1 / 8; }
+  .ed-encargo__accion { grid-column: 8 / 13; }
+}
+
+/* ---------- 50 · Historia con cronología cosida ---------- */
+.ed-historia .rejilla { row-gap: var(--s-8); }
+.ed-historia__cabeza, .ed-crono { grid-column: 1 / -1; }
+.ed-historia__cabeza h2 { max-width: 16ch; }
+.ed-historia__texto { margin-top: var(--s-6); max-width: 40ch; }
+.ed-historia__texto::first-letter {
+  float: left; font-family: var(--f-titulo); font-weight: 500; color: var(--c-acento);
+  font-size: 4.6em; line-height: .78; margin: .08em .1em 0 -.02em;
+}
+@supports (initial-letter: 3) {
+  .ed-historia__texto::first-letter { float: none; initial-letter: 3; font-size: inherit; line-height: inherit; margin: 0 .14em 0 0; }
+}
+@media (min-width: 1024px) {
+  .ed-historia__cabeza { grid-column: 1 / 6; }
+  .ed-historia__fijo { position: sticky; top: calc(var(--alto-cabecera-mini) + var(--s-8)); }
+  .ed-crono { grid-column: 7 / 13; }
+}
+
+.ed-crono { position: relative; --ed-x: 1.25rem; padding-left: calc(var(--ed-x) + 2.75rem); }
+.ed-crono__hilo { position: absolute; left: var(--ed-x); top: .9rem; bottom: 3.5rem; width: var(--pespunte-grosor); }
+.ed-crono__hilo::before, .ed-crono__cosido {
+  content: ""; position: absolute; inset: 0; border-radius: 2px;
+  background: repeating-linear-gradient(180deg, var(--c-filete) 0 var(--pespunte-puntada), transparent var(--pespunte-puntada) calc(var(--pespunte-puntada) + var(--pespunte-hueco)));
+}
+.ed-crono__cosido {
+  background-image: repeating-linear-gradient(180deg, var(--c-hilo) 0 var(--pespunte-puntada), transparent var(--pespunte-puntada) calc(var(--pespunte-puntada) + var(--pespunte-hueco)));
+  clip-path: inset(0 0 calc((1 - var(--avance, 1)) * 100%) 0);
+}
+/* la aguja que va cosiendo: va en la punta del hilo */
+.ed-crono__aguja {
+  position: absolute; left: 50%; top: calc(var(--avance, 1) * 100%);
+  width: 4px; height: 2.5rem; margin-left: -2px; transform: translateY(-88%) rotate(8deg); transform-origin: 50% 90%;
+  border-radius: 2px 2px 50% 50% / 2px 2px 100% 100%;
+  background: linear-gradient(90deg, var(--c-tinta-suave), var(--c-borde) 60%, var(--c-tinta-suave));
+  transition: opacity var(--dur-fundido) var(--ease-suave);
+}
+.ed-crono__aguja::before { content: ""; position: absolute; left: 1px; top: 4px; width: 2px; height: 7px; border-radius: 2px; background: var(--c-fondo); }
+.ed-crono--completa .ed-crono__aguja { opacity: 0; }
+
+.ed-crono__lista { list-style: none; margin: 0; padding: 0; }
+.ed-hito { position: relative; padding-bottom: var(--s-8); }
+.ed-hito:last-child { padding-bottom: 0; }
+.ed-hito::before {
+  content: ""; position: absolute; top: 1.05rem; left: calc(-2.75rem - 7px + 1px);
+  width: 14px; height: 14px; border-radius: var(--r-redondo); background: var(--c-fondo);
+  border: 2px solid var(--c-filete); box-sizing: border-box;
+  transition: border-color var(--dur-base) var(--ease-suave), background-color var(--dur-base) var(--ease-suave), transform var(--dur-base) var(--ease-rebote);
+}
+.ed-hito--cosido::before { border-color: var(--c-acento); background: var(--c-acento); transform: scale(1.15); }
+.ed-hito__anio { font-size: var(--t-anio); line-height: 1; color: var(--c-acento); font-weight: 400; letter-spacing: -.01em; max-width: none; }
+.ed-hito__txt { margin-top: var(--s-3); max-width: 34ch; }
+@media (min-width: 1024px) { .ed-crono { --ed-x: 1.5rem; padding-left: calc(var(--ed-x) + 3.5rem); } .ed-hito::before { left: calc(-3.5rem - 7px + 1px); } }
+
+/* ---------- 55 · Cita ---------- */
+.ed-cita { padding-block: 0 calc(var(--s-seccion) * .5); }
+.ed-cita__figura { margin-inline: auto; text-align: center; max-width: min(100% - 2 * var(--margen), 54rem); }
+.ed-cita__figura::before { content: ""; display: block; width: 3rem; height: 1px; margin: 0 auto var(--s-6); background: var(--c-acento); }
+.ed-cita__texto { margin: 0; }
+.ed-cita__texto p {
+  font-family: var(--f-titulo); font-style: italic; font-weight: 400;
+  font-size: clamp(1.625rem, 1.2rem + 1.7vw, 2.5rem); line-height: 1.3; letter-spacing: -.008em;
+  color: var(--c-tinta); max-width: none; text-wrap: balance;
+}
+.ed-cita__texto p::before { content: "«"; }
+.ed-cita__texto p::after { content: "»"; }
+.ed-cita__firma { margin-top: var(--s-5); font-size: var(--t-pequeno); font-weight: 600; color: var(--c-tinta-suave); letter-spacing: var(--tr-ui); }
+
+/* ---------- 60 · Cómo comprar (resumen) ---------- */
+.ed-comprar { padding-top: 0; }
+.ed-comprar__rejilla { border-top: var(--filete); padding-top: calc(var(--s-seccion) * .5); row-gap: var(--s-7); }
+.ed-comprar__cabeza, .ed-pasos { grid-column: 1 / -1; }
+.ed-comprar__cabeza h2 { max-width: 10ch; }
+.ed-comprar__cabeza .boton--texto { margin-top: var(--s-4); margin-left: -.25rem; }
+.ed-pasos { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--s-7); }
+.ed-paso { display: grid; grid-template-columns: 3rem 1fr; column-gap: var(--s-4); align-items: baseline; }
+.ed-paso__num { grid-row: 1 / 3; font-family: var(--f-titulo); font-size: 3.5rem; line-height: .9; color: var(--c-acento); font-variant-numeric: lining-nums; }
+.ed-paso__titulo { font-size: var(--t-h3); }
+.ed-paso p { grid-column: 2; margin-top: var(--s-2); color: var(--c-tinta-suave); max-width: 30ch; }
+@media (min-width: 900px) {
+  .ed-pasos { grid-template-columns: repeat(3, minmax(0, 1fr)); column-gap: var(--hueco); }
+  .ed-paso { grid-template-columns: 1fr; align-items: start; align-content: start; }
+  .ed-paso__num { grid-row: auto; margin-bottom: var(--s-4); }
+  .ed-paso p { grid-column: 1; }
+}
+@media (min-width: 1024px) {
+  .ed-comprar__cabeza { grid-column: 1 / 5; }
+  .ed-pasos { grid-column: 5 / 13; }
+}
+
+/* ---------- 70 · Visítenos ---------- */
+.ed-visitenos__rejilla { row-gap: var(--s-7); align-items: center; }
+.ed-visitenos__mapa, .ed-visitenos__datos { grid-column: 1 / -1; }
+@media (min-width: 1024px) {
+  .ed-visitenos__mapa { grid-column: 1 / 7; }
+  .ed-visitenos__datos { grid-column: 8 / 13; }
+}
+.ed-visitenos__datos > * + * { margin-top: var(--s-5); }
+.ed-direccion { font-style: normal; font-family: var(--f-titulo); font-size: var(--t-entradilla); line-height: 1.4; color: var(--c-tinta); }
+.ed-botones { display: flex; flex-wrap: wrap; gap: var(--s-3); padding-top: var(--s-2); }
+@media (max-width: 520px) { .ed-botones .boton { width: 100%; } }
+
+/* estado abierto / cerrado */
+.ed-estado { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-2) var(--s-3); max-width: none; }
+.ed-estado .etiqueta svg { width: 18px; height: 18px; }
+.ed-estado__txt { font-weight: 600; }
+
+/* horario en tabla */
+.ed-horario { width: 100%; border-collapse: collapse; font-variant-numeric: lining-nums tabular-nums; }
+.ed-horario tr { border-top: var(--filete); }
+.ed-horario tr:last-child { border-bottom: var(--filete); }
+.ed-horario th, .ed-horario td { padding: var(--s-3) 0; vertical-align: top; text-align: left; line-height: 1.45; }
+.ed-horario th { font-weight: 500; padding-right: var(--s-4); color: var(--c-tinta-suave); width: 46%; }
+.ed-horario td { color: var(--c-tinta-suave); }
+.ed-horario__hoy th, .ed-horario__hoy td { color: var(--c-tinta); font-weight: 700; }
+.ed-horario__marca { font-weight: 500; color: var(--c-tinta-suave); }
+
+/* contacto (página Visítenos) */
+.ed-contacto { list-style: none; margin: 0; padding: 0; }
+.ed-contacto li { border-top: var(--filete); }
+.ed-contacto li:last-child { border-bottom: var(--filete); }
+.ed-contacto a { display: flex; align-items: center; gap: var(--s-4); min-height: 4rem; padding-block: var(--s-2); color: var(--c-tinta); text-decoration: none; font-weight: 700; font-size: 1.1875rem; }
+.ed-contacto a > svg { flex: none; color: var(--c-acento); }
+.ed-contacto a > span { display: grid; min-width: 0; }
+.ed-contacto__que { font-size: var(--t-pequeno); font-weight: 500; color: var(--c-tinta-suave); }
+.ed-contacto__largo { overflow-wrap: anywhere; }
+@media (hover: hover) { .ed-contacto a:hover { color: var(--c-acento-hondo); } .ed-contacto a:hover .ed-contacto__largo, .ed-contacto a:hover > span > :last-child { text-decoration: underline; text-underline-offset: .2em; } }
+
+/* ---------- mapa ilustrado (SVG propio) ----------
+   R2: plano a línea fina sobre papel rosa velo (antes, bloques rosas macizos). */
+.ed-mapa { margin: 0; }
+.ed-mapa > svg { display: block; width: 100%; height: auto; aspect-ratio: 4 / 3; border-radius: var(--r-lienzo); background: var(--c-rosa-velo); box-shadow: inset 0 0 0 1px var(--c-filete); }
+.ed-mapa.con-lino::before { border-radius: var(--r-lienzo); bottom: auto; aspect-ratio: 4 / 3; z-index: 1; pointer-events: none; }
+.ed-mapa__pie { margin-top: var(--s-3); color: var(--c-tinta-suave); }
+.ed-mapa__fondo { fill: var(--c-rosa-velo); }
+.ed-mapa__manzanas path { fill: var(--c-fondo); stroke: var(--c-hilo); stroke-width: 1.1; stroke-linejoin: round; }
+.ed-mapa__parcelas path { fill: none; stroke: var(--c-hilo); stroke-width: .6; opacity: .45; }
+.ed-mapa__plaza { fill: var(--c-rosa); stroke: var(--c-hilo); stroke-width: 1.1; stroke-linejoin: round; }
+.ed-mapa__losas path { fill: none; stroke: var(--c-fondo); stroke-width: .8; opacity: .7; }
+.ed-mapa__plaza-borde { fill: none; stroke: var(--c-hilo); stroke-width: .6; opacity: .55; }
+.ed-mapa__fuente circle { fill: var(--c-fondo); stroke: var(--c-hilo); stroke-width: 1; }
+.ed-mapa__fuente circle + circle { fill: var(--c-lavanda); }
+.ed-mapa__fuente circle:last-child { fill: var(--c-hilo); stroke: none; }
+.ed-mapa__arbol circle { fill: var(--c-rosa-velo); stroke: var(--c-hilo); stroke-width: 1; }
+.ed-mapa__arbol path { fill: none; stroke: var(--c-hilo); stroke-width: .8; stroke-linecap: round; opacity: .7; }
+.ed-mapa__rotulo-plaza { font-family: var(--f-titulo); font-style: italic; font-size: 15px; fill: var(--c-tinta-suave); paint-order: stroke; stroke: var(--c-rosa); stroke-width: 4px; stroke-linejoin: round; }
+.ed-mapa__norte circle { fill: var(--c-fondo); stroke: var(--c-hilo); stroke-width: 1; }
+.ed-mapa__norte path { fill: var(--c-acento); }
+.ed-mapa__norte .ed-mapa__norte-sur { fill: none; stroke: var(--c-hilo); stroke-width: .8; }
+.ed-mapa__norte text { font-family: var(--f-texto); font-size: 10px; font-weight: 700; fill: var(--c-tinta-suave); }
+.ed-mapa__local { fill: var(--c-rosa-palo); stroke: var(--c-acento); stroke-width: 1.4; stroke-linejoin: round; }
+.ed-mapa__guia { fill: none; stroke: var(--c-acento); stroke-width: 1; }
+.ed-mapa__pin-gota { fill: var(--c-acento); stroke: var(--c-acento-hondo); stroke-width: 1; }
+.ed-mapa__carrete rect { fill: var(--c-fondo); }
+.ed-mapa__carrete .ed-mapa__carrete-hilo { fill: var(--c-rosa-palo); }
+.ed-mapa__pin-sombra { fill: var(--c-tinta); opacity: .18; }
+.ed-mapa__onda { fill: none; stroke: var(--c-acento); stroke-width: 1.5; opacity: 0; transform-box: fill-box; transform-origin: center; }
+.ed-mapa__cartel rect { fill: var(--c-fondo); stroke: var(--c-acento); stroke-width: 1.25; }
+.ed-mapa__cartel text { font-family: var(--f-titulo); font-weight: 600; font-size: 14px; fill: var(--c-acento); }
+.ed-mapa__pin-cae { transform-box: fill-box; transform-origin: 50% 100%; }
+
+/* el marcador cae y deja una onda cuando el mapa se descubre (B7 añade .in) */
+.ed-mapa.in .ed-mapa__pin-cae { animation: ed-pin-cae 900ms var(--ease-salida) 650ms both; }
+.ed-mapa.in .ed-mapa__onda { animation: ed-pin-onda 1400ms var(--ease-salida) 1350ms 2 both; }
+@keyframes ed-pin-cae {
+  0% { opacity: 0; transform: translateY(-36px); }
+  55% { opacity: 1; transform: translateY(0) scale(1, .92); }
+  75% { transform: translateY(-5px) scale(1); }
+  100% { opacity: 1; transform: none; }
+}
+@keyframes ed-pin-onda { 0% { opacity: .7; transform: scale(.5); } 100% { opacity: 0; transform: scale(2.6); } }
+@media (prefers-reduced-motion: reduce) {
+  .ed-mapa.in .ed-mapa__pin-cae { animation: ed-fundir 600ms var(--ease-suave) 400ms both; }
+  .ed-mapa.in .ed-mapa__onda { animation: none; }
+  .ed-crono__aguja { display: none; }
+}
+@keyframes ed-fundir { from { opacity: 0; } to { opacity: 1; } }
+
+/* SUP-A · letra muy grande: más sitio para el botón de la banda de encargo */
+@media (min-width: 1024px) {
+  html[data-texto="muygrande"] .ed-encargo__texto { grid-column: 1 / 8; }
+  html[data-texto="muygrande"] .ed-encargo__accion { grid-column: 8 / 13; }
+}
