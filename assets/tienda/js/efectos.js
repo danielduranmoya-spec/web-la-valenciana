@@ -24,19 +24,8 @@ function progreso(){
 }
 
 
-/* ---------- tarjetas: inclinación 3D + luz + pespunte ---------- */
+/* ---------- tarjetas: inclinación 3D + luz (sin pespunte: no casaba con la estética) ---------- */
 const SEL_TARJETA = ".tarjeta__lienzo, .por-tesela, .pag-red, .pag-hor__tarjeta, .mm-lienzo, .fic-formato";
-/* los botones grandes (secciones, megamenú, redes, horario) van sin pespunte: quedaba mal */
-const SIN_COSTURA = ".por-tesela, .mm-lienzo, .pag-red, .pag-hor__tarjeta";
-function costura(el){
-  if (el.querySelector(":scope > .fx-costura")) return;
-  const r = parseFloat(getComputedStyle(el).borderTopLeftRadius) || 16;
-  const s = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-  s.setAttribute("class", "fx-costura"); s.setAttribute("aria-hidden", "true");
-  s.innerHTML = `<rect x="0" y="0" width="100%" height="100%" rx="${Math.max(0, r - 6)}" />`;
-  if (getComputedStyle(el).position === "static") el.style.position = "relative";
-  el.appendChild(s);
-}
 function tarjetas(){
   const inclinar = RATON() && !RM();
   document.addEventListener("pointerover", e => {
@@ -44,7 +33,6 @@ function tarjetas(){
     if (!el || el.dataset.fx) return;
     el.dataset.fx = "1";
     el.classList.add("fx-luz");
-    if (!el.matches(SIN_COSTURA)) costura(el);
     if (!inclinar) return;
     el.classList.add("fx-inclina");
     const mover = ev => {

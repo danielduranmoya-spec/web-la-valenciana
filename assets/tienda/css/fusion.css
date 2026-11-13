@@ -219,3 +219,10 @@ html.buscador-abierto { overflow: hidden; }
 }
 .ed-costura .ed-hito { width: min(100%, 34rem); }
 @media (max-width: 699px) { .ed-costura .ed-hito { width: 100%; } }
+
+/* ---------- menús opacos: no se transparenta lo que hay debajo ---------- */
+.cab-barra, .megamenu { background: var(--c-fondo); -webkit-backdrop-filter: none; backdrop-filter: none; }
+.megamenu { box-shadow: 0 30px 60px -30px rgba(47,42,38,.45); }
+@media (max-width: 899px) {
+  .lv-dock { background: var(--c-fondo); -webkit-backdrop-filter: none; backdrop-filter: none; border-color: var(--c-filete, #EADFD2); }
+}
