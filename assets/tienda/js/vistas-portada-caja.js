@@ -31,7 +31,7 @@ function html(){
     <div class="caja-hero__texto">
       <p class="caja-antetitulo">Mercería · Complementos · Cápsulas · Almendralejo</p>
       <h1 class="caja-titular" id="caja-titular" aria-label="Hilos, botones, medias y abanicos, como en el mostrador.">${palabras}</h1>
-      <p class="caja-entradilla">Somos La Valenciana, la mercería de la Plaza de Espronceda desde el siglo&nbsp;XIX. Elija con calma: se lo preparamos para recoger o se lo enviamos a casa.</p>
+      <p class="caja-entradilla">Somos La Valenciana, mercería de Almendralejo desde el siglo&nbsp;XIX, en la calle Moreno Nieto. Elija con calma: se lo preparamos para recoger o se lo enviamos a casa.</p>
       ${estadoPildora()}
       <div class="caja-botones">
         <a class="boton boton--primario boton--grande caja-boton" href="${url("merceria")}" data-iman><span>Ver Mercería</span><span class="caja-flecha" aria-hidden="true">→</span></a>

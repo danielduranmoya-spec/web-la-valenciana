@@ -244,3 +244,12 @@ html.buscador-abierto { overflow: hidden; }
 .pag--comprar > .cc { margin-bottom: clamp(2rem, 5vw, 4rem); }
 .cc .fx-subraya::after { display: none; }
 .pag.pag--comprar { padding-top: 0; }
+
+/* ---------- mapa de la calle Moreno Nieto ---------- */
+.ed-mapa__manzana { fill: var(--c-fondo); }
+.ed-mapa__calles-borde path { fill: none; stroke: var(--c-hilo); stroke-width: 20; stroke-linecap: square; stroke-linejoin: round; }
+.ed-mapa__calles path { fill: none; stroke: var(--c-rosa-velo); stroke-width: 18; stroke-linecap: square; stroke-linejoin: round; }
+.ed-mapa__rotulo-calle { font-family: var(--f-texto); font-size: 10.5px; font-weight: 600; letter-spacing: .02em; fill: var(--c-tinta-suave); }
+.ed-mapa__hacia path { fill: none; stroke: var(--c-tinta-suave); stroke-width: 1.2; stroke-linecap: round; stroke-linejoin: round; }
+.ed-mapa__hacia text { font-family: var(--f-titulo); font-style: italic; font-size: 12.5px; fill: var(--c-tinta-suave); paint-order: stroke; stroke: var(--c-fondo); stroke-width: 4px; stroke-linejoin: round; }
+.ed-mapa__rotulo-suelto { paint-order: stroke; stroke: var(--c-fondo); stroke-width: 4px; stroke-linejoin: round; }

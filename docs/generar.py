@@ -9,8 +9,8 @@ TEL='924 67 08 39'; TEL_HREF='tel:+34924670839'
 WA_TXT='633 930 935'
 CORREO='administracion@lavalencianamerceria.com'
 PED_M='pedidos@lavalencianamerceria.com'; PED_C='pedidos@lavalencianacomplementos.com'
-DIR1='Plaza de Espronceda 2'; DIR2='06200 Almendralejo (Badajoz)'
-MAPS='https://www.google.com/maps/search/?api=1&amp;query=La+Valenciana+Plaza+de+Espronceda+2+Almendralejo'
+DIR1='Calle Moreno Nieto 7'; DIR2='06200 Almendralejo (Badajoz)'
+MAPS='https://www.google.com/maps/search/?api=1&amp;query=Calle+Moreno+Nieto+7,+06200+Almendralejo'
 HORARIO_CORTO='Lunes a sábado, de 10:00 a 14:00 y de 17:00 a 20:00'
 REDES=[('https://www.instagram.com/_lavalenciana','Instagram','@_lavalenciana'),('https://www.tiktok.com/@_lavalenciana_','TikTok','@_lavalenciana_'),('https://www.facebook.com/mercerialavalenciana/','Facebook','La Valenciana')]
 WA_ICO='<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.1l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.7.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.3-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6a2.7 2.7 0 0 0 1.8-1.2 2.2 2.2 0 0 0 .2-1.3c-.1-.1-.3-.2-.5-.3z"/></svg>'
@@ -204,7 +204,7 @@ inicio=f'''<section class="hero" aria-labelledby="titulo-inicio">
     <div class="hero-texto">
       <p class="etiqueta">Mercería · Medias · Complementos · Almendralejo</p>
       <h1 id="titulo-inicio">Hilos, botones, medias y lencería en el centro de Almendralejo</h1>
-      <p class="entradilla">Una tienda de las de siempre en la Plaza de Espronceda. Te atendemos con calma y, si no lo tenemos, te lo buscamos.</p>
+      <p class="entradilla">Una tienda de las de siempre en la calle Moreno Nieto. Te atendemos con calma y, si no lo tenemos, te lo buscamos.</p>
       {estado()}
       <div class="botones">
         <a class="boton lleno cosido" href="merceria/">Ver Mercería {FLECHA}</a>
@@ -260,7 +260,7 @@ inicio=f'''<section class="hero" aria-labelledby="titulo-inicio">
     <ol class="pasos">
       <li><h3>Llena tu cesta</h3><p>Entra en Mercería, Complementos o Cápsulas y pulsa «Añadir a la cesta» en lo que quieras. Si no lo encuentras, pregúntanos por WhatsApp.</p><div class="botones"><button class="boton boton-buscar" type="button" aria-haspopup="dialog" aria-controls="buscador">{LUPA_ICO}Buscar un producto</button></div></li>
       <li><h3>Paga como prefieras</h3><p>Tarjeta, PayPal o Bizum. Solo cobramos cuando comprobamos que tenemos todo: si falta algo, te avisamos antes.</p><div class="botones"><a class="boton" href="envios-y-devoluciones/">Envíos y devoluciones {FLECHA}</a></div></li>
-      <li><h3>Recógelo o te lo enviamos</h3><p>Recogida gratis en la Plaza de Espronceda 2, o envío a casa en {PLAZO_ENVIO} (gratis desde {ENVIO_GRATIS} €).</p><div class="botones"><a class="boton" href="{MAPS}">{MAPA_ICO}Cómo llegar</a></div></li>
+      <li><h3>Recógelo o te lo enviamos</h3><p>Recogida gratis en la calle Moreno Nieto 7, o envío a casa en {PLAZO_ENVIO} (gratis desde {ENVIO_GRATIS} €).</p><div class="botones"><a class="boton" href="{MAPS}">{MAPA_ICO}Cómo llegar</a></div></li>
     </ol>
   </div>
 </section>
@@ -289,7 +289,7 @@ inicio=f'''<section class="hero" aria-labelledby="titulo-inicio">
   <div class="envoltura dos" style="align-items:start">
     <div class="pila">
       <p class="etiqueta">Horario y dirección</p>
-      <h2 id="titulo-visitanos">Te esperamos en la Plaza de Espronceda</h2>
+      <h2 id="titulo-visitanos">Te esperamos en la calle Moreno Nieto</h2>
       {estado()}
       <dl class="datos">
         <div><dt>Dirección</dt><dd>{DIR1}<br>{DIR2}</dd></div>
@@ -310,13 +310,13 @@ inicio=f'''<section class="hero" aria-labelledby="titulo-inicio">
   </div>
 </section>'''
 ld={"@context":"https://schema.org","@type":"Store","name":"La Valenciana","description":"Mercería y complementos en Almendralejo.",
- "address":{"@type":"PostalAddress","streetAddress":"Plaza de Espronceda 2","postalCode":"06200","addressLocality":"Almendralejo","addressRegion":"Badajoz","addressCountry":"ES"},
+ "address":{"@type":"PostalAddress","streetAddress":"Calle Moreno Nieto 7","postalCode":"06200","addressLocality":"Almendralejo","addressRegion":"Badajoz","addressCountry":"ES"},
  "telephone":"+34924670839","email":CORREO,
  "openingHoursSpecification":[{"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],"opens":"10:00","closes":"14:00"},
    {"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],"opens":"17:00","closes":"20:00"}],
  "sameAs":[u for u,_,_ in REDES]}
 faq={"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":q,"acceptedAnswer":{"@type":"Answer","text":__import__('re').sub('<[^>]+>','',a)}} for q,a in PREGUNTAS]}
-_no('index.html',doc('','La Valenciana · Mercería y Complementos en Almendralejo','Mercería y complementos en la Plaza de Espronceda 2 de Almendralejo: hilos, lanas, botones, labores, medias, lencería y más. Lunes a sábado.',inicio,'inicio','con-caja',
+_no('index.html',doc('','La Valenciana · Mercería y Complementos en Almendralejo','Mercería y complementos en la calle Moreno Nieto 7 de Almendralejo: hilos, lanas, botones, labores, medias, lencería y más. Lunes a sábado.',inicio,'inicio','con-caja',
   '<link rel="stylesheet" href="assets/css/caja.css">\n','<script type="application/ld+json">'+json.dumps(ld,ensure_ascii=False)+'</script>\n<script type="application/ld+json">'+json.dumps(faq,ensure_ascii=False)+'</script>\n'))
 
 # ---------- SECCIONES ----------
@@ -361,9 +361,9 @@ def seccion(slug,nombre,clase,intro,subs,otra,otra_nombre,otra_txt,correo,gris):
   <a class="cambio {'a-c' if otra=='complementos' else 'a-m cosido'}" href="../{otra}/"><div class="pila junta"><span class="etiqueta">La otra sección</span><h2>{otra_nombre}</h2><p>{otra_txt}</p></div><span class="flecha" aria-hidden="true">→</span></a>
 </div>
 </div>'''
-_no('merceria/index.html',doc('../','Mercería · La Valenciana','Hilos, lanas, botones, cremalleras, cintas y labores en La Valenciana, Plaza de Espronceda 2, Almendralejo.',
+_no('merceria/index.html',doc('../','Mercería · La Valenciana','Hilos, lanas, botones, cremalleras, cintas y labores en La Valenciana, calle Moreno Nieto 7, Almendralejo.',
   seccion('merceria','Mercería','seccion-merceria','Todo lo que necesitas para coser, tejer y bordar, y el consejo de quien sabe.',MERC,'complementos','Complementos','Medias, calcetines, lencería, pañuelos y bolsos.',PED_M,False),'merceria'))
-_no('complementos/index.html',doc('../','Complementos · La Valenciana','Medias, pantis, calcetines, lencería, pañuelos, bolsos y bisutería en La Valenciana, Plaza de Espronceda 2, Almendralejo.',
+_no('complementos/index.html',doc('../','Complementos · La Valenciana','Medias, pantis, calcetines, lencería, pañuelos, bolsos y bisutería en La Valenciana, calle Moreno Nieto 7, Almendralejo.',
   seccion('complementos','Complementos','seccion-complementos','Medias, lencería y detalles elegidos con mimo para el día a día y para las ocasiones especiales.',COMP,'merceria','Mercería','Hilos, lanas, botones, cintas y labores.',PED_C,True),'complementos'))
 _no('capsulas/index.html',doc('../','Cápsulas · La Valenciana','Kits para empezar a tejer, bordar o coser, colecciones de temporada y cajas para regalar en La Valenciana, Almendralejo.',
   seccion('capsulas','Cápsulas','seccion-capsulas','Selecciones cerradas que combinan productos de la tienda: lo justo para empezar una labor, pasar la temporada o hacer un regalo. Cuando se agotan, no vuelven.',CAPS,'merceria','Mercería','Hilos, lanas, botones, cintas y labores.',PED_M,False),'capsulas'))

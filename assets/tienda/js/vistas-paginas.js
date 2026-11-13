@@ -112,7 +112,7 @@ function visitanosHTML(){
   const T = D().TIENDA, id = U().uid("pag");
   return `<div class="pag pag--visitanos">
 <div class="contenedor">
-  ${cabeza("Visítenos", "Estamos en la Plaza de Espronceda desde hace generaciones. Venga a vernos: le atendemos con calma.")}
+  ${cabeza("Visítenos", "Estamos en la calle Moreno Nieto, 7, a un paso de la Plaza de la Iglesia. Venga a vernos: le atendemos con calma.")}
   <div class="rejilla pag-visita">
     <div class="pag-visita__mapa">${E().mapa ? E().mapa({ grande: true }) : ""}</div>
     <div class="pag-visita__datos" data-r-grupo>

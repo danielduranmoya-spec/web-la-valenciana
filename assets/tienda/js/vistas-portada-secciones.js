@@ -88,60 +88,75 @@ function contactoHTML(){
   </ul>`;
 }
 
-/* ---------------- mapa ilustrado de la Plaza de Espronceda ----------------
-   SVG propio (sin iframe). Colores por clase CSS (tokens), en portada.css.
-   R2: rehecho como plano a línea fina, en el estilo de las ilustraciones:
-   papel rosa velo, manzanas irregulares de casco antiguo con sus parcelas
-   en trazo fino, la plaza en lino rosa con enlosado, árboles y fuente a
-   línea, y la tienda rellena en ciruela con el marcador del carrete.
-   Calles sin nombre a propósito: no inventamos callejero. */
+/* ---------------- mapa ilustrado de la calle Moreno Nieto ----------------
+   SVG propio (sin iframe). Colores por clase CSS (tokens), en portada.css
+   y fusion.css. Plano a línea fina, con el norte arriba y a escala
+   aproximada (≈2 px por metro), según el callejero:
+   - Calle Méndez Núñez (≈158 m): baja de la Plaza de la Iglesia hacia la
+     Plaza de Espronceda (abajo a la izquierda, fuera del plano).
+   - Calle Moreno Nieto (≈62 m): sale de Méndez Núñez hacia el este.
+   - Calle Jacinto Benavente (≈57 m): une Moreno Nieto con la Plaza de la Iglesia.
+   - Plaza de España, al nordeste, junto a la de la Iglesia.
+   La tienda, en el n.º 7 (impares en la acera norte, hacia Jacinto Benavente). */
 let nMapa = 0;
-const MANZANAS = [
-  "M-10 -10H140L136 92L138 172L-10 176Z",                 // noroeste
-  "M164 -10H318L318 88L160 94Z",                           // norte (la de la tienda)
-  "M342 -10H490V186L344 192Z",                             // noreste
-  "M-10 198L138 194L134 270L110 370H-10Z",                 // suroeste
-  "M158 270L318 264L298 370H134Z",                         // sur
-  "M346 214L490 208V370H322Z"                              // sureste
-];
+const CALLES = {
+  mendez:  "M108 372L214 66",
+  moreno:  "M170 205L292 195",
+  jacinto: "M292 195L262 100"
+};
+const PLAZA_IGLESIA = "M200 44L272 38L280 98L208 104Z";
+const PLAZA_ESPANA = "M280 -10H490V58L286 74Z";
 const PARCELAS = [
-  "M-10 60H138", "M88 60V174", "M40 -10V60", "M-10 120H88",
-  "M196 92.6V40", "M276 89.6V40", "M162 40H318", "M318 40H342",
-  "M344 96H490", "M400 -10V96", "M446 96V188", "M400 96V190",
-  "M-10 262H136", "M70 196V370", "M70 312H-10",
-  "M200 268L188 370", "M252 266L236 370", "M146 320H310",
-  "M338 290H490", "M410 210V370", "M410 318H490"
+  // manzana oeste de Méndez Núñez
+  "M-10 70H170", "M-10 150H146", "M-10 240H124", "M60 -10V372", "M110 70V150",
+  // manzana de la tienda (entre Méndez Núñez, Moreno Nieto y Jacinto Benavente)
+  "M196 150H275", "M218 112V196", "M248 108V194", "M190 170L278 168",
+  // al sur de Moreno Nieto
+  "M182 260H490", "M230 214V372", "M300 210V372", "M380 120V372", "M160 320H490",
+  // al este de Jacinto Benavente
+  "M300 120H490", "M310 160H490", "M440 80V200",
+  // al norte de la Plaza de la Iglesia
+  "M-10 20H190", "M150 -10V40"
 ];
 function mapa({ grande = false } = {}){
   const id = `ed-mapa-${++nMapa}`;
-  // árboles a línea alrededor de la plaza (copa + tronco visto desde arriba)
-  const arboles = [[176,124],[216,121],[268,119],[310,120],[174,236],[220,238],[268,236],[312,233],[172,180],[314,176]]
-    .map(([x,y],i) => `<g class="ed-mapa__arbol" transform="translate(${x} ${y})"><circle r="${i%3 ? 8 : 9.5}"/><path d="M-4 0a4 4 0 0 1 8 0"/></g>`).join("");
-  // enlosado de la plaza: retícula fina recortada a la plaza
-  const losas = Array.from({length: 10}, (_, i) => `<path d="M${158 + i*18} 96V270"/>`).join("") + Array.from({length: 9}, (_, i) => `<path d="M150 ${112 + i*18}H340"/>`).join("");
-  const PLAZA = "M162 108L326 102L332 252L156 258Z";
+  const losasIg = Array.from({length: 6}, (_, i) => `<path d="M${206 + i*14} 30V110"/>`).join("") + Array.from({length: 5}, (_, i) => `<path d="M196 ${50 + i*14}H286"/>`).join("");
+  const losasEs = Array.from({length: 13}, (_, i) => `<path d="M${292 + i*16} -10V80"/>`).join("") + Array.from({length: 5}, (_, i) => `<path d="M280 ${4 + i*16}H490"/>`).join("");
+  const arboles = [[318,30],[358,24],[398,22],[438,22],[338,54],[420,48],[226,58],[258,84]]
+    .map(([x,y],i) => `<g class="ed-mapa__arbol" transform="translate(${x} ${y})"><circle r="${i%3 ? 7 : 8.5}"/><path d="M-3.5 0a3.5 3.5 0 0 1 7 0"/></g>`).join("");
+  const calle = (k) => `<path id="${id}-${k}" d="${CALLES[k]}"/>`;
+  const rotulo = (k, txt, off = "50%") => `<text class="ed-mapa__rotulo-calle" dy="3.6"><textPath href="#${id}-${k}" startOffset="${off}" text-anchor="middle">${txt}</textPath></text>`;
   return `<figure class="ed-mapa con-lino rev${grande ? " ed-mapa--grande" : ""}">
   <svg viewBox="0 0 480 360" role="img" aria-labelledby="${id}-t" preserveAspectRatio="xMidYMid slice">
-    <title id="${id}-t">Mapa ilustrado: La Valenciana está en la Plaza de Espronceda, número 2, en Almendralejo.</title>
-    <defs><clipPath id="${id}-p"><path d="${PLAZA}"/></clipPath></defs>
-    <rect class="ed-mapa__fondo" width="480" height="360"/>
-    <g class="ed-mapa__manzanas">${MANZANAS.map(d => `<path d="${d}"/>`).join("")}</g>
+    <title id="${id}-t">Mapa ilustrado: La Valenciana está en la calle Moreno Nieto, número 7, en Almendralejo, entre la calle Méndez Núñez y la calle Jacinto Benavente, a un paso de la Plaza de la Iglesia.</title>
+    <defs>
+      <clipPath id="${id}-pi"><path d="${PLAZA_IGLESIA}"/></clipPath>
+      <clipPath id="${id}-pe"><path d="${PLAZA_ESPANA}"/></clipPath>
+    </defs>
+    <rect class="ed-mapa__manzana" width="480" height="360"/>
     <g class="ed-mapa__parcelas">${PARCELAS.map(d => `<path d="${d}"/>`).join("")}</g>
-    <path class="ed-mapa__plaza" d="${PLAZA}"/>
-    <g class="ed-mapa__losas" clip-path="url(#${id}-p)">${losas}</g>
-    <path class="ed-mapa__plaza-borde" d="M168 114L320 108L326 246L162 252Z"/>
-    <g class="ed-mapa__fuente" transform="translate(244 180)"><circle r="20"/><circle r="13"/><circle r="3"/></g>
+    <g class="ed-mapa__calles-borde">${Object.values(CALLES).map(d => `<path d="${d}"/>`).join("")}</g>
+    <path class="ed-mapa__plaza" d="${PLAZA_ESPANA}"/>
+    <g class="ed-mapa__losas" clip-path="url(#${id}-pe)">${losasEs}</g>
+    <path class="ed-mapa__plaza" d="${PLAZA_IGLESIA}"/>
+    <g class="ed-mapa__losas" clip-path="url(#${id}-pi)">${losasIg}</g>
+    <g class="ed-mapa__calles">${calle("mendez")}${calle("moreno")}${calle("jacinto")}</g>
     ${arboles}
-    <text class="ed-mapa__rotulo-plaza" x="244" y="222" text-anchor="middle">Plaza de Espronceda</text>
+    ${rotulo("mendez", "C/ Méndez Núñez", "36%")}
+    ${rotulo("moreno", "C/ Moreno Nieto", "42%")}
+    <text class="ed-mapa__rotulo-calle ed-mapa__rotulo-suelto" x="296" y="140">C/ Jacinto Benavente</text>
+    <text class="ed-mapa__rotulo-plaza" x="194" y="78" text-anchor="end">Plaza de la Iglesia</text>
+    <text class="ed-mapa__rotulo-plaza" x="392" y="96" text-anchor="middle">Plaza de España</text>
+    <g class="ed-mapa__hacia" transform="translate(132 336)"><path d="M-6 -6L-14 10M-14 10L-15 2M-14 10L-7 7"/><text x="0" y="6">a la Plaza de Espronceda</text></g>
     <g class="ed-mapa__norte" transform="translate(448 330)"><circle r="14"/><path d="M0 -10L4 2H-4Z"/><path class="ed-mapa__norte-sur" d="M0 10L4 2H-4Z"/><text y="-18" text-anchor="middle">N</text></g>
     <g class="ed-mapa__tienda">
-      <path class="ed-mapa__local" d="M236 40H276V89.6L236 91.1Z"/>
-      <path class="ed-mapa__guia" d="M276 52H330"/>
-      <g class="ed-mapa__cartel" transform="translate(330 38)">
+      <path class="ed-mapa__local" d="M254 172L280 170L285 186L256 188Z"/>
+      <path class="ed-mapa__guia" d="M282 186L330 228"/>
+      <g class="ed-mapa__cartel" transform="translate(330 222)">
         <rect width="118" height="28" rx="2"/>
         <text x="59" y="19" text-anchor="middle">La Valenciana</text>
       </g>
-      <g class="ed-mapa__pin" transform="translate(256 92)">
+      <g class="ed-mapa__pin" transform="translate(268 182)">
         <ellipse class="ed-mapa__onda" cx="0" cy="1" rx="14" ry="5"/>
         <ellipse class="ed-mapa__pin-sombra" cx="3" cy="2" rx="10" ry="3.5"/>
         <g class="ed-mapa__pin-cae">
@@ -154,7 +169,7 @@ function mapa({ grande = false } = {}){
       </g>
     </g>
   </svg>
-  <figcaption class="ed-mapa__pie t-pequeno">Plaza de Espronceda, 2. Almendralejo.</figcaption>
+  <figcaption class="ed-mapa__pie t-pequeno">Calle Moreno Nieto, 7. Almendralejo.</figcaption>
 </figure>`;
 }
 
@@ -383,7 +398,7 @@ function citaHTML(){
   return `<section class="ed-cita" aria-label="Nuestra forma de atender">
   <figure class="contenedor ed-cita__figura" data-r>
     <blockquote class="ed-cita__texto"><p>Un botón, un metro de cinta o unas medias: lo que necesite, se lo buscamos con calma, como se ha hecho siempre en este mostrador.</p></blockquote>
-    <figcaption class="ed-cita__firma">La familia Díaz, en la Plaza de Espronceda</figcaption>
+    <figcaption class="ed-cita__firma">La familia Díaz, en la calle Moreno Nieto</figcaption>
   </figure>
 </section>`;
 }
@@ -394,7 +409,7 @@ const PASOS = [
     () => `<button type="button" class="boton boton--secundario" data-abre-buscador aria-haspopup="dialog">${ic("buscar")}<span>Buscar un producto</span></button>`],
   ["Paga como prefieras", "Tarjeta, PayPal o Bizum. Solo cobramos cuando comprobamos que tenemos todo: si falta algo, te avisamos antes.",
     opc => `<a class="boton boton--secundario" href="${opc.envios || R().url.comoComprar()}"><span>Envíos y devoluciones</span><span class="cc-flecha" aria-hidden="true">→</span></a>`],
-  ["Recógelo o te lo enviamos", "Recogida gratis en la Plaza de Espronceda 2, o envío a casa en 2 a 4 días laborables (gratis desde 50&nbsp;€).",
+  ["Recógelo o te lo enviamos", "Recogida gratis en la calle Moreno Nieto 7, o envío a casa en 2 a 4 días laborables (gratis desde 50&nbsp;€).",
     () => comoLlegar("boton--secundario")]
 ];
 /** Bloque «Cómo comprar»: en Inicio con h2; en la página #/como-comprar, con h1. */

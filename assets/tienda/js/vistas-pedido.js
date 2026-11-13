@@ -107,7 +107,7 @@ function htmlBotonEnviar(pago, idForm, extraClase = ""){
 function htmlConfianza(){
   const e = U().estadoTienda();
   return `<ul class="ped-confianza">
-    <li>${ic("tienda")}<span>Tienda en la Plaza de Espronceda de Almendralejo desde el siglo XIX.</span></li>
+    <li>${ic("tienda")}<span>Tienda en Almendralejo desde el siglo XIX, en la calle Moreno Nieto.</span></li>
     <li>${ic("tel")}<span>Atención en el <a href="${U().telURL()}">${telTxt()}</a> y por WhatsApp en el ${esc(D().TIENDA.whatsTxt).replace(/ /g, " ")}. <span class="ped-estado${e.abierto ? " ped-estado--abierto" : ""}">${esc(e.txt)}.</span></span></li>
     <li>${ic("cambio")}<span>Tiene ${D().TIENDA.diasCambio} días para cambiarlo.</span></li>
   </ul>`;
@@ -176,7 +176,7 @@ function htmlPedido(){
           <fieldset class="ped-grupo">
             <legend class="visualmente-oculto">¿Cómo lo recibe?</legend>
             ${opcion("entrega", "tienda", { titulo: "Lo recojo en la tienda. Gratis.", icono: "tienda", marcado: entrega === "tienda",
-              detalle: `${esc(TI.calle || "Plaza de Espronceda, 2")}, Almendralejo. Le avisamos cuando esté preparado.` })}
+              detalle: `${esc(TI.calle || "Calle Moreno Nieto, 7")}, Almendralejo. Le avisamos cuando esté preparado.` })}
             ${opcion("entrega", "casa", { titulo: `Envío a casa. ${euros(TI.envio)} (gratis desde ${euros(TI.envioGratis)}).`, icono: "camion", marcado: entrega === "casa",
               etiqueta: gratisCasa ? `<span class="etiqueta etiqueta--salvia ped-etq">Gratis para su pedido</span>` : "",
               detalle: `A la Península, en 2 a 4 días laborables. Si pide antes de las 14:00, sale hoy.` })}
@@ -504,7 +504,7 @@ function htmlConfirmacion(){
   const cuando = fechaBonita(ped.fecha);
   const entregaTxt = dat.entrega === "casa"
     ? `Envío a ${esc([dat.dir, [dat.cp, dat.loc].filter(Boolean).join(" ")].filter(Boolean).join(", "))}`
-    : "Recogida en la tienda, Plaza de Espronceda, 2";
+    : "Recogida en la tienda, calle Moreno Nieto, 7";
   const yaVacia = T().vacia();
   return `<div class="ped ped-hecho contenedor">
   <div class="ped-hecho__cab">
@@ -571,7 +571,7 @@ function htmlPagado(ped){
   const cuando = fechaBonita(ped.fecha);
   const lugar = dat.entrega === "casa"
     ? `Se lo enviamos a ${esc([dat.dir, [dat.cp, dat.loc].filter(Boolean).join(" ")].filter(Boolean).join(", "))} y le mandamos el número de seguimiento.`
-    : `Le avisamos al ${esc(dat.tel || "teléfono que nos ha dado")} para que lo recoja en la Plaza de Espronceda, 2.`;
+    : `Le avisamos al ${esc(dat.tel || "teléfono que nos ha dado")} para que lo recoja en la calle Moreno Nieto, 7.`;
   const aviso = [`Hola, La Valenciana. He hecho el pedido ${dat.ref || ""} en la web y lo he pagado con tarjeta${dat.paypal ? ` (PayPal ${dat.paypal})` : ""}.`, `Nombre: ${dat.nombre || ""}`, `Teléfono: ${dat.tel || ""}`].join("\n");
   return `<div class="ped ped-hecho contenedor">
   <div class="ped-hecho__cab">

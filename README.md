@@ -1,6 +1,6 @@
 # La Valenciana · Web
 
-Web de **La Valenciana**, mercería y complementos en la Plaza de Espronceda de Almendralejo, con tres secciones: **Mercería**, **Complementos** y **Cápsulas**.
+Web de **La Valenciana**, mercería y complementos en la calle Moreno Nieto 7 de Almendralejo, con tres secciones: **Mercería**, **Complementos** y **Cápsulas**.
 
 - Paleta blanca, crema y kraft (la de la v3), con Playfair Display y Jost alojadas en la propia web.
 - En la portada, una caja de cartón que se abre y de la que salen las secciones.
