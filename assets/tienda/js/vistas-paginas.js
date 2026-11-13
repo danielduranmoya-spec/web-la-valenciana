@@ -48,11 +48,6 @@ const cabeza = (titulo, entradilla, extra = "") => `<header class="pag-cabeza">
 /* =================================================================
    CÓMO COMPRAR (§7.7)
    ================================================================= */
-const PASOS = [
-  ["Elija lo que necesita", `Entre en <a href="#/c/merceria">Mercería</a>, <a href="#/c/complementos">Complementos</a> o <a href="#/c/capsulas">Cápsulas</a>, o escriba en el buscador lo que busca: «botones», «medias de descanso», «cremallera de 20». En cada artículo verá sus colores, medidas o tallas.`],
-  ["Haga su pedido", `Pulse «Añadir a la cesta» y, cuando termine, «Hacer el pedido». Escriba su nombre y su teléfono y elija cómo pagar: con tarjeta o PayPal en la web, o enviándonos el pedido por WhatsApp o por correo. Si lo prefiere, pídalo directamente por WhatsApp desde cualquier artículo.`],
-  ["Recójalo o se lo enviamos", `Le confirmamos el pedido por teléfono o por WhatsApp. Puede recogerlo en la tienda, sin coste, o se lo enviamos a casa.`]
-];
 const GUIAS = [
   { t:"Cómo elegir el hilo", icono:"bobina", color:"Rosa empolvado",
     x:"Para coser a mano o a máquina en prendas corrientes, un hilo de poliéster multiuso sirve para casi todo. Escoja un tono algo más oscuro que la tela: al coser se ve más claro. Para botones y telas gruesas, use hilo reforzado. Si duda, traiga un recorte de tela o envíenos una foto por WhatsApp y lo emparejamos." },
@@ -78,11 +73,8 @@ function comoComprarHTML(){
   const indice = [["envios","Envíos y plazos"],["recogida","Recogida en tienda"],["pago","Formas de pago"],["cambios","Cambios y devoluciones"],["telefono","Pedir por teléfono o WhatsApp"],["guias","Guías breves"],["preguntas","Preguntas frecuentes"]];
   const sec = (k, titulo, cuerpo) => `<section class="pag-bloque" id="${id}-${k}" aria-labelledby="${id}-${k}-t" data-r><h2 id="${id}-${k}-t">${titulo}</h2>${cuerpo}</section>`;
   return `<div class="pag pag--comprar">
+${E().comprarHTML ? E().comprarHTML({ h1: true, envios: `#${id}-envios` }) : cabeza("Cómo comprar", "")}
 <div class="contenedor--estrecho">
-  ${cabeza("Cómo comprar", "Elija con calma, pídalo como le resulte más cómodo y recójalo en la tienda o reciba el pedido en casa.")}
-  <ol class="pag-pasos" data-r-grupo>
-    ${PASOS.map(([t, x], i) => `<li class="pag-paso" data-r><span class="pag-paso__num" aria-hidden="true">${i + 1}</span><div><h2 class="pag-paso__titulo"><span class="visualmente-oculto">Paso ${i + 1}: </span>${t}</h2><p>${x}</p></div></li>`).join("")}
-  </ol>
   <nav class="pag-indice" aria-label="En esta página" data-r>
     <p class="pag-indice__titulo">En esta página</p>
     <ul>${indice.map(([k, t]) => `<li><a class="boton boton--texto" href="#${id}-${k}">${t}</a></li>`).join("")}</ul>

@@ -388,22 +388,23 @@ function citaHTML(){
 </section>`;
 }
 
-/* ---- 60 · Cómo comprar en 3 pasos ---- */
+/* ---- 60 · Cómo comprar (la versión de antes de la fusión, con la paleta actual) ---- */
 const PASOS = [
-  ["Elija", "Busque por categoría o escriba lo que necesita."],
-  ["Haga su pedido", "Desde la cesta, pagando con tarjeta, o directamente por WhatsApp."],
-  ["Recójalo o se lo enviamos", "Recogida gratis en la tienda. Envío a casa 4,95&nbsp;€, gratis desde 50&nbsp;€."]
+  ["Llena tu cesta", "Entra en Mercería, Complementos o Cápsulas y pulsa «Añadir a la cesta» en lo que quieras. Si no lo encuentras, pregúntanos por WhatsApp.",
+    () => `<button type="button" class="boton boton--secundario" data-abre-buscador aria-haspopup="dialog">${ic("buscar")}<span>Buscar un producto</span></button>`],
+  ["Paga como prefieras", "Tarjeta, PayPal o Bizum. Solo cobramos cuando comprobamos que tenemos todo: si falta algo, te avisamos antes.",
+    opc => `<a class="boton boton--secundario" href="${opc.envios || R().url.comoComprar()}"><span>Envíos y devoluciones</span><span class="cc-flecha" aria-hidden="true">→</span></a>`],
+  ["Recógelo o te lo enviamos", "Recogida gratis en la Plaza de Espronceda 2, o envío a casa en 2 a 4 días laborables (gratis desde 50&nbsp;€).",
+    () => comoLlegar("boton--secundario")]
 ];
-function comprarHTML(){
-  const id = U().uid("ed-com");
-  return `<section class="ed-comprar seccion" aria-labelledby="${id}">
-  <div class="contenedor rejilla ed-comprar__rejilla">
-    <div class="ed-comprar__cabeza" data-r>
-      <h2 id="${id}">Comprar es sencillo</h2>
-      <a class="boton boton--texto" href="${R().url.comoComprar()}">Ver cómo comprar</a>
-    </div>
-    <ol class="ed-pasos" data-r-grupo>
-      ${PASOS.map(([t, x], i) => `<li class="ed-paso" data-r><span class="ed-paso__num" aria-hidden="true">${i + 1}</span><h3 class="ed-paso__titulo"><span class="visualmente-oculto">Paso ${i + 1}: </span>${t}</h3><p>${x}</p></li>`).join("")}
+/** Bloque «Cómo comprar»: en Inicio con h2; en la página #/como-comprar, con h1. */
+function comprarHTML(opc = {}){
+  const id = U().uid("cc"), H = opc.h1 ? "h1" : "h2", h3 = opc.h1 ? "h2" : "h3";
+  return `<section class="cc seccion" aria-labelledby="${id}">
+  <div class="contenedor">
+    <div class="cc-cabeza" data-r><p class="cc-etiqueta">Cómo comprar</p><${H} class="cc-titulo" id="${id}">Fácil, como en la tienda de toda la vida</${H}></div>
+    <ol class="cc-pasos" data-r-grupo>
+      ${PASOS.map(([t, x, b], i) => `<li class="cc-paso" data-r><span class="cc-paso__num" aria-hidden="true">${String(i + 1).padStart(2, "0")}</span><${h3} class="cc-paso__titulo"><span class="visualmente-oculto">Paso ${i + 1}: </span>${t}</${h3}><p>${x}</p><div class="cc-paso__botones">${b(opc)}</div></li>`).join("")}
     </ol>
   </div>
 </section>`;
@@ -439,5 +440,5 @@ function registrar(){
 }
 registrar();   // registrar no llama a otros módulos: solo guarda funciones en LV.rutas (que ya existe)
 
-return Object.freeze({ respaldoRev, mapa, estado, estadoHTML, vigilarEstado, horarioHTML, contactoHTML, comoLlegar, llamar, whats, nb });
+return Object.freeze({ respaldoRev, mapa, estado, estadoHTML, vigilarEstado, horarioHTML, contactoHTML, comoLlegar, llamar, whats, nb, comprarHTML });
 })();
