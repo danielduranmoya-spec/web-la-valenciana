@@ -38,6 +38,8 @@ const SVG = {
   copiar: '<rect x="8" y="8" width="12" height="12" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M16 8V5a1 1 0 00-1-1H5a1 1 0 00-1 1v10a1 1 0 001 1h3" fill="none" stroke="currentColor" stroke-width="1.8"/>',
   borrar: '<path d="M4 7h16M10 7V4h4v3M6 7l1 13h10l1-13" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>',
   cerrar: '<path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>',
+  menu: '<path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/>',
+  plegar: '<path d="M15 6l-6 6 6 6" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/>',
   recargar: '<path d="M20 11a8 8 0 10-2.3 5.7M20 4v7h-7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>'
 };
 const ic = n => `<svg viewBox="0 0 24 24" aria-hidden="true">${SVG[n]}</svg>`;
@@ -184,13 +186,29 @@ const VISTAS = [["resumen", "Resumen"], ["pedidos", "Pedidos"], ["productos", "P
   ["categorias", "Secciones"], ["clientes", "Clientes"], ["ajustes", "Ajustes de la tienda"], ["registro", "Registro de cambios"]];
 const ROL = { admin: "Administración", pedidos: "Pedidos y stock", consulta: "Solo consultar" };
 function montarApp(){
-  $("#raiz").innerHTML = `<div class="app"><aside class="lado"><div class="marca"><b>La Valenciana</b><span>Trastienda</span></div>
+  let plegado = false; try { plegado = localStorage.getItem("lv-menu-plegado") === "1"; } catch (e) {}
+  $("#raiz").innerHTML = `<div class="app${plegado ? " plegado" : ""}" id="app">
+    <header class="barra"><button class="hamb" type="button" id="abrirMenu" aria-label="Abrir el menú" aria-expanded="false" aria-controls="lado">${ic("menu")}<span class="cnt" id="cntMenu" hidden></span></button>
+      <div class="titulo"><b>La Valenciana</b><span id="tituloVista"></span></div></header>
+    <div class="velo-menu" id="veloMenu"></div>
+    <aside class="lado" id="lado" aria-label="Menú del panel"><div class="lado-cab"><div class="marca"><b>La Valenciana</b><span>Trastienda</span></div>
+      <button class="plegar" type="button" id="plegar" aria-label="${plegado ? "Desplegar el menú" : "Plegar el menú"}" title="${plegado ? "Desplegar el menú" : "Plegar el menú"}">${ic("plegar")}</button></div>
     <nav class="nav" id="nav" aria-label="Secciones del panel"></nav>
-    <div class="pie"><div class="yo"><span class="av">${esc(iniciales(YO.nombre))}</span><div><b>${esc(YO.nombre)}</b><br>${esc(ROL[YO.rol] || YO.rol)}</div></div>
+    <div class="pie"><div class="yo" title="${esc(YO.nombre)}"><span class="av">${esc(iniciales(YO.nombre))}</span><div><b>${esc(YO.nombre)}</b><br>${esc(ROL[YO.rol] || YO.rol)}</div></div>
     <a href="../" target="_blank" rel="noopener" style="color:var(--acento)">Ver la tienda</a><button class="salir" type="button" id="salir">Cerrar sesión</button></div></aside>
-    <main><div id="vista"></div><p class="salir-movil"><a href="../" target="_blank" rel="noopener">Ver la tienda</a> · <button class="salir" type="button" id="salir2">Cerrar sesión</button></p></main></div>`;
-  const salir = async () => { await sb.auth.signOut(); location.hash = ""; pantallaAcceso(); };
-  $("#salir").onclick = salir; $("#salir2").onclick = salir;
+    <main><div id="vista"></div></main></div>`;
+  const app = $("#app");
+  $("#salir").onclick = async () => { await sb.auth.signOut(); location.hash = ""; pantallaAcceso(); };
+  $("#plegar").onclick = () => { const p = app.classList.toggle("plegado"); try { localStorage.setItem("lv-menu-plegado", p ? "1" : "0"); } catch (e) {}
+    const t = p ? "Desplegar el menú" : "Plegar el menú"; $("#plegar").setAttribute("aria-label", t); $("#plegar").title = t; };
+  $("#abrirMenu").onclick = () => abrirMenu(true);
+  $("#veloMenu").onclick = () => abrirMenu(false);
+  $("#nav").addEventListener("click", e => { if (e.target.closest("a")) abrirMenu(false); });
+}
+function abrirMenu(si){
+  const app = $("#app"); if (!app) return;
+  app.classList.toggle("abierto", si); $("#abrirMenu").setAttribute("aria-expanded", si);
+  if (si) { const a = $("#nav a[aria-current]") || $("#nav a"); a && a.focus(); } else if (document.activeElement && $("#lado").contains(document.activeElement)) $("#abrirMenu").focus();
 }
 const pendientes = () => S.pedidos.filter(p => ["cobrar", "preparar", "recoger"].includes(p.estado)).length;
 const estadoStock = p => !p.visible ? { n: "Oculto", c: "p-ne" } : p.uds <= 0 ? { n: "Agotado", c: "p-er" } : p.uds <= p.umbral ? { n: "Quedan pocas", c: "p-av" } : { n: "Disponible", c: "p-ok" };
@@ -200,8 +218,10 @@ function nav(){
   const n = $("#nav"); if (!n) return;
   n.innerHTML = VISTAS.map(([id, t]) => {
     const c = id === "pedidos" ? pendientes() : id === "stock" ? bajos().length : 0;
-    return `<a href="#${id}" ${id === actual ? 'aria-current="page"' : ""}>${ic(id)}<span>${t}</span>${c ? `<span class="cnt">${c}</span>` : ""}</a>`;
+    return `<a href="#${id}" title="${t}" ${id === actual ? 'aria-current="page"' : ""}>${ic(id)}<span>${t}</span>${c ? `<span class="cnt">${c}</span>` : ""}</a>`;
   }).join("");
+  const tv = $("#tituloVista"); if (tv) tv.textContent = (VISTAS.find(v => v[0] === actual) || [, ""])[1];
+  const cm = $("#cntMenu"); if (cm) { const n = pendientes(); cm.hidden = !n; cm.textContent = n; }
 }
 function ir(){ const h = location.hash.slice(1); actual = VISTAS.some(v => v[0] === h) ? h : "resumen"; cerrarCajon(); pintar(); window.scrollTo(0, 0); }
 window.addEventListener("hashchange", () => { if ($("#vista")) ir(); });
@@ -623,7 +643,7 @@ function cajon(titulo, cuerpo, pie){
   const pri = $("#capa .cuerpo input, #capa .cuerpo select, #capa footer .btn"); (pri || $("#capa .icono")).focus();
 }
 function cerrarCajon(){ if ($("#capa").innerHTML) { $("#capa").innerHTML = ""; if (foco && document.contains(foco)) foco.focus(); } }
-document.addEventListener("keydown", e => { if (e.key === "Escape") cerrarCajon(); });
+document.addEventListener("keydown", e => { if (e.key !== "Escape") return; if ($("#app.abierto")) abrirMenu(false); else cerrarCajon(); });
 function copiar(t){ try { navigator.clipboard.writeText(t).then(() => tostada("Copiado"), () => tostada(t)); } catch (e) { tostada(t); } }
 
 entrar();
