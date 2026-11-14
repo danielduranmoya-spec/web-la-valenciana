@@ -47,7 +47,7 @@ function casiIgual(a, b){
   return dif + (la - i) + (lb - j) <= 1;
 }
 // índice precalculado
-const INDICE = D.PRODUCTOS.map(prod => {
+const construirIndice = () => D.PRODUCTOS.map(prod => {
   const sub = D.subcategoria(prod.cat, prod.sub), cat = D.categoria(prod.cat);
   const nombre = new Set(tokens(`${prod.nombre} ${sub.n}`));
   const texto = new Set(tokens([prod.nombre, prod.desc, sub.n, cat.nombre, prod.variantes.map(v=>v.n).join(" "), prod.medidas.join(" "), prod.detalles.join(" "), prod.etiqueta||"", prod.icono.replace(/-/g," ")].join(" ")));
@@ -55,6 +55,9 @@ const INDICE = D.PRODUCTOS.map(prod => {
   const colores = new Set(prod.conColor === false ? [] : tokens(prod.variantes.map(v => v.n).join(" ")));
   return { prod, nombre: [...nombre], nombreSet: nombre, texto: [...texto], textoSet: texto, colores };
 });
+let INDICE = construirIndice();
+// si la base de datos cambia el catálogo (productos nuevos u ocultos), se rehace el índice
+if (LV.remoto) LV.remoto.listo.then(ok => { if (ok) INDICE = construirIndice(); });
 // Palabras de color: las de la paleta, salvo las que forman parte del NOMBRE de algún artículo
 // («transparente», «carey», «perla», «estampado»…), que cuentan como palabra de producto.
 const EN_NOMBRES = new Set(INDICE.flatMap(e => e.nombre));

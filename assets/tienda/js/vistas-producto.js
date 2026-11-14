@@ -184,7 +184,7 @@ function compra(st){
     <div class="fic-precio" data-r>
       <p class="fic-precio__linea"><span class="fic-precio__cifra" data-fic-precio>${U.euros(precioUd(st))}</span>
         <span class="fic-precio__nota">${prod.porMetro ? "el metro, IVA incluido" : "IVA incluido"}</span></p>
-      ${prod.stock === "pocas" ? `<span class="etiqueta lv-pocas">Quedan pocas unidades</span>` : `<span class="etiqueta etiqueta--salvia">${IC("check")}Disponible</span>`}
+      ${prod.stock === "agotado" ? `<span class="etiqueta lv-pocas">Agotado por ahora: pregúntenos por WhatsApp cuándo llega</span>` : prod.stock === "pocas" ? `<span class="etiqueta lv-pocas">Quedan pocas unidades</span>` : `<span class="etiqueta etiqueta--salvia">${IC("check")}Disponible</span>`}
     </div>
     <hr class="filete fic-filete">
     <div class="fic-elegir" id="${ids.elegir}" data-fic-destino="versiones">
@@ -193,8 +193,8 @@ function compra(st){
       ${cantidad(st)}
       <div class="fic-acciones" data-r>
         <p class="fic-ya" data-fic-ya hidden></p>
-        <button type="button" class="boton boton--primario boton--grande boton--ancho fic-anadir" data-fic="anadir">
-          <span class="fic-anadir__estado fic-anadir__estado--normal">${IC("cesta")}<span>Añadir a la cesta</span></span>
+        <button type="button" class="boton boton--primario boton--grande boton--ancho fic-anadir" data-fic="anadir"${prod.stock === "agotado" ? " disabled" : ""}>
+          <span class="fic-anadir__estado fic-anadir__estado--normal">${IC("cesta")}<span>${prod.stock === "agotado" ? "Agotado" : "Añadir a la cesta"}</span></span>
           <span class="fic-anadir__estado fic-anadir__estado--hecho" aria-hidden="true">
             <svg class="fic-anadir__check" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12.5l4.5 4.5L19 7.5" pathLength="1"/></svg>
             <span>Añadido</span></span>

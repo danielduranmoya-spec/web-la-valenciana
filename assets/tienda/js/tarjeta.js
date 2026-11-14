@@ -51,6 +51,8 @@ function precioHTML(prod){
 }
 function etiquetaHTML(prod){
   const U = LV.util;
+  if (prod.stock === "agotado") return `<span class="etiqueta tarjeta__etiqueta lv-pocas">Agotado</span>`;
+  if (prod.oferta) return `<span class="etiqueta tarjeta__etiqueta lv-pocas">−${prod.oferta} %</span>`;
   if (prod.stock === "pocas") return `<span class="etiqueta tarjeta__etiqueta lv-pocas">Quedan pocas</span>`;
   if (prod.novedad) return `<span class="etiqueta etiqueta--mantequilla tarjeta__etiqueta">Novedad</span>`;
   if (prod.etiqueta) return `<span class="etiqueta tarjeta__etiqueta tarjeta__etiqueta--blanca">${U.esc(prod.etiqueta)}</span>`;

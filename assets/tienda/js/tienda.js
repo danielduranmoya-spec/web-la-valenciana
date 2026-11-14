@@ -76,6 +76,7 @@ const cantidadDe = id => lineas.filter(l => l.id === id).reduce((s, l) => s + l.
 function anadir(id, variante, medida, cantidad = 1, origenEl = null){
   const prod = D.PORID[id];
   if (!prod) { console.error("[LV.tienda] producto desconocido:", id); return null; }
+  if (prod.stock === "agotado") { U.anunciar && U.anunciar(`«${prod.nombre}» está agotado ahora mismo.`, true); return null; }
   const v = prod.variantes.some(x => x.n === variante) ? variante : prod.variantes[0].n;
   const m = prod.medidas.includes(medida) ? medida : (prod.medidas[0] || "");
   const q = U.ajustarCantidad(prod, cantidad);

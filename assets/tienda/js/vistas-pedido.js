@@ -369,6 +369,7 @@ function montarPedido(main){
         datos: () => { guardar(); return leerDatos(); },
         decir,
         hecho: (datos, res) => {
+          if (LV.remoto) LV.remoto.pedido(datos, { canal: "tarjeta", paypal_id: res.id, ref: res.ref });
           T().guardarPedido({ ...datos, pago: "tarjeta", ref: res.ref, paypal: res.id, pagado: true });
           T().vaciar();
           LV.rutas.ir(LV.rutas.url.hecho());
@@ -438,7 +439,9 @@ function montarPedido(main){
     }
     const datos = leerDatos();
     guardar();
+    if (LV.datos.TIENDA.vacaciones) { U().anunciar("La tienda está de vacaciones y ahora no admite pedidos. Llámenos o escríbanos por WhatsApp.", true); return; }
     if (datos.pago === "tarjeta") { mostrarPasarela(); return; }
+    if (LV.remoto) LV.remoto.pedido(datos, { canal: datos.pago });
     const ped = T().guardarPedido(datos);
     aperturaFallida = false;
     if (datos.pago === "correo") {
