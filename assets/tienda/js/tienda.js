@@ -7,7 +7,7 @@ window.LV = window.LV || {};
 LV.tienda = (() => {
 "use strict";
 const D = LV.datos, U = LV.util;
-const CLAVE = "lv-cesta-v2", CLAVE_PEDIDO = "lv-ultimo-pedido";
+const CLAVE = "lv-cesta-v2", CLAVE_PEDIDO = "lv-ultimo-pedido", CLAVE_CODIGO = "lv-codigo";
 
 /* Línea guardada: {k:"id|variante|medida", id, v:"Rojo", m:"25 mm" | "", q:1.5} */
 let lineas = [];
@@ -57,8 +57,13 @@ const vacia = () => lineas.length === 0;
 /** Suma de los importes de cada línea (cada importe ya redondeado a céntimos, como se muestra). */
 const subtotal = () => r2(lineas.reduce((s, l) => s + r2(D.precioDe(D.PORID[l.id], l.v) * l.q), 0));
 /** Gastos de envío: modo "tienda" (recogida) → 0; "casa" → 4,95 € salvo subtotal ≥ 50 € o cesta vacía. */
-const envio = (modo = "casa") => (modo === "tienda" || vacia() || subtotal() >= D.TIENDA.envioGratis) ? 0 : D.TIENDA.envio;
-const total = (modo = "casa") => r2(subtotal() + envio(modo));
+/* Código de descuento aplicado: {codigo, tipo:"%"|"€", valor} (lo valida la base de datos; ver LV.remoto). */
+let codigo = U.leer(CLAVE_CODIGO, null);
+const codigoActual = () => codigo;
+function ponerCodigo(c){ codigo = c && c.codigo ? { codigo: c.codigo, tipo: c.tipo, valor: +c.valor } : null; U.guardar(CLAVE_CODIGO, codigo); guardarYAvisar("codigo"); }
+const descuento = () => !codigo || vacia() ? 0 : codigo.tipo === "%" ? r2(subtotal() * codigo.valor / 100) : r2(Math.min(codigo.valor, subtotal()));
+const envio = (modo = "casa") => (modo === "tienda" || vacia() || subtotal() - descuento() >= D.TIENDA.envioGratis) ? 0 : D.TIENDA.envio;
+const total = (modo = "casa") => r2(subtotal() - descuento() + envio(modo));
 /** Lo que falta para el envío gratis (0 si ya lo tiene). */
 const faltaEnvioGratis = () => Math.max(0, r2(D.TIENDA.envioGratis - subtotal()));
 /** Progreso hacia el envío gratis, de 0 a 1. */
@@ -127,7 +132,7 @@ function deshacer(){
 }
 const puedeDeshacer = () => !!ultimoQuitado;
 /** Vacía la cesta. */
-function vaciar(){ lineas = []; ultimoQuitado = null; guardarYAvisar("vaciar"); }
+function vaciar(){ lineas = []; ultimoQuitado = null; codigo = null; U.guardar(CLAVE_CODIGO, null); guardarYAvisar("vaciar"); }
 
 /**
  * Recomendaciones para la cesta: productos de las subcategorías de COMBINA de lo que hay,
@@ -163,6 +168,7 @@ function textoPedido(datos = {}){
     datos.ref ? `Pedido ${datos.ref} en La Valenciana:` : "Hola, quiero hacer este pedido en La Valenciana:", "",
     ...filas, "",
     `Productos: ${U.euros(subtotal())}`,
+    ...(descuento() ? [`Descuento (${codigo.codigo}): −${U.euros(descuento())}`] : []),
     `Envío: ${modo === "tienda" ? "recojo en la tienda (gratis)" : env ? U.euros(env) : "gratis"}`,
     `Total: ${U.euros(total(modo))}`, "",
     modo === "casa" ? `Entrega: envío a ${[datos.dir, [datos.cp, datos.loc].filter(Boolean).join(" ")].filter(Boolean).join(", ")}` : "Entrega: recojo en la tienda",
@@ -201,7 +207,7 @@ function iniciar(){
 cargar();
 
 return Object.freeze({
-  iniciar, lista, linea, articulos, numLineas, vacia, subtotal, envio, total,
+  iniciar, lista, linea, articulos, numLineas, vacia, subtotal, envio, total, descuento, codigoActual, ponerCodigo,
   faltaEnvioGratis, progresoEnvio, cantidadDe,
   anadir, cambiar, sumar, quitar, deshacer, puedeDeshacer, vaciar,
   recomendaciones, textoPedido, guardarPedido, ultimoPedido, correoPedido

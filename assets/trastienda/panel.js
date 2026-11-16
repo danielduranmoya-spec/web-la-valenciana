@@ -675,7 +675,7 @@ enlazar.clientes = () => { buscarEn("#cq", "clientes"); $$("[data-cli]").forEach
 const DIAS = ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"];
 const hhmm = x => `${String(Math.floor(x)).padStart(2, "0")}:${String(Math.round(x % 1 * 60)).padStart(2, "0")}`;
 const leerHora = s => { const m = /^(\d{1,2})(?::(\d{2}))?$/.exec(s.trim()); return m ? +m[1] + (+m[2] || 0) / 60 : NaN; };
-V.ajustes = () => { const a = S.ajustes, hor = a.horario || {}, fest = a.festivos || [], pp = a.pago || window.LV_PAGO || {};
+V.ajustes = () => { const a = S.ajustes, hor = a.horario || {}, fest = a.festivos || [], pp = a.pago || window.LV_PAGO || {}, av = a.avisos || {};
   return cab("Ajustes de la tienda", "Envíos, horario, festivos, avisos, datos de contacto, cobros y accesos. Los cambios se ven en la web en cuanto alguien la abre o la recarga.") + `<div class="vista">${YO.rol !== "admin" ? '<p class="nota-pago">Solo la administración puede cambiar estos ajustes. Usted puede consultarlos.</p>' : ""}<div class="rejilla r2" style="align-items:start">
   <section class="bloque"><h2>Envíos y cambios</h2><div class="form">
    <label class="c">Coste del envío (€)<input class="campo" data-aj="envio" inputmode="decimal" value="${coma(a.envio ?? 4.95)}"></label>
@@ -696,6 +696,12 @@ V.ajustes = () => { const a = S.ajustes, hor = a.horario || {}, fest = a.festivo
    <label class="c">Client ID de PayPal <small>De developer.paypal.com → Apps &amp; Credentials → Live. Es público. Nunca pegue aquí el «Secret».</small><input class="campo" id="ppid" value="${esc(pp.clientId || "")}" autocomplete="off" spellcheck="false"></label>
    <label class="marcar"><span class="interr"><input type="checkbox" id="pppru" ${pp.prueba !== false ? "checked" : ""}><span></span></span>Modo de prueba (no cobra)</label>
    <p class="mini" style="margin:0">Los pagos se reservan al hacer el pedido y se cobran desde PayPal cuando lo prepare.</p></div></section>
+  <section class="bloque"><h2>Avisos por correo</h2><div style="display:flex;flex-direction:column;gap:12px">
+   <label class="c">Enviar los avisos a <small>Puede poner varios correos separados por comas.</small><input class="campo" type="text" inputmode="email" id="avcor" value="${esc(av.correo || (a.contacto || {}).correo || "")}" autocomplete="off" spellcheck="false"></label>
+   <label class="marcar"><span class="interr"><input type="checkbox" id="avped" ${av.pedidos !== false ? "checked" : ""}><span></span></span>Cada vez que entra un pedido por la web</label>
+   <label class="marcar"><span class="interr"><input type="checkbox" id="avsto" ${av.stock !== false ? "checked" : ""}><span></span></span>Cuando un producto baja de su mínimo o se agota</label>
+   <div><button class="btn pq" type="button" id="avpru">Enviar un correo de prueba</button></div>
+   <p class="mini" style="margin:0" id="avest" role="status">Si la prueba no llega en un par de minutos, mire la carpeta de spam.</p></div></section>
   </div>
   <section class="bloque"><h2>Quién puede entrar aquí</h2><div class="lista" id="admins"><p class="mini">Cargando…</p></div>
    <h2 style="margin-top:18px">Cuentas que esperan acceso</h2><div class="lista" id="pendientes"><p class="mini">Cargando…</p></div>
@@ -720,6 +726,19 @@ enlazar.ajustes = () => {
     guardarAjuste("pago", pago(), "Client ID guardado"); };
   $("#pppru").onchange = async e => { if (!e.target.checked && (!$("#ppid").value.trim() || $("#ppid").value.trim() === "sb")) { e.target.checked = true; return tostada("Antes de cobrar de verdad, pegue el Client ID «Live» de PayPal."); }
     await guardarAjuste("pago", pago(), e.target.checked ? "Pagos en modo de prueba" : "La web ya cobra de verdad con PayPal"); pintar(); };
+  const avisos = () => ({ ...(S.ajustes.avisos || {}), correo: $("#avcor").value.trim(), pedidos: $("#avped").checked, stock: $("#avsto").checked });
+  $("#avcor").onchange = () => { const v = $("#avcor").value.trim();
+    if (v && !v.split(/[,;\s]+/).filter(Boolean).every(c => /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(c))) return tostada("Revise el correo: parece que no está bien escrito");
+    guardarAjuste("avisos", avisos(), "Correo de avisos guardado"); };
+  $("#avped").onchange = e => guardarAjuste("avisos", avisos(), e.target.checked ? "Le avisaremos de cada pedido" : "Sin avisos de pedidos");
+  $("#avsto").onchange = e => guardarAjuste("avisos", avisos(), e.target.checked ? "Le avisaremos cuando algo se acabe" : "Sin avisos de stock");
+  $("#avpru").onclick = async () => { const b = $("#avpru"), est = $("#avest"); b.disabled = true; est.textContent = "Enviando…";
+    const { data, error } = await sb.functions.invoke("avisos", { body: { tipo: "prueba" } });
+    b.disabled = false;
+    if (error) { let m = ""; try { m = (await error.context.json()).error || ""; } catch (e) {}
+      est.textContent = /RESEND/.test(m) ? "Falta poner la clave de Resend en Supabase (paso 3 de la guía)." : m ? "No se pudo enviar: " + m : "No se pudo enviar. ¿Está creada la función «avisos» en Supabase? (ver la guía)";
+      return; }
+    est.textContent = "Prueba enviada" + (data && data.ok ? " a " + data.ok : "") + ". Si no llega en un par de minutos, mire la carpeta de spam."; };
   if (YO.rol !== "admin") $$("#vista input, #vista select, #vista button:not([data-recargar])").forEach(x => x.disabled = true);
   pintarAccesos();
 };

@@ -89,6 +89,7 @@ function htmlCifras(modo){
   const textoEnv = modo === "tienda" ? "Gratis (recogida)" : env ? euros(env) : "Gratis";
   return `<dl class="ped-cifras">
     <div><dt>Productos</dt><dd>${euros(t.subtotal())}</dd></div>
+    ${t.descuento && t.descuento() ? `<div class="ped-descuento"><dt>Descuento <span>(${esc(t.codigoActual().codigo)})</span></dt><dd>−${euros(t.descuento())}</dd></div>` : ""}
     <div><dt>Entrega</dt><dd${env ? "" : ' class="ped-gratis"'}>${textoEnv}</dd></div>
     <div class="ped-cifras__total"><dt>Total <span>(IVA incluido)</span></dt><dd>${euros(t.total(modo))}</dd></div>
   </dl>`;
@@ -97,7 +98,20 @@ function htmlCuerpoResumen(modo){
   const n = T().articulos();
   return `${htmlLineasResumen()}
     <button type="button" class="boton boton--texto ped-cambiar" data-ped="cesta" aria-controls="ces-panel" aria-haspopup="dialog">Cambiar artículos o cantidades</button>
+    ${htmlCodigo()}
     ${htmlCifras(modo)}`;
+}
+let nCodigo = 0;
+function htmlCodigo(){
+  if (!LV.remoto || !LV.remoto.conectado() || !T().ponerCodigo) return "";
+  const c = T().codigoActual();
+  if (c) return `<div class="ped-codigo ped-codigo--hecho"><p>${ic("check")}<span>Código <strong>${esc(c.codigo)}</strong> aplicado</span></p><button type="button" class="boton boton--texto" data-cod="quitar">Quitar</button></div>`;
+  const id = "cod-" + (++nCodigo);
+  return `<details class="ped-codigo"><summary>¿Tiene un código de descuento?</summary>
+    <div class="ped-codigo__fila"><label class="visualmente-oculto" for="${id}">Código de descuento</label>
+    <input class="campo__control ped-codigo__campo" id="${id}" data-cod="campo" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="Escriba el código">
+    <button type="button" class="boton boton--secundario" data-cod="aplicar">Aplicar</button></div>
+    <p class="ped-codigo__msg" data-cod="msg" role="status"></p></details>`;
 }
 function textoBoton(pago){ return pago === "tarjeta" ? "Pagar con tarjeta" : pago === "correo" ? "Enviar pedido por correo" : "Enviar pedido por WhatsApp"; }
 const iconoPago = pago => ic(pago === "tarjeta" ? "candado" : pago === "correo" ? "correo" : "whats");
@@ -417,7 +431,23 @@ function montarPedido(main){
     inp.scrollIntoView({ block: "center", behavior: U().reducido() ? "auto" : "smooth" });
     inp.focus({ preventScroll: true });
   });
+  // código de descuento (lo comprueba la base de datos)
+  const aplicarCodigo = async caja => {
+    const campo = caja.querySelector('[data-cod="campo"]'), msg = caja.querySelector('[data-cod="msg"]'), cod = campo.value.trim();
+    if (!cod) { msg.textContent = "Escriba el código."; campo.focus(); return; }
+    msg.textContent = "Comprobando…";
+    const r = await LV.remoto.comprobarCodigo(cod);
+    if (!r) { msg.textContent = "Ese código no existe o ya no está activo."; campo.focus(); return; }
+    T().ponerCodigo(r); refrescar();
+    U().anunciar(`Código ${r.codigo} aplicado. Total: ${U().euros(T().total(entrega()))}.`);
+  };
+  raiz.addEventListener("keydown", e => {
+    if (e.key !== "Enter" || !e.target.matches('[data-cod="campo"]')) return;
+    e.preventDefault(); aplicarCodigo(e.target.closest(".ped-codigo"));
+  });
   raiz.addEventListener("click", e => {
+    const ap = e.target.closest('[data-cod="aplicar"]'); if (ap) { aplicarCodigo(ap.closest(".ped-codigo")); return; }
+    if (e.target.closest('[data-cod="quitar"]')) { T().ponerCodigo(null); refrescar(); U().anunciar("Código quitado."); return; }
     const b = e.target.closest('[data-ped="cesta"]'); if (!b) return;
     LV.cesta && LV.cesta.abrir && LV.cesta.abrir(b);
   });

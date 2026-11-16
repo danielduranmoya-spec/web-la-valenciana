@@ -125,10 +125,17 @@ function pedido(datos, extra = {}){
   const lineas = LV.tienda.lista().map(l => ({ id: l.id, version: [l.v, l.m].filter(Boolean).join(" · ") || null, q: +l.q }));
   const cuerpo = { cliente: datos.nombre, tel: datos.tel, email: datos.email || null, direccion: datos.dir || null, localidad: datos.loc || null, cp: datos.cp || null,
     entrega: datos.entrega === "casa" ? "casa" : "tienda", canal: extra.canal || datos.pago || "whatsapp", lineas, paypal_id: extra.paypal_id || null,
+    codigo: (LV.tienda.codigoActual && LV.tienda.codigoActual() || {}).codigo || null,
     notas: [datos.notas, extra.ref ? "Ref. PayPal " + extra.ref : ""].filter(Boolean).join(" · ") || null };
   return pedir("rpc/crear_pedido", { method: "POST", body: JSON.stringify({ datos: cuerpo }), keepalive: true })
     .catch(e => { console.error("[LV.remoto] no se pudo registrar el pedido:", e.message); return null; });
 }
 
-return { listo, pedido, parchear, conectado: () => conectado };
+/** Comprueba un código de descuento en la base de datos → {codigo, tipo, valor} o null. */
+function comprobarCodigo(cod){
+  return pedir("rpc/comprobar_codigo", { method: "POST", body: JSON.stringify({ pcodigo: cod }) })
+    .then(r => r && r.codigo ? r : null).catch(() => null);
+}
+
+return { listo, pedido, parchear, comprobarCodigo, conectado: () => conectado };
 })();

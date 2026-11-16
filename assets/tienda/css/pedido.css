@@ -298,3 +298,18 @@ button.boton--texto.ped-cambiar, .ped-hecho__vaciar button.boton--texto { backgr
 }
 .ped-hecho__siguiente { padding-top: var(--s-8); display: grid; gap: var(--s-3); justify-items: start; }
 .ped-hecho__siguiente .boton { margin-top: var(--s-4); }
+
+/* Código de descuento */
+.ped-codigo { border-top: var(--filete); padding-top: var(--s-3); }
+.ped-codigo summary { cursor: pointer; font-size: var(--t-pequeno); font-weight: 600; color: var(--c-acento); width: max-content; max-width: 100%; }
+.ped-codigo__fila { display: flex; gap: var(--s-2); margin-top: var(--s-2); }
+.ped-codigo__campo { flex: 1; min-width: 0; text-transform: uppercase; }
+.ped-codigo__fila .boton { flex: none; }
+.ped-codigo__msg { margin: var(--s-1) 0 0; font-size: var(--t-pequeno); color: var(--c-tinta-suave); min-height: 1.2em; }
+.ped-codigo--hecho { display: flex; align-items: center; justify-content: space-between; gap: var(--s-2); }
+.ped-codigo--hecho p { margin: 0; display: flex; align-items: center; gap: .4em; font-size: var(--t-pequeno); color: var(--c-exito); }
+.ped-codigo--hecho p svg { width: 1.1em; height: 1.1em; flex: none; }
+.ped-codigo--hecho .boton--texto { background-color: transparent; font-size: var(--t-pequeno); }
+.ped-cifras .ped-descuento dd { color: var(--c-exito); }
+.ped-cifras .ped-descuento dt span { font-size: var(--t-pequeno); }
+.ped-codigo__campo::placeholder { text-transform: none; }

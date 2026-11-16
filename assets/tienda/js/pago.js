@@ -67,15 +67,17 @@ function botones(paypal, cont, { validar, datos, decir, hecho }){
       const items = articulos();
       const sub = items.reduce((s, i) => s + i._c, 0);
       const env = casa ? cent(LV.tienda.envio("casa")) : 0;
+      const des = LV.tienda.descuento ? cent(LV.tienda.descuento()) : 0;
       items.forEach(i => delete i._c);
       ref = referencia();
       const desglose = { item_total: { currency_code: mon(), value: dec(sub) } };
+      if (des) desglose.discount = { currency_code: mon(), value: dec(des) };
       if (casa) desglose.shipping = { currency_code: mon(), value: dec(env) };
       const unidad = {
         reference_id: ref, invoice_id: ref,
         description: corta(`${casa ? "Envío" : "Recogida en tienda"} · ${dt.nombre} · ${dt.tel}`),
         custom_id: corta([dt.email, dt.notas].filter(Boolean).join(" | ")),
-        amount: { currency_code: mon(), value: dec(sub + env), breakdown: desglose },
+        amount: { currency_code: mon(), value: dec(sub - des + env), breakdown: desglose },
         items
       };
       if (casa) unidad.shipping = { name: { full_name: corta(dt.nombre, 300) },

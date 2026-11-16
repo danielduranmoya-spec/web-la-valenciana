@@ -21,3 +21,21 @@
   acceso a nada hasta que la administración lo aprueba. Roles: `admin` (todo), `pedidos` (pedidos, stock, productos y ofertas), `consulta` (solo ver).
 - Para la recuperación de contraseña, en *Authentication → URL Configuration → Redirect URLs* debe estar
   `https://danielduranmoya-spec.github.io/web-la-valenciana/**`.
+- `actualizar-2.sql` (16-11-2026): función `comprobar_codigo()` para la casilla de código de descuento de la cesta, y avisos por
+  correo: activa `pg_net`, añade `pedidos.avisado` y `productos.aviso_stock`, y dos disparadores que llaman a la función `avisos`
+  cuando entra un pedido (salvo los hechos en la tienda) o cuando un producto cruza su mínimo o se agota. Ajuste nuevo `avisos`
+  `{correo, pedidos, stock}`, que se cambia en el panel. Ya va incluido al final de `instalar.sql`.
+
+## Avisos por correo (función `avisos`)
+
+Código en `funciones/avisos/index.ts`. Envía con [Resend](https://resend.com) (gratis hasta 3.000 correos al mes).
+
+1. Crear cuenta en resend.com con el correo donde se quieren recibir los avisos. *API Keys → Create API key* (permiso «Sending access»).
+   Sin dominio propio verificado, Resend solo entrega al correo de la cuenta: ese debe ser el de «Enviar los avisos a» en el panel.
+   Para enviar a otros correos, verificar el dominio `lavalencianamerceria.com` en *Domains* y poner en el ajuste `avisos`
+   `"remitente": "La Valenciana <avisos@lavalencianamerceria.com>"`.
+2. Supabase → *Edge Functions → Deploy a new function → Via Editor*. Nombre `avisos`; pegar `funciones/avisos/index.ts`; *Deploy*.
+3. En la función → *Details*: desactivar *Enforce JWT verification* (la llama la base de datos; solo acepta referencias reales y no repite avisos).
+4. *Edge Functions → Secrets → Add new secret*: `RESEND_API_KEY` = la clave de Resend. (`SUPABASE_URL` y `SUPABASE_SERVICE_ROLE_KEY` ya existen.)
+5. Ejecutar `actualizar-2.sql` en el SQL Editor.
+6. Panel → *Ajustes → Avisos por correo → Enviar un correo de prueba*.
