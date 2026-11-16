@@ -9,16 +9,7 @@
   --f-titulo:"Playfair Display",Georgia,serif;
   --f-texto:"Jost","Helvetica Neue",system-ui,-apple-system,"Segoe UI",sans-serif;
 }
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
-  --fondo:#1E1A17; --crema:#26211D; --beis:#332B24; --kraft:#B08A62; --filete:#3B332C;
-  --tinta:#F1E9DF; --suave:#C4B8AA; --acento:#D9A97C; --acento-hondo:#E8C29E; --sobre-acento:#1E1A17;
-  --borde:#9C8269; --exito:#7FC79A; --exito-velo:#1F3127; --aviso:#E5B85C; --aviso-velo:#3A2F18;
-  --error:#F08A8E; --error-velo:#3D2022; --info:#8DBBDD; --info-velo:#1D2A35; --sombra:rgba(0,0,0,.45); --velo:rgba(0,0,0,.6); color-scheme:dark}}
-:root[data-theme="dark"]{
-  --fondo:#1E1A17; --crema:#26211D; --beis:#332B24; --kraft:#B08A62; --filete:#3B332C;
-  --tinta:#F1E9DF; --suave:#C4B8AA; --acento:#D9A97C; --acento-hondo:#E8C29E; --sobre-acento:#1E1A17;
-  --borde:#9C8269; --exito:#7FC79A; --exito-velo:#1F3127; --aviso:#E5B85C; --aviso-velo:#3A2F18;
-  --error:#F08A8E; --error-velo:#3D2022; --info:#8DBBDD; --info-velo:#1D2A35; --sombra:rgba(0,0,0,.45); --velo:rgba(0,0,0,.6); color-scheme:dark}
+:root{color-scheme:light}
 *{box-sizing:border-box}
 html,body{height:100%}
 body{background:var(--fondo);color:var(--tinta);font:16px/1.5 var(--f-texto);}
