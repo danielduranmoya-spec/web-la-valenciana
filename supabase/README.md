@@ -28,14 +28,14 @@
 
 ## Avisos por correo (función `avisos`)
 
-Código en `funciones/avisos/index.ts`. Envía con [Resend](https://resend.com) (gratis hasta 3.000 correos al mes).
+Código en `funciones/avisos/index.ts`. Envía con [Brevo](https://www.brevo.com) (empresa europea; plan gratuito de 300 correos al día).
+También admite Resend si en lugar de `BREVO_API_KEY` se pone el secreto `RESEND_API_KEY`.
 
-1. Crear cuenta en resend.com con el correo donde se quieren recibir los avisos. *API Keys → Create API key* (permiso «Sending access»).
-   Sin dominio propio verificado, Resend solo entrega al correo de la cuenta: ese debe ser el de «Enviar los avisos a» en el panel.
-   Para enviar a otros correos, verificar el dominio `lavalencianamerceria.com` en *Domains* y poner en el ajuste `avisos`
-   `"remitente": "La Valenciana <avisos@lavalencianamerceria.com>"`.
+1. Crear cuenta gratuita en brevo.com con el correo donde se quieren recibir los avisos. Arriba a la derecha → *SMTP & API → API Keys →
+   Generate a new API key*. Copiarla (solo se ve una vez). El remitente es el correo de la cuenta, que Brevo ya da por verificado; para usar
+   otro, verificarlo en *Senders, Domains & Dedicated IPs* y ponerlo en el ajuste `avisos` como `"remitente": "otro@correo.com"`.
 2. Supabase → *Edge Functions → Deploy a new function → Via Editor*. Nombre `avisos`; pegar `funciones/avisos/index.ts`; *Deploy*.
 3. En la función → *Details*: desactivar *Enforce JWT verification* (la llama la base de datos; solo acepta referencias reales y no repite avisos).
-4. *Edge Functions → Secrets → Add new secret*: `RESEND_API_KEY` = la clave de Resend. (`SUPABASE_URL` y `SUPABASE_SERVICE_ROLE_KEY` ya existen.)
+4. *Edge Functions → Secrets → Add new secret*: `BREVO_API_KEY` = la clave de Brevo. (`SUPABASE_URL` y `SUPABASE_SERVICE_ROLE_KEY` ya existen.)
 5. Ejecutar `actualizar-2.sql` en el SQL Editor.
 6. Panel → *Ajustes → Avisos por correo → Enviar un correo de prueba*.

@@ -736,7 +736,7 @@ enlazar.ajustes = () => {
     const { data, error } = await sb.functions.invoke("avisos", { body: { tipo: "prueba" } });
     b.disabled = false;
     if (error) { let m = ""; try { m = (await error.context.json()).error || ""; } catch (e) {}
-      est.textContent = /RESEND/.test(m) ? "Falta poner la clave de Resend en Supabase (paso 3 de la guía)." : m ? "No se pudo enviar: " + m : "No se pudo enviar. ¿Está creada la función «avisos» en Supabase? (ver la guía)";
+      est.textContent = /BREVO_API_KEY|RESEND/.test(m) ? "Falta poner la clave de Brevo en Supabase (secreto BREVO_API_KEY)." : m ? "No se pudo enviar: " + m : "No se pudo enviar. ¿Está creada la función «avisos» en Supabase? (ver la guía)";
       return; }
     est.textContent = "Prueba enviada" + (data && data.ok ? " a " + data.ok : "") + ". Si no llega en un par de minutos, mire la carpeta de spam."; };
   if (YO.rol !== "admin") $$("#vista input, #vista select, #vista button:not([data-recargar])").forEach(x => x.disabled = true);

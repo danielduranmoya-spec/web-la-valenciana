@@ -6,7 +6,8 @@
 //
 // Instalación (una vez): Supabase → Edge Functions → Deploy a new function → Via Editor,
 // nombre «avisos», pegar este archivo entero y desplegar. Después, en los ajustes de la función,
-// desactivar «Verify JWT». En Edge Functions → Secrets, añadir RESEND_API_KEY (de resend.com).
+// desactivar «Verify JWT». En Edge Functions → Secrets, añadir BREVO_API_KEY (de brevo.com → SMTP & API → API Keys).
+// También funciona con Resend: en lugar de BREVO_API_KEY, poner RESEND_API_KEY.
 
 import { createClient } from "jsr:@supabase/supabase-js@2";
 
@@ -28,19 +29,30 @@ async function ajustes() {
   const { data } = await db.from("ajustes").select("clave,valor").in("clave", ["avisos", "contacto"]);
   const a = Object.fromEntries((data || []).map((f) => [f.clave, f.valor]));
   const av = a.avisos || {};
-  return { correo: av.correo || a.contacto?.correo, remitente: av.remitente || "La Valenciana <onboarding@resend.dev>", pedidos: av.pedidos !== false, stock: av.stock !== false };
+  return { correo: av.correo || a.contacto?.correo, remitente: av.remitente || "", pedidos: av.pedidos !== false, stock: av.stock !== false };
 }
 
 async function enviar(para: string, asunto: string, cuerpo: string, remitente: string) {
-  const clave = Deno.env.get("RESEND_API_KEY");
-  if (!clave) throw new Error("Falta el secreto RESEND_API_KEY");
+  const brevo = Deno.env.get("BREVO_API_KEY"), resend = Deno.env.get("RESEND_API_KEY");
+  if (!brevo && !resend) throw new Error("Falta el secreto BREVO_API_KEY");
+  const destinos = para.split(/[,;\s]+/).filter(Boolean);
   const html = `<div style="font-family:Arial,sans-serif;font-size:15px;color:#2b2420;max-width:560px">${cuerpo}
     <p style="margin-top:24px"><a href="${PANEL}" style="background:#6b4a2f;color:#fff;padding:10px 16px;border-radius:6px;text-decoration:none">Abrir la Trastienda</a></p>
     <p style="color:#8a7d72;font-size:12px;margin-top:24px">Aviso automático de la web de La Valenciana. Se cambia en la Trastienda → Ajustes → Avisos por correo.</p></div>`;
+  if (brevo) {
+    // Brevo: el remitente debe ser un correo verificado en Brevo (el de la cuenta lo está). Por defecto, el primer destinatario.
+    const r = await fetch("https://api.brevo.com/v3/smtp/email", {
+      method: "POST",
+      headers: { "api-key": brevo, "Content-Type": "application/json", Accept: "application/json" },
+      body: JSON.stringify({ sender: { name: "La Valenciana", email: remitente || destinos[0] }, to: destinos.map((email) => ({ email })), subject: asunto, htmlContent: html }),
+    });
+    if (!r.ok) throw new Error(`Brevo ${r.status}: ${await r.text()}`);
+    return;
+  }
   const r = await fetch("https://api.resend.com/emails", {
     method: "POST",
-    headers: { Authorization: `Bearer ${clave}`, "Content-Type": "application/json" },
-    body: JSON.stringify({ from: remitente, to: para.split(/[,;\s]+/).filter(Boolean), subject: asunto, html }),
+    headers: { Authorization: `Bearer ${resend}`, "Content-Type": "application/json" },
+    body: JSON.stringify({ from: remitente ? `La Valenciana <${remitente}>` : "La Valenciana <onboarding@resend.dev>", to: destinos, subject: asunto, html }),
   });
   if (!r.ok) throw new Error(`Resend ${r.status}: ${await r.text()}`);
 }
