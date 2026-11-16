@@ -14,6 +14,7 @@ const cfg = window.LV_DB || {};
 const D = LV.datos;
 const cab = () => ({ apikey: cfg.clave, "Content-Type": "application/json" });
 const COLS = "id,cat,sub,nombre,precio,icono,descripcion,variantes,tipo_var,medidas,tipo_medida,por_metro,precios,etiqueta,detalles,destacado,novedad,oferta,uds,umbral,orden";
+const COLS_FOTOS = COLS + ",fotos";
 let conectado = false;
 
 function pedir(ruta, opciones = {}){
@@ -49,6 +50,7 @@ function aplicar(filas, ajustes, subs){
       if (r.detalles) p.detalles = r.detalles;
       p.etiqueta = r.etiqueta || null; p.destacado = !!r.destacado; p.novedad = !!r.novedad; p.precios = r.precios || null; p.orden = r.orden;
     }
+    p.fotos = Array.isArray(r.fotos) ? r.fotos.filter(u => /^https:\/\//.test(u)) : [];
     p.precioNormal = +r.precio;
     p.oferta = r.oferta || null;
     p.precio = r.oferta ? Math.round(r.precio * (100 - r.oferta)) / 100 : +r.precio;
@@ -65,6 +67,37 @@ function aplicar(filas, ajustes, subs){
   const T = D.TIENDA, a = Object.fromEntries((ajustes || []).map(x => [x.clave, x.valor]));
   ["envio", "envioGratis", "plazoEnvio", "horaCorte", "diasCambio", "horario", "festivos"].forEach(k => { if (a[k] != null) T[k] = a[k]; });
   T.vacaciones = !!a.vacaciones; T.avisoTexto = a.avisoTexto || "";
+  // datos de contacto
+  const c = a.contacto || {}, dig = s => String(s || "").replace(/\D/g, "");
+  if (c.tel) { T.tel = c.tel; T.telHref = "+34" + dig(c.tel).replace(/^34(?=\d{9}$)/, ""); }
+  if (c.whatsapp) { T.whatsTxt = c.whatsapp; T.whats = "34" + dig(c.whatsapp).replace(/^34(?=\d{9}$)/, ""); }
+  if (c.correo) T.correo = c.correo;
+  if (c.correoMerceria) T.correoMerceria = c.correoMerceria;
+  if (c.correoComplementos) T.correoComplementos = c.correoComplementos;
+  if (c.calle) { T.calle = c.calle; T.cp = c.cp || T.cp; T.ciudad = c.ciudad || T.ciudad; T.provincia = c.provincia || T.provincia;
+    T.dir = `${T.calle}, ${T.cp} ${T.ciudad} (${T.provincia})`;
+    T.mapa = "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(`${T.calle}, ${T.cp} ${T.ciudad}`); }
+  // pasarela de pago (Client ID público de PayPal y modo de prueba)
+  if (a.pago && a.pago.clientId) window.LV_PAGO = { ...(window.LV_PAGO || {}), clientId: a.pago.clientId, prueba: a.pago.prueba !== false };
+}
+
+/* Fotos: si un producto tiene fotos subidas desde la trastienda, se muestran en lugar del dibujo.
+   Vista principal → 1.ª foto; «de cerca» → 2.ª; «a escala» → 3.ª; «combinada» → 4.ª (si no hay, la 1.ª). */
+const ORDEN_VISTAS = { principal: 0, detalle: 1, escala: 2, combinada: 3 };
+function parchear(){
+  if (!LV.ilus || !LV.ilus.dibujar || LV.ilus._conFotos) return;
+  const dibujar = LV.ilus.dibujar;
+  LV.ilus.dibujar = function (prod, idx = 0, op = {}) {
+    const f = prod && prod.fotos;
+    if (!f || !f.length) return dibujar.apply(this, arguments);
+    const u = f[ORDEN_VISTAS[op.vista || "principal"]] || f[0], dec = op.decorativa !== false;
+    const alt = dec ? "" : prod.nombre;
+    return `<img class="lv-foto${op.clase ? " " + op.clase : ""}" src="${String(u).replace(/"/g, "%22")}" alt="${String(alt).replace(/[<>"&]/g, "")}" loading="lazy" decoding="async"${dec ? ' aria-hidden="true"' : ""}>`;
+  };
+  LV.ilus._conFotos = true;
+  const st = document.createElement("style");
+  st.textContent = ".lv-foto{display:block;width:100%;height:100%;object-fit:cover;aspect-ratio:1/1;background:#fff}";
+  document.head.appendChild(st);
 }
 function aviso(){
   const T = D.TIENDA, txt = T.vacaciones ? (T.avisoTexto || "La tienda está de vacaciones: puede ver el catálogo, pero ahora no admitimos pedidos.") : T.avisoTexto;
@@ -76,7 +109,7 @@ function aviso(){
 }
 
 const listo = !cfg.url ? Promise.resolve(false) : conTiempo(Promise.all([
-  pedir(`productos?select=${COLS}&order=orden`),
+  pedir(`productos?select=${COLS_FOTOS}&order=orden`).catch(() => pedir(`productos?select=${COLS}&order=orden`)),
   pedir("ajustes?select=clave,valor"),
   pedir("subcategorias?select=id,cat,nombre,texto,orden&order=orden")
 ]), 3000).then(([filas, ajustes, subs]) => {
@@ -97,5 +130,5 @@ function pedido(datos, extra = {}){
     .catch(e => { console.error("[LV.remoto] no se pudo registrar el pedido:", e.message); return null; });
 }
 
-return { listo, pedido, conectado: () => conectado };
+return { listo, pedido, parchear, conectado: () => conectado };
 })();

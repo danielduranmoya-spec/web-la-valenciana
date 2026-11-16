@@ -138,7 +138,7 @@ function htmlCabecera(){
   const T = D.TIENDA;
   return `<div class="cab-anuncio">
     <div class="contenedor cab-anuncio__in">
-      <p class="cab-anuncio__txt">Envío gratis desde 50&nbsp;€. Pague con tarjeta o pídalo por WhatsApp: <a href="${U.whatsURL()}" target="_blank" rel="noopener">633&nbsp;930&nbsp;935</a></p>
+      <p class="cab-anuncio__txt">Envío gratis desde ${String(T.envioGratis).replace(".", ",")}&nbsp;€. Pague con tarjeta o pídalo por WhatsApp: <a href="${U.whatsURL()}" target="_blank" rel="noopener">${U.esc(T.whatsTxt).replace(/ /g, "&nbsp;")}</a></p>
       ${htmlLetra("cab")}
     </div>
   </div>

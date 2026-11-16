@@ -55,7 +55,7 @@ let PID = {}, subN = {}, catN = {};
 
 const aProd = r => ({ id: r.id, cat: r.cat, sub: r.sub, n: r.nombre, precio: +r.precio, coste: r.coste == null ? 0 : +r.coste,
   var: (r.variantes || []).map(v => v.n), _var: r.variantes || [], med: r.medidas || [], porMetro: !!r.por_metro, uds: +r.uds, umbral: +r.umbral,
-  visible: !!r.visible, dest: !!r.destacado, nov: !!r.novedad, desc: r.descripcion || "", oferta: r.oferta || null, icono: r.icono, orden: r.orden || 0, _fila: r });
+  visible: !!r.visible, dest: !!r.destacado, nov: !!r.novedad, desc: r.descripcion || "", fotos: Array.isArray(r.fotos) ? r.fotos : [], detalles: r.detalles || [], etiqueta: r.etiqueta || "", oferta: r.oferta || null, icono: r.icono, orden: r.orden || 0, _fila: r });
 const aPed = r => ({ ref: r.ref, t: Date.parse(r.creado), cli: r.cliente, tel: r.tel || "—", email: r.email || "—",
   loc: r.entrega === "casa" ? [r.direccion, [r.cp, r.localidad].filter(Boolean).join(" ")].filter(Boolean).join(", ") || "Envío" : (r.canal === "tienda" ? "Mostrador" : "Recoge en tienda"),
   localidad: r.localidad || "", canal: r.canal, entrega: r.entrega, lineas: (r.lineas || []).map(l => ({ id: l.id, n: l.nombre, ver: l.version || "", q: +l.q, precio: +l.precio })),
@@ -116,18 +116,20 @@ function tostada(txt, deshacer){
 
 /* ---------- acceso ---------- */
 function pantallaAcceso(modo = "entrar", msg = ""){
-  const nueva = modo === "nueva";
+  const nueva = modo === "nueva", alta = modo === "alta";
   $("#raiz").innerHTML = `<div class="acceso"><form id="facc" novalidate>
     <div class="marca"><b>La Valenciana</b><span>Trastienda</span></div>
     ${nueva ? `<p style="margin:0">Escriba su nueva contraseña.</p>
       <label class="c">Nueva contraseña<input class="campo" id="acp" type="password" autocomplete="new-password" minlength="8" required></label>`
-    : `<label class="c">Correo<input class="campo" id="acc" type="email" autocomplete="username" required></label>
-      <label class="c">Contraseña<input class="campo" id="acp" type="password" autocomplete="current-password" required></label>`}
+    : `${alta ? `<p style="margin:0">Cree su cuenta. Podrá entrar cuando la administración le dé acceso desde el panel.</p>` : ""}
+      <label class="c">Correo<input class="campo" id="acc" type="email" autocomplete="username" required></label>
+      <label class="c">Contraseña${alta ? " <small>Al menos 8 caracteres</small>" : ""}<input class="campo" id="acp" type="password" autocomplete="${alta ? "new-password" : "current-password"}" required></label>`}
     <p class="error" id="aerr" role="alert">${esc(msg)}</p>
-    <button class="btn prin" type="submit">${nueva ? "Guardar contraseña" : "Entrar"}</button>
-    ${nueva ? "" : '<button class="enlace" type="button" id="olv">He olvidado la contraseña</button>'}
+    <button class="btn prin" type="submit">${nueva ? "Guardar contraseña" : alta ? "Crear mi cuenta" : "Entrar"}</button>
+    ${nueva ? "" : alta ? '<button class="enlace" type="button" id="volver">Ya tengo cuenta: entrar</button>'
+      : '<button class="enlace" type="button" id="olv">He olvidado la contraseña</button><button class="enlace" type="button" id="alta">Soy del equipo y aún no tengo cuenta</button>'}
   </form></div>`;
-  const err = t => $("#aerr").textContent = t;
+  const err = (t, bien) => { $("#aerr").textContent = t; $("#aerr").style.color = bien ? "var(--exito)" : ""; };
   $("#facc").onsubmit = async e => {
     e.preventDefault(); err("");
     const pass = $("#acp").value;
@@ -139,18 +141,34 @@ function pantallaAcceso(modo = "entrar", msg = ""){
     }
     const correo = $("#acc").value.trim();
     if (!correo || !pass) return err("Escriba su correo y su contraseña.");
+    if (alta) {
+      if (pass.length < 8) return err("Use al menos 8 caracteres.");
+      const { data, error } = await sb.auth.signUp({ email: correo, password: pass, options: { emailRedirectTo: location.origin + location.pathname } });
+      if (error) return err(/not allowed|disabled/i.test(error.message) ? "Ahora mismo no se pueden crear cuentas. Pida a la administración que active el registro en Supabase." : error.message);
+      if (data && data.session) return entrar();
+      return err("Cuenta creada. Revise su correo y pulse el enlace de confirmación; después, pida a la administración que le dé acceso.", true);
+    }
     const { error } = await sb.auth.signInWithPassword({ email: correo, password: pass });
-    if (error) return err(/invalid/i.test(error.message) ? "El correo o la contraseña no son correctos." : error.message);
+    if (error) return err(/invalid/i.test(error.message) ? "El correo o la contraseña no son correctos." : /confirm/i.test(error.message) ? "Antes de entrar, confirme su correo con el enlace que le enviamos." : error.message);
     entrar();
   };
   const o = $("#olv"); if (o) o.onclick = async () => {
     const correo = $("#acc").value.trim();
     if (!correo) return err("Escriba primero su correo y vuelva a pulsar.");
     const { error } = await sb.auth.resetPasswordForEmail(correo, { redirectTo: location.origin + location.pathname });
-    err(""); $("#aerr").style.color = "var(--exito)";
-    $("#aerr").textContent = error ? "No se ha podido enviar: " + error.message : "Le hemos enviado un correo con un enlace para poner una contraseña nueva.";
+    err(error ? "No se ha podido enviar: " + error.message : "Le hemos enviado un correo con un enlace para poner una contraseña nueva.", !error);
   };
+  const al = $("#alta"); if (al) al.onclick = () => pantallaAcceso("alta");
+  const vo = $("#volver"); if (vo) vo.onclick = () => pantallaAcceso();
   const pri = $("#facc input"); pri && pri.focus();
+}
+function pantallaPendiente(correo){
+  $("#raiz").innerHTML = `<div class="acceso"><form id="facc" novalidate><div class="marca"><b>La Valenciana</b><span>Trastienda</span></div>
+    <p style="margin:0">Su cuenta <b>${esc(correo)}</b> está creada, pero todavía no tiene acceso.</p>
+    <p class="mini" style="margin:0">Pida a la administración que entre en <i>Ajustes de la tienda → Quién puede entrar</i> y le dé acceso. Después, vuelva a esta página.</p>
+    <button class="btn prin" type="button" id="reint">Ya me han dado acceso</button><button class="enlace" type="button" id="fuera">Cerrar sesión</button></form></div>`;
+  $("#reint").onclick = () => entrar();
+  $("#fuera").onclick = async () => { await sb.auth.signOut(); pantallaAcceso(); };
 }
 sb.auth.onAuthStateChange(ev => { if (ev === "PASSWORD_RECOVERY") pantallaAcceso("nueva"); });
 
@@ -160,7 +178,7 @@ async function entrar(){
   if (/type=recovery/.test(location.hash)) return pantallaAcceso("nueva");
   $("#raiz").innerHTML = '<p class="cargando">Cargando los datos de la tienda…</p>';
   const { data: yo } = await sb.from("admins").select("*").eq("user_id", session.user.id).maybeSingle();
-  if (!yo) { await sb.auth.signOut(); return pantallaAcceso("entrar", "Esta cuenta no tiene permiso para entrar en la trastienda. Pida acceso a la administradora."); }
+  if (!yo) return pantallaPendiente(session.user.email);
   YO = { nombre: yo.nombre || session.user.email.split("@")[0], rol: yo.rol, correo: session.user.email };
   try { await cargar(); }
   catch (e) { console.error(e); $("#raiz").innerHTML = `<p class="cargando">No se han podido cargar los datos (${esc(e.message)}). Compruebe la conexión y recargue la página.</p>`; return; }
@@ -289,7 +307,7 @@ V.pedidos = () => {
   const q = f.q.trim().toLowerCase();
   const lista = S.pedidos.filter(p => grupos[f.estado].includes(p.estado) && (!q || (p.ref + " " + p.cli + " " + p.loc + " " + p.tel + " " + p.email).toLowerCase().includes(q)));
   const total = lista.filter(p => p.estado !== "cancelado").reduce((s, p) => s + p.total, 0);
-  return cab("Pedidos", "Los pedidos de la web entran aquí solos y descuentan el stock. Los pagos con tarjeta quedan reservados en PayPal hasta que los cobre.", `<button class="btn" type="button" id="nuevoMostrador">${ic("mas")}Anotar venta de mostrador</button>`) + `<div class="vista">
+  return cab("Pedidos", "Los pedidos de la web entran aquí solos y descuentan el stock. Los pagos con tarjeta quedan reservados en PayPal hasta que los cobre.", `<button class="btn" type="button" id="nuevoMostrador">${ic("mas")}Anotar venta de mostrador</button><button class="btn" type="button" id="exportar">Descargar en Excel</button>`) + `<div class="vista">
   <div class="filtros"><input class="campo buscar" id="pq" type="search" placeholder="Buscar por cliente, referencia, teléfono…" value="${esc(f.q)}" aria-label="Buscar pedidos">
   <div class="chips">${Object.keys(nombres).map(k => `<button type="button" class="chip" data-est="${k}" aria-pressed="${f.estado === k}">${nombres[k]}<span class="n">${S.pedidos.filter(p => grupos[k].includes(p.estado)).length}</span></button>`).join("")}</div></div>
   <p class="mini" style="margin:0">${lista.length} pedidos · ${eur(total)} en total</p>
@@ -302,7 +320,25 @@ enlazar.pedidos = () => {
   $$("[data-est]").forEach(c => c.onclick = () => { F.pedidos.estado = c.dataset.est; pintar(); });
   $$("tr[data-ped]").forEach(r => { r.onclick = () => abrirPedido(r.dataset.ped); r.onkeydown = e => { if (e.key === "Enter") abrirPedido(r.dataset.ped); }; });
   $("#nuevoMostrador").onclick = abrirMostrador;
+  $("#exportar").onclick = exportarPedidos;
 };
+/** Descarga los pedidos del filtro actual en un CSV que abre Excel (separado por «;», con BOM para las tildes). */
+function exportarPedidos(){
+  const f = F.pedidos, q = f.q.trim().toLowerCase();
+  const grupos = { activos: ["cobrar", "preparar", "recoger"], todos: Object.keys(ESTADOS) };
+  const est = grupos[f.estado] || [f.estado];
+  const lista = S.pedidos.filter(p => est.includes(p.estado) && (!q || (p.ref + " " + p.cli + " " + p.loc + " " + p.tel + " " + p.email).toLowerCase().includes(q)));
+  const c = v => `"${String(v ?? "").replace(/"/g, '""')}"`, n = v => String((+v || 0).toFixed(2)).replace(".", ",");
+  const filas = [["Pedido", "Fecha", "Cliente", "Teléfono", "Correo", "Entrega", "Dirección", "Pago", "Estado", "Artículos", "Subtotal", "Descuento", "Envío", "Total", "Nota"]]
+    .concat(lista.map(p => [p.ref, new Date(p.t).toLocaleString("es-ES"), p.cli, p.tel, p.email, p.entrega === "casa" ? "Envío" : "Recogida", p.loc, CANAL[p.canal] || p.canal, ESTADOS[p.estado].n,
+      p.lineas.map(l => `${coma(l.q)} × ${l.n}${l.ver ? " (" + l.ver + ")" : ""}`).join(" | "), n(p.sub), n(p.descuento), n(p.envio), n(p.total), p.notas]));
+  const csv = "\ufeff" + filas.map(r => r.map((v, k) => k >= 10 && k <= 13 && filas[0] !== r ? v : c(v)).join(";")).join("\r\n");
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(new Blob([csv], { type: "text/csv;charset=utf-8" }));
+  a.download = `pedidos-la-valenciana-${new Date().toISOString().slice(0, 10)}.csv`;
+  document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+  tostada(`${lista.length} pedidos descargados`);
+}
 const FLUJO = { casa: ["cobrar", "preparar", "enviado", "entregado"], tienda: ["cobrar", "preparar", "recoger", "entregado"] };
 function abrirPedido(ref){
   const p = S.pedidos.find(x => x.ref === ref); if (!p) return;
@@ -370,7 +406,7 @@ V.productos = () => {
   ${sel.size ? `<div class="selbar"><b>${sel.size} seleccionados</b><button class="btn pq" type="button" data-masivo="precio">Cambiar precio en %</button><button class="btn pq" type="button" data-masivo="ocultar">Ocultar</button><button class="btn pq" type="button" data-masivo="mostrar">Mostrar</button><button class="btn pq" type="button" data-masivo="novedad">Marcar como novedad</button><button class="btn pq" type="button" data-masivo="sinnovedad">Quitar novedad</button><button class="btn pq" type="button" data-masivo="quitar">Quitar selección</button></div><div id="masivo"></div>` : ""}
   <div class="tabla-env"><table><thead><tr><th style="width:36px"><input type="checkbox" id="todos" ${todos ? "checked" : ""} aria-label="Seleccionar todos"></th><th>Producto</th><th>Sección</th><th class="der">Precio</th><th>Stock</th><th>Estado</th><th>En la web</th><th class="der">Acciones</th></tr></thead><tbody>
   ${lista.map(p => { const e = estadoStock(p); return `<tr><td><input type="checkbox" data-sel="${esc(p.id)}" ${sel.has(p.id) ? "checked" : ""} aria-label="Seleccionar ${esc(p.n)}"></td>
-  <td><div class="prod-n">${esc(p.n)}${p.nov ? ' <span class="pill p-in" style="font-size:.74rem">Novedad</span>' : ""}</div><div class="prod-m">${p.var.length > 1 ? p.var.length + " versiones · " : ""}${p.porMetro ? "por metro" : "por unidad"}${p.oferta ? ` · <b class="baja">−${p.oferta} %</b>` : ""}</div></td>
+  <td><div class="prod-celda">${p.fotos[0] ? `<img class="mini-foto" src="${esc(p.fotos[0])}" alt="" loading="lazy">` : `<span class="mini-foto mini-foto--vacia" title="Sin foto"></span>`}<div><div class="prod-n">${esc(p.n)}${p.nov ? ' <span class="pill p-in" style="font-size:.74rem">Novedad</span>' : ""}</div><div class="prod-m">${p.var.length > 1 ? p.var.length + " versiones · " : ""}${p.porMetro ? "por metro" : "por unidad"}${p.oferta ? ` · <b class="baja">−${p.oferta} %</b>` : ""}</div></div></div></td>
   <td>${esc(catN[p.cat] || p.cat)}<div class="prod-m">${esc(subN[p.sub] || p.sub)}</div></td>
   <td class="der"><input class="precio-in" data-precio="${esc(p.id)}" value="${p.precio.toFixed(2).replace(".", ",")}" inputmode="decimal" aria-label="Precio de ${esc(p.n)}"> €</td>
   <td><div class="paso"><button type="button" data-st="${esc(p.id)}" data-d="-1" aria-label="Quitar uno">−</button><input data-uds="${esc(p.id)}" value="${coma(p.uds)}" inputmode="decimal" aria-label="Stock de ${esc(p.n)}"><button type="button" data-st="${esc(p.id)}" data-d="1" aria-label="Añadir uno">+</button></div></td>
@@ -443,8 +479,22 @@ function confirmarBorrado(p){
     F.productos.sel.delete(p.id); registrar(`Eliminó «${p.n}»`); await cargar(); cerrarCajon(); pintar();
   };
 }
+/** Reduce la foto (máx. 1600 px, JPG) y la sube a la carpeta pública «fotos». Devuelve su dirección. */
+async function subirFoto(file, carpeta){
+  if (!/^image\//.test(file.type)) throw new Error("no es una imagen");
+  const img = await new Promise((ok, mal) => { const i = new Image(); i.onload = () => ok(i); i.onerror = () => mal(new Error("no se puede leer la imagen")); i.src = URL.createObjectURL(file); });
+  const max = 1600, k = Math.min(1, max / Math.max(img.naturalWidth, img.naturalHeight));
+  const cv = document.createElement("canvas"); cv.width = Math.round(img.naturalWidth * k); cv.height = Math.round(img.naturalHeight * k);
+  const cx = cv.getContext("2d"); cx.fillStyle = "#fff"; cx.fillRect(0, 0, cv.width, cv.height); cx.drawImage(img, 0, 0, cv.width, cv.height);
+  URL.revokeObjectURL(img.src);
+  const blob = await new Promise(ok => cv.toBlob(ok, "image/jpeg", .86));
+  const ruta = `productos/${carpeta}/${Date.now()}-${Math.random().toString(36).slice(2, 7)}.jpg`;
+  const { error } = await sb.storage.from("fotos").upload(ruta, blob, { contentType: "image/jpeg", cacheControl: "31536000", upsert: false });
+  if (error) throw error;
+  return sb.storage.from("fotos").getPublicUrl(ruta).data.publicUrl;
+}
 function abrirProducto(id){
-  const p = id ? PID[id] : { id: "", cat: S.cats[0] ? S.cats[0].id : "", sub: "", n: "", precio: 0, var: [], _var: [], med: [], porMetro: false, uds: 0, umbral: 5, visible: true, dest: false, nov: true, desc: "", coste: 0, _fila: {} };
+  const p = id ? PID[id] : { id: "", cat: S.cats[0] ? S.cats[0].id : "", sub: "", n: "", precio: 0, var: [], _var: [], med: [], porMetro: false, uds: 0, umbral: 5, visible: true, dest: false, nov: true, desc: "", coste: 0, fotos: [], detalles: [], etiqueta: "", _fila: {} };
   if (!p) return;
   const subsDe = c => (S.cats.find(x => x.id === c) || { subs: [] }).subs;
   cajon(id ? "Editar producto" : "Añadir producto", `
@@ -459,6 +509,12 @@ function abrirProducto(id){
     <label class="c ancho">Colores o versiones <small>Separados por comas. Ej.: Blanco, Negro, Azul marino</small><input class="campo" id="fv" value="${esc(p.var.join(", "))}"></label>
     <label class="c ancho">Tallas o medidas <small>Separadas por comas. Déjelo vacío si no tiene</small><input class="campo" id="fm" value="${esc(p.med.join(", "))}"></label>
     <label class="c ancho">Descripción<textarea class="campo" id="fd">${esc(p.desc)}</textarea></label>
+    <label class="c ancho">Detalles <small>Uno por línea. Ej.: Bobina de 100 metros</small><textarea class="campo" id="fdt">${esc((p.detalles || []).join("\n"))}</textarea></label>
+    <label class="c ancho">Etiqueta <small>Opcional. Sale en la tarjeta del producto, p. ej. «Para regalar»</small><input class="campo" id="fet" value="${esc(p.etiqueta || "")}"></label>
+    <div class="c ancho"><span>Fotos <small>La primera es la principal. JPG, PNG o WEBP; se reducen solas antes de subir.</small></span>
+      <div class="fotos" id="ffotos"></div>
+      <label class="btn pq subir">${ic("mas")}Añadir fotos<input type="file" id="ffile" accept="image/jpeg,image/png,image/webp" multiple hidden></label>
+      <p class="mini" id="festfoto" role="status" style="margin:0"></p></div>
     <div class="ancho" style="display:flex;flex-direction:column;gap:10px">
       <label class="marcar"><span class="interr"><input type="checkbox" id="fme" ${p.porMetro ? "checked" : ""}><span></span></span>Se vende por metros</label>
       <label class="marcar"><span class="interr"><input type="checkbox" id="fvi" ${p.visible ? "checked" : ""}><span></span></span>Visible en la web</label>
@@ -471,6 +527,25 @@ function abrirProducto(id){
   $("#fc").onchange = e => $("#fs").innerHTML = subsDe(e.target.value).map(s => `<option value="${s.id}">${esc(s.n)}</option>`).join("");
   const marg = () => { const v = leerNum($("#fpr").value), c = leerNum($("#fco").value); $("#fmarg").textContent = v > 0 && c > 0 ? `Margen: ${eur(v / 1.21 - c)} por ${$("#fme").checked ? "metro" : "unidad"} (${Math.round((v / 1.21 - c) / (v / 1.21) * 100)} % sin IVA)` : ""; };
   $("#fpr").oninput = marg; $("#fco").oninput = marg; marg();
+  // fotos: lista de URLs; las nuevas se suben al elegirlas
+  let fotos = [...(p.fotos || [])];
+  const pintarFotos = () => { $("#ffotos").innerHTML = fotos.length ? fotos.map((u, k) => `<figure class="foto"><img src="${esc(u)}" alt="Foto ${k + 1}">${k === 0 ? '<span class="foto-pral">Principal</span>' : ""}
+      <div class="foto-acc">${k ? `<button class="icono" type="button" data-fizq="${k}" aria-label="Poner antes">←</button>` : ""}<button class="icono" type="button" data-fbo="${k}" aria-label="Quitar foto">${ic("borrar")}</button></div></figure>`).join("")
+      : '<p class="mini" style="margin:0">Sin fotos: la tienda muestra el dibujo del producto.</p>';
+    $$("[data-fbo]").forEach(b => b.onclick = () => { fotos.splice(+b.dataset.fbo, 1); pintarFotos(); });
+    $$("[data-fizq]").forEach(b => b.onclick = () => { const k = +b.dataset.fizq; [fotos[k - 1], fotos[k]] = [fotos[k], fotos[k - 1]]; pintarFotos(); }); };
+  pintarFotos();
+  $("#ffile").onchange = async e => {
+    const files = [...e.target.files]; e.target.value = ""; if (!files.length) return;
+    const est = $("#festfoto"), carpeta = p.id || slug($("#fn").value) || "nuevo";
+    $("#fok").disabled = true;
+    for (let k = 0; k < files.length; k++) {
+      est.textContent = `Subiendo foto ${k + 1} de ${files.length}…`;
+      try { fotos.push(await subirFoto(files[k], carpeta)); pintarFotos(); }
+      catch (x) { console.error(x); est.textContent = `No se ha podido subir «${files[k].name}»: ${x.message || x}`; $("#fok").disabled = false; return; }
+    }
+    est.textContent = "Fotos subidas. Pulse «" + (id ? "Guardar cambios" : "Añadir a la tienda") + "» para que salgan en la web."; $("#fok").disabled = false;
+  };
   $("#fok").onclick = async () => {
     const n = $("#fn").value.trim(), pr = leerNum($("#fpr").value), err = t => $("#ferr").textContent = t;
     if (!n) return err("Falta el nombre del producto.");
@@ -483,7 +558,7 @@ function abrirProducto(id){
     const fila = { nombre: n, cat: $("#fc").value, sub, precio: Math.round(pr * 100) / 100, coste: leerNum($("#fco").value) || null,
       uds: Math.max(0, leerNum($("#fu").value) || 0), umbral: Math.max(0, leerNum($("#fum").value) || 0),
       variantes: variantes.length ? variantes : [{ n: "Único" }], medidas, tipo_medida: medidas.length ? (p._fila.tipo_medida || "medida") : null,
-      descripcion: $("#fd").value.trim(), por_metro: $("#fme").checked, visible: $("#fvi").checked, destacado: $("#fde").checked, novedad: $("#fno").checked };
+      descripcion: $("#fd").value.trim(), detalles: $("#fdt").value.split("\n").map(x => x.trim()).filter(Boolean), etiqueta: $("#fet").value.trim() || null, fotos, por_metro: $("#fme").checked, visible: $("#fvi").checked, destacado: $("#fde").checked, novedad: $("#fno").checked };
     $("#fok").disabled = true;
     try {
       if (id) {
@@ -583,6 +658,7 @@ enlazar.categorias = () => {
     let id = slug(n), k = 2; while (subN[id]) id = slug(n) + "-" + k++;
     await bd(sb.from("subcategorias").insert({ id, cat: S.cats[ci].id, nombre: n, orden: S.cats[ci].subs.length }), "Subsección añadida");
     registrar(`Añadió la subsección «${n}» a ${S.cats[ci].n}`); await cargar(); pintar(); });
+  if (YO.rol === "consulta") $$("#vista input, #vista button:not([data-recargar])").forEach(x => x.disabled = true);
 };
 
 /* ===== CLIENTES ===== */
@@ -599,8 +675,8 @@ enlazar.clientes = () => { buscarEn("#cq", "clientes"); $$("[data-cli]").forEach
 const DIAS = ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"];
 const hhmm = x => `${String(Math.floor(x)).padStart(2, "0")}:${String(Math.round(x % 1 * 60)).padStart(2, "0")}`;
 const leerHora = s => { const m = /^(\d{1,2})(?::(\d{2}))?$/.exec(s.trim()); return m ? +m[1] + (+m[2] || 0) / 60 : NaN; };
-V.ajustes = () => { const a = S.ajustes, hor = a.horario || {}, fest = a.festivos || [], pago = window.LV_PAGO || {};
-  return cab("Ajustes de la tienda", "Envíos, horario, festivos y avisos. Los cambios se ven en la web en cuanto alguien la abre o la recarga.") + `<div class="vista"><div class="rejilla r2" style="align-items:start">
+V.ajustes = () => { const a = S.ajustes, hor = a.horario || {}, fest = a.festivos || [], pp = a.pago || window.LV_PAGO || {};
+  return cab("Ajustes de la tienda", "Envíos, horario, festivos, avisos, datos de contacto, cobros y accesos. Los cambios se ven en la web en cuanto alguien la abre o la recarga.") + `<div class="vista">${YO.rol !== "admin" ? '<p class="nota-pago">Solo la administración puede cambiar estos ajustes. Usted puede consultarlos.</p>' : ""}<div class="rejilla r2" style="align-items:start">
   <section class="bloque"><h2>Envíos y cambios</h2><div class="form">
    <label class="c">Coste del envío (€)<input class="campo" data-aj="envio" inputmode="decimal" value="${coma(a.envio ?? 4.95)}"></label>
    <label class="c">Envío gratis desde (€)<input class="campo" data-aj="envioGratis" inputmode="decimal" value="${coma(a.envioGratis ?? 50)}"></label>
@@ -612,10 +688,19 @@ V.ajustes = () => { const a = S.ajustes, hor = a.horario || {}, fest = a.festivo
   <section class="bloque"><h2>Horario</h2><p class="mini" style="margin-top:-6px">Escriba los tramos así: 10:00-14:00, 17:00-20:00. Vacío = cerrado.</p><div class="lista">${[1, 2, 3, 4, 5, 6, 0].map(d => `<div class="fila"><span class="cr">${DIAS[d]}</span><input class="campo" data-hor="${d}" value="${esc((hor[d] || []).map(([x, y]) => `${hhmm(x)}-${hhmm(y)}`).join(", "))}" placeholder="Cerrado" aria-label="Horario del ${DIAS[d]}" style="width:min(240px,55vw)"></div>`).join("")}</div></section>
   <section class="bloque"><h2>Festivos (cerrado)</h2><div class="lista">${fest.map(f => `<div class="fila"><span class="cr">${new Date(f + "T12:00").toLocaleDateString("es-ES", { weekday: "long", day: "numeric", month: "long", year: "numeric" })}</span><button class="icono" type="button" data-qf="${f}" aria-label="Quitar festivo">${ic("cerrar")}</button></div>`).join("") || '<p class="vacio">No hay festivos.</p>'}</div>
    <div class="filtros" style="margin-top:10px"><input class="campo" type="date" id="fnuevo" aria-label="Nuevo festivo"><button class="btn pq" type="button" id="fok2">${ic("mas")}Añadir festivo</button></div></section>
-  <section class="bloque"><h2>Cobros</h2><p style="margin:0 0 8px">Pasarela: <b>PayPal</b> (tarjeta y cuenta PayPal). <span class="pill ${pago.prueba ? "p-av" : "p-ok"}">${pago.prueba ? "Modo de prueba: no cobra" : "Cobrando de verdad"}</span></p>
-   <p class="mini" style="margin:0">Los pagos con tarjeta se reservan al hacer el pedido; se cobran desde PayPal cuando lo prepare. Para pasar a cobrar de verdad hace falta la cuenta PayPal Business: pídamelo y lo cambio.</p></section>
-  <section class="bloque"><h2>Quién puede entrar aquí</h2><div class="lista">${S.admins.map(u => `<div class="fila"><span class="av">${esc(iniciales(u.nombre))}</span><div class="cr"><div class="prod-n">${esc(u.nombre || "Sin nombre")}${u.user_id === "" ? "" : ""}</div></div><span class="pill p-ne">${esc(ROL[u.rol] || u.rol)}</span></div>`).join("")}</div>
-   <p class="mini">Para dar acceso a alguien: en Supabase, <i>Authentication → Users → Add user</i> con su correo y una contraseña; después pídame que le asigne el permiso (Administración, Pedidos y stock, o Solo consultar).</p></section></div></div>`; };
+  <section class="bloque"><h2>Datos de contacto</h2><p class="mini" style="margin-top:-6px">Salen en la cabecera, el pie, la página de contacto y los mensajes de pedido.</p><div class="form">
+   ${[["tel", "Teléfono fijo"], ["whatsapp", "WhatsApp"], ["correo", "Correo general"], ["correoMerceria", "Correo de pedidos de Mercería"], ["correoComplementos", "Correo de pedidos de Complementos"], ["calle", "Calle y número"], ["cp", "Código postal"], ["ciudad", "Ciudad"], ["provincia", "Provincia"]]
+     .map(([k, n]) => `<label class="c${/correo|calle/.test(k) ? " ancho" : ""}">${n}<input class="campo" data-con="${k}" value="${esc((a.contacto || {})[k] || "")}"></label>`).join("")}</div></section>
+  <section class="bloque"><h2>Cobros con tarjeta (PayPal)</h2><div style="display:flex;flex-direction:column;gap:12px">
+   <p style="margin:0"><span class="pill ${pp.prueba !== false ? "p-av" : "p-ok"}">${pp.prueba !== false ? "Modo de prueba: no cobra" : "Cobrando de verdad"}</span></p>
+   <label class="c">Client ID de PayPal <small>De developer.paypal.com → Apps &amp; Credentials → Live. Es público. Nunca pegue aquí el «Secret».</small><input class="campo" id="ppid" value="${esc(pp.clientId || "")}" autocomplete="off" spellcheck="false"></label>
+   <label class="marcar"><span class="interr"><input type="checkbox" id="pppru" ${pp.prueba !== false ? "checked" : ""}><span></span></span>Modo de prueba (no cobra)</label>
+   <p class="mini" style="margin:0">Los pagos se reservan al hacer el pedido y se cobran desde PayPal cuando lo prepare.</p></div></section>
+  </div>
+  <section class="bloque"><h2>Quién puede entrar aquí</h2><div class="lista" id="admins"><p class="mini">Cargando…</p></div>
+   <h2 style="margin-top:18px">Cuentas que esperan acceso</h2><div class="lista" id="pendientes"><p class="mini">Cargando…</p></div>
+   <p class="mini">Para dar acceso a alguien: que abra esta página, pulse «Soy del equipo y aún no tengo cuenta» y cree su cuenta. Aparecerá aquí y podrá elegir qué puede hacer.
+   <br><b>Administración</b>: todo. <b>Pedidos y stock</b>: pedidos, productos, stock y ofertas, sin tocar ajustes ni accesos. <b>Solo consultar</b>: ver sin cambiar nada.</p></section></div>`; };
 const guardarAjuste = (clave, valor, txt) => { S.ajustes[clave] = valor; return bd(sb.from("ajustes").upsert({ clave, valor }), txt || "Ajuste guardado").then(() => registrar(`Cambió el ajuste «${clave}»`)); };
 enlazar.ajustes = () => {
   $$("[data-aj]").forEach(i => i.onchange = () => { const k = i.dataset.aj, txt = i.hasAttribute("data-texto"), v = txt ? i.value.trim() : leerNum(i.value);
@@ -629,7 +714,32 @@ enlazar.ajustes = () => {
   });
   $("#fok2").onclick = async () => { const v = $("#fnuevo").value; if (!v) return tostada("Elija una fecha"); const f = [...new Set([...(S.ajustes.festivos || []), v])].sort(); await guardarAjuste("festivos", f, "Festivo añadido"); pintar(); };
   $$("[data-qf]").forEach(b => b.onclick = async () => { await guardarAjuste("festivos", (S.ajustes.festivos || []).filter(f => f !== b.dataset.qf), "Festivo quitado"); pintar(); });
+  $$("[data-con]").forEach(i => i.onchange = () => guardarAjuste("contacto", { ...(S.ajustes.contacto || {}), [i.dataset.con]: i.value.trim() }, "Dato de contacto guardado"));
+  const pago = () => ({ ...(S.ajustes.pago || {}), clientId: $("#ppid").value.trim() || "sb", prueba: $("#pppru").checked });
+  $("#ppid").onchange = () => { if (/secret/i.test($("#ppid").value)) return tostada("Eso parece el «Secret». Pegue el «Client ID».");
+    guardarAjuste("pago", pago(), "Client ID guardado"); };
+  $("#pppru").onchange = async e => { if (!e.target.checked && (!$("#ppid").value.trim() || $("#ppid").value.trim() === "sb")) { e.target.checked = true; return tostada("Antes de cobrar de verdad, pegue el Client ID «Live» de PayPal."); }
+    await guardarAjuste("pago", pago(), e.target.checked ? "Pagos en modo de prueba" : "La web ya cobra de verdad con PayPal"); pintar(); };
+  if (YO.rol !== "admin") $$("#vista input, #vista select, #vista button:not([data-recargar])").forEach(x => x.disabled = true);
+  pintarAccesos();
 };
+async function pintarAccesos(){
+  const caja = $("#admins"), pend = $("#pendientes"); if (!caja) return;
+  const [{ data: ad, error: e1 }, { data: pe, error: e2 }] = await Promise.all([sb.rpc("lista_admins"), sb.rpc("usuarios_pendientes")]);
+  if (e1) { caja.innerHTML = `<p class="mini">Para ver y gestionar los accesos hace falta ejecutar en Supabase la actualización 1 (supabase/actualizar-1.sql).</p>`; pend.innerHTML = ""; return; }
+  const jefa = YO.rol === "admin", sel = (u, rol) => `<select class="campo" data-rol="${u}" aria-label="Permiso" ${jefa ? "" : "disabled"}>${Object.entries(ROL).map(([k, n]) => `<option value="${k}" ${k === rol ? "selected" : ""}>${n}</option>`).join("")}</select>`;
+  caja.innerHTML = (ad || []).map(u => `<div class="fila"><span class="av">${esc(iniciales(u.nombre || u.email))}</span><div class="cr"><div class="prod-n">${esc(u.nombre || u.email)}${u.email === YO.correo ? " (usted)" : ""}</div><div class="prod-m">${esc(u.email)} · ${u.ultimo ? "entró " + hace(Date.parse(u.ultimo)) : "aún no ha entrado"}</div></div>
+    ${sel(u.user_id, u.rol)}${jefa && u.email !== YO.correo ? `<button class="btn pq peligro" type="button" data-quitar="${u.user_id}">Quitar acceso</button>` : ""}</div>`).join("");
+  pend.innerHTML = e2 || !(pe || []).length ? '<p class="mini">No hay cuentas esperando.</p>' : pe.map(u => `<div class="fila"><div class="cr"><div class="prod-n">${esc(u.email)}</div><div class="prod-m">Creada ${hace(Date.parse(u.creado))}${u.confirmado ? "" : " · aún no ha confirmado su correo"}</div></div>
+    <input class="campo" data-nom="${u.user_id}" placeholder="Nombre" aria-label="Nombre" style="width:130px">${sel(u.user_id, "pedidos")}<button class="btn pq prin" type="button" data-dar="${u.user_id}">Dar acceso</button></div>`).join("");
+  $$("#admins [data-rol]").forEach(s => s.onchange = async () => { const u = ad.find(x => x.user_id === s.dataset.rol);
+    await bd(sb.rpc("dar_acceso", { uid: u.user_id, pnombre: u.nombre || "", prol: s.value }), "Permiso cambiado"); registrar(`Cambió el permiso de ${u.email} a «${ROL[s.value]}»`); pintarAccesos(); });
+  $$("[data-quitar]").forEach(b => b.onclick = async () => { const u = ad.find(x => x.user_id === b.dataset.quitar);
+    if (b.dataset.seguro !== "1") { b.dataset.seguro = "1"; b.textContent = "¿Seguro? Pulse otra vez"; return; }
+    await bd(sb.rpc("quitar_acceso", { uid: u.user_id }), `${u.email} ya no puede entrar`); registrar(`Quitó el acceso a ${u.email}`); pintarAccesos(); });
+  $$("[data-dar]").forEach(b => b.onclick = async () => { const uid = b.dataset.dar, u = pe.find(x => x.user_id === uid), nom = $(`[data-nom="${uid}"]`).value.trim(), rol = $(`#pendientes [data-rol="${uid}"]`).value;
+    await bd(sb.rpc("dar_acceso", { uid, pnombre: nom || u.email.split("@")[0], prol: rol }), `${u.email} ya puede entrar`); registrar(`Dio acceso a ${u.email} («${ROL[rol]}»)`); pintarAccesos(); });
+}
 
 /* ===== REGISTRO ===== */
 V.registro = () => cab("Registro de cambios", "Todo lo que se cambia en el panel queda apuntado: quién, qué y cuándo.") + `<div class="vista"><section class="bloque"><div class="lista">${S.registro.map(r => `<div class="fila"><span class="av">${esc(iniciales(r.quien))}</span><div class="cr"><div>${esc(r.txt)}</div><div class="prod-m">${esc(r.quien)} · ${fLarga(r.t)}</div></div></div>`).join("") || '<p class="vacio">Aún no hay cambios.</p>'}</div></section></div>`;

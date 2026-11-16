@@ -13,8 +13,11 @@
 - Código: `trastienda/index.html`, `assets/trastienda/panel.js` y `panel.css`. Librería supabase-js 2.45.4 copiada en `assets/trastienda/` (sin CDN).
 - La tienda lee precios, stock, visibilidad, ofertas, productos nuevos y ajustes al arrancar (`assets/tienda/js/remoto.js`).
   Si la base no responde en 3 s, usa `datos.js` tal cual. Cada pedido se registra con `crear_pedido()`.
-- Para dar acceso a otra persona: créela en *Authentication → Users → Add user* y ejecute en *SQL Editor*:
-  `insert into admins (user_id, nombre, rol) select id, 'Nombre', 'pedidos' from auth.users where email = 'correo@ejemplo.es';`
-  Roles: `admin` (todo), `pedidos` (pedidos, stock y productos), `consulta` (solo ver).
+- `actualizar-1.sql` (16-11-2026): fotos (carpeta pública `fotos` en Storage y columna `productos.fotos`), funciones para gestionar
+  accesos desde el panel (`lista_admins`, `usuarios_pendientes`, `dar_acceso`, `quitar_acceso`), solo la administración cambia ajustes,
+  y ajustes nuevos `contacto` y `pago` (Client ID público de PayPal y modo de prueba). Ya va incluido al final de `instalar.sql`.
+- Accesos: la persona crea su cuenta en /trastienda/ («Soy del equipo y aún no tengo cuenta») y la administración se la aprueba en
+  *Ajustes → Quién puede entrar*. Requiere *Authentication → Sign In / Providers → Allow new users to sign up* activado: crear cuenta no da
+  acceso a nada hasta que la administración lo aprueba. Roles: `admin` (todo), `pedidos` (pedidos, stock, productos y ofertas), `consulta` (solo ver).
 - Para la recuperación de contraseña, en *Authentication → URL Configuration → Redirect URLs* debe estar
   `https://danielduranmoya-spec.github.io/web-la-valenciana/**`.

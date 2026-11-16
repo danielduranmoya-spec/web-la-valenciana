@@ -88,7 +88,7 @@ function arrancar(){
   });
 }
 // Espera (máx. 3 s) a que lleguen precios y stock de la base de datos; si no, arranca con datos.js.
-const empezar = () => (LV.remoto ? LV.remoto.listo : Promise.resolve()).then(arrancar, arrancar);
+const empezar = () => (LV.remoto ? LV.remoto.listo : Promise.resolve()).then(() => { try { LV.remoto && LV.remoto.parchear(); } catch (e) {} arrancar(); }, arrancar);
 if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", empezar);
 else empezar();
 })();
