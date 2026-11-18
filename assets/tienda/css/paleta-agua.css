@@ -1,0 +1,89 @@
+/* =====================================================================
+   LA VALENCIANA · paleta-agua.css — PRUEBA: gris azulado + verde agua.
+   Solo se aplica con <html class="paleta-agua"> (?paleta=agua en la URL;
+   ?paleta=kraft vuelve a la normal). La caja kraft del inicio se queda.
+   ===================================================================== */
+html.paleta-agua {
+  --c-rosa-velo:    #F1F5F7;  /* bruma gris azulada: bandas, pie */
+  --c-rosa:         #E2EAEE;  /* gris azulado claro: seleccionado suave */
+  --c-rosa-palo:    #C8D5DC;
+  --c-lavanda:      #E3F2EE;  /* verde agua muy claro (Complementos) */
+  --c-mantequilla:  #EAF5F1;
+  --c-salvia:       #E1F1EC;
+  --c-tinta:        #24303A;
+  --c-tinta-suave:  #53626E;
+  --c-acento:       #3E5868;  /* gris azulado hondo: botones, enlaces, precios */
+  --c-acento-hondo: #2B4150;
+  --c-agua:         #8FD0C4;  /* verde agua */
+  --c-agua-claro:   #CBEAE3;
+  --c-agua-hondo:   #2D7A70;  /* verde agua oscuro, legible sobre blanco */
+  --c-exito:        #2D7A70;
+  --c-filete:       #DCE4E9;
+  --c-borde:        #6C808C;
+  --c-hilo:         #7FB3AA;
+  --c-desactivado:  #EEF2F4;
+  --c-velo-modal:   rgba(36, 48, 58, .42);
+}
+html.paleta-agua ::selection { background: var(--c-agua-claro); }
+
+/* botones */
+html.paleta-agua .boton--primario { background-color: #33495A;
+  background-image: linear-gradient(180deg, #4F6A7B 0%, #3A5163 55%, #2C3F4E 100%);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.28), 0 10px 22px -10px rgba(36,52,66,.75), 0 2px 4px rgba(36,52,66,.2); }
+html.paleta-agua .boton--secundario .fx-onda { background: rgba(143,208,196,.4); }
+
+/* cabecera y menús */
+html.paleta-agua .cab-anuncio { background: linear-gradient(90deg, #E2F2EE, #EEF6F4 50%, #E4EEF2); }
+html.paleta-agua .megamenu { box-shadow: 0 30px 60px -30px rgba(36,48,58,.45); }
+
+/* tarjetas, teselas y bandas */
+html.paleta-agua .tarjeta__lienzo { box-shadow: 0 1px 2px rgba(36,52,66,.06), 0 18px 36px -26px rgba(36,52,66,.45); }
+html.paleta-agua .fic-lienzo { box-shadow: 0 30px 60px -40px rgba(36,52,66,.55); }
+html.paleta-agua .por-tesela { background: linear-gradient(160deg, #F7FAFB, var(--c-rosa)); box-shadow: inset 0 1px 0 #fff, 0 24px 50px -36px rgba(36,52,66,.5); }
+html.paleta-agua .por-tesela--complementos { background: linear-gradient(160deg, #F5FBF9, var(--c-lavanda)); }
+html.paleta-agua .por-tesela--capsulas { background: linear-gradient(160deg, #F6FAFA, var(--c-agua-claro)); }
+html.paleta-agua .pag-red { box-shadow: 0 24px 50px -40px rgba(36,52,66,.55); }
+html.paleta-agua .pag-red__icono { background: linear-gradient(145deg, #EEF6F4, var(--c-rosa)); }
+html.paleta-agua .pag-hor__tarjeta { background: linear-gradient(150deg, #F7FAFB, var(--c-rosa)); }
+html.paleta-agua .seccion--rosa { background: radial-gradient(60% 80% at 85% 10%, rgba(203,234,227,.6), transparent 70%), radial-gradient(50% 70% at 10% 95%, rgba(200,213,220,.5), transparent 70%), var(--c-rosa-velo); }
+html.paleta-agua .fx-subraya::after { background: linear-gradient(90deg, var(--c-agua-hondo), var(--c-agua)); }
+html.paleta-agua .pie, html.paleta-agua footer#pie { background: linear-gradient(180deg, var(--c-rosa-velo), #E3EBEF); }
+html.paleta-agua .cc { background-image: radial-gradient(40vmax 30vmax at 100% 100%, rgba(143,208,196,.35), transparent 70%); }
+html.paleta-agua .col-grupo { background: linear-gradient(160deg, #fff, var(--c-rosa-velo)); }
+html.paleta-agua .col-grupo:hover, html.paleta-agua .col-grupo:focus-visible { border-color: var(--c-agua); }
+html.paleta-agua .col-tira { background: radial-gradient(50% 80% at 15% 50%, rgba(203,234,227,.45), transparent 70%); }
+html.paleta-agua .etiqueta--pocas, html.paleta-agua .lv-pocas { background: #E6F4F0; color: var(--c-agua-hondo); border-color: #BFE2DA; }
+html.paleta-agua .lv-pocas::before { background: var(--c-agua-hondo); }
+
+/* buscador y flotantes */
+html.paleta-agua .cab-abre-buscador, html.paleta-agua .bus-r { box-shadow: inset 0 1px 0 #fff, 0 10px 24px -18px rgba(36,52,66,.45); }
+html.paleta-agua .buscador { background: linear-gradient(160deg, #fff, #F1F5F7); box-shadow: 0 40px 90px -30px rgba(36,52,66,.55), inset 0 1px 0 #fff; }
+html.paleta-agua .buscador::backdrop { background: rgba(36,48,58,.32); }
+html.paleta-agua .flotante--cesta { background: linear-gradient(180deg, #4F9E93, var(--c-agua-hondo)); }
+
+/* barra inferior del móvil: lo activo en verde agua */
+@media (max-width: 899px) {
+  html.paleta-agua .lv-dock__b[aria-current] { color: var(--c-agua-hondo); background: var(--c-agua-claro); }
+  html.paleta-agua .lv-dock__n { background: var(--c-agua-hondo); }
+}
+
+/* caja del inicio: el cartón kraft se queda; el papel de seda y la cinta pasan a verde agua */
+html.paleta-agua .cv-seda { background:
+  linear-gradient(115deg, transparent 0 18%, rgba(255,255,255,.45) 19%, transparent 23% 46%, rgba(45,122,112,.16) 47%, transparent 52% 70%, rgba(255,255,255,.4) 71%, transparent 75%),
+  linear-gradient(35deg, transparent 0 30%, rgba(45,122,112,.14) 31%, transparent 36% 62%, rgba(255,255,255,.35) 63%, transparent 68%),
+  linear-gradient(135deg,#D3EEE8 0%,#A9DCD2 35%,#DDF2EE 55%,#9DD3C8 80%,#C9EAE3 100%);
+  box-shadow: inset 0 0 40px rgba(45,122,112,.3); }
+html.paleta-agua .cv-seda-atras { background: linear-gradient(180deg,#DDF2EE,#9DD3C8); box-shadow: inset 0 -12px 18px rgba(45,122,112,.25); }
+html.paleta-agua .cv-seda-ala { background: linear-gradient(180deg,#D3EEE8,#A9DCD2); }
+html.paleta-agua .cv-cinta { background: linear-gradient(90deg,#7FC2B6 0%,#CBEAE3 35%,#A9DCD2 60%,#5FA89C 100%); box-shadow: 0 0 0 1px rgba(45,122,112,.25); }
+html.paleta-agua .cv-lazo i { background: radial-gradient(70% 60% at 50% 45%, #DDF2EE 0%, #A9DCD2 55%, #5FA89C 100%); box-shadow: inset 0 0 0 5px rgba(45,122,112,.18), 0 4px 8px rgba(36,48,58,.25); }
+html.paleta-agua .cv-lazo b { background: linear-gradient(135deg,#CBEAE3,#5FA89C); }
+html.paleta-agua .cv-tarjeta { border-color: rgba(62,88,104,.2); }
+/* objetos que flotan alrededor de la caja: de rosa a verde agua / gris azulado */
+html.paleta-agua .cv-objeto svg { filter: hue-rotate(185deg) saturate(.75) drop-shadow(0 10px 8px rgba(36,48,58,.28)) drop-shadow(0 2px 2px rgba(36,48,58,.18)); }
+/* toques de verde agua: barra de lectura, hilo del envío gratis, subrayado del menú */
+html.paleta-agua .fx-progreso { background: linear-gradient(90deg, var(--c-agua-hondo), var(--c-agua) 50%, #5FA89C); }
+html.paleta-agua .ces-hilo__lleno { --hc: var(--c-agua-hondo); }
+html.paleta-agua .ces-hilo__nudo { border-color: var(--c-agua-hondo); }
+html.paleta-agua .ces-envio__txt strong { color: var(--c-agua-hondo); }
+html.paleta-agua .mov-subrayado { background-image: linear-gradient(var(--c-agua-hondo), var(--c-agua-hondo)); }
