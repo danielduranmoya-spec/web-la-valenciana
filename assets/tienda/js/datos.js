@@ -115,10 +115,28 @@ const AJUSTES = {
 const PRODUCTOS = [];
 const quitarTildesId = s => s.normalize("NFD").replace(/[̀-ͯ]/g,"").toLowerCase().replace(/[^a-z0-9-]+/g,"-");
 
+/* Color con nombre propio (p. ej. «750 Beach Hut») → color de la carta más parecido, para «Buscar por color». */
+const rgb = h => /^#[0-9a-f]{6}$/i.test(h||"") ? [1,3,5].map(i=>parseInt(h.slice(i,i+2),16)) : null;
+function lab(h){
+  const l = rgb(h); if (!l) return null;
+  const [r,g,b] = l.map(x => { x/=255; return x>.04045 ? ((x+.055)/1.055)**2.4 : x/12.92; });
+  const f = t => t>.008856 ? Math.cbrt(t) : 7.787*t+16/116;
+  const X=f((r*.4124+g*.3576+b*.1805)/.95047), Y=f(r*.2126+g*.7152+b*.0722), Z=f((r*.0193+g*.1192+b*.9505)/1.08883);
+  return [116*Y-16, 500*(X-Y), 200*(Y-Z)];
+}
+const NO_FAMILIA = new Set(["Transparente","Nácar","Plata","Dorado","Oro rosa"]);
+function familia(hex){
+  const a = lab(hex); if (!a) return null;
+  let mejor = null, d0 = Infinity;
+  for (const [n,h] of Object.entries(COL)) { if (NO_FAMILIA.has(n)) continue; const b = lab(h); if (!b) continue;
+    const d = (a[0]-b[0])**2 + (a[1]-b[1])**2 + (a[2]-b[2])**2; if (d < d0) { d0 = d; mejor = n; } }
+  return mejor;
+}
+
 function p(id,cat,sub,nombre,precio,icono,vars,desc,extra={}){
   id = quitarTildesId(id);                       // p. ej. 'cinta-biés' → 'cinta-bies'
   const aj = AJUSTES[id] || {};
-  const variantes = vars.map(v => typeof v==="string" ? {n:v, c:COL[v]||null} : {n:v.n, c:v.c||null});
+  const variantes = vars.map(v => typeof v==="string" ? {n:v, c:COL[v]||null} : {n:v.n, c:v.c||null, ...(v.foto ? {foto:v.foto, fam:familia(v.c)} : {})});
   const conColor = variantes.some(v=>v.c);
   let tipoVar = aj.tipoVar || (extra.tipoVar==="importes" ? "importe" : null) || (conColor ? "color" : variantes.length>1 ? "modelo" : null);
   const medidas = extra.tallas || extra.tamanos || [];
@@ -183,7 +201,60 @@ p("acerico","merceria","agujas","Acerico de pulsera",4.50,"acerico",colores("Ros
 
 p("ovillo-acrilico","merceria","lanas","Ovillo de lana acrílica 100 g",2.95,"ovillo",colores("Blanco","Crudo","Rosa empolvado","Celeste","Gris perla","Mostaza","Burdeos","Azul marino","Verde botella","Lila","Negro","Coral"),"Suave, lavable a máquina y que no pica. Rinde mucho para mantas, bufandas y jerséis.",{mas:true,detalles:["100 g, unos 280 m","100 % acrílico","Aguja recomendada 4-4,5 mm"]});
 p("ovillo-bebe","merceria","lanas","Lana de bebé antialérgica 50 g",3.40,"ovillo",colores("Blanco","Celeste","Rosa empolvado","Amarillo","Verde menta","Crudo"),"Hilado muy fino y suave para patucos, chaquetitas y mantas de bebé.",{detalles:["50 g","Aguja recomendada 3 mm"]});
-p("ovillo-algodon","merceria","lanas","Algodón para ganchillo 50 g",2.75,"ovillo",colores("Blanco","Crudo","Beige","Rosa empolvado","Turquesa","Amarillo","Coral"),"Algodón mercerizado para tapetes, puntillas y amigurumis.",{detalles:["50 g, unos 170 m","Ganchillo 2,5-3 mm"]});
+/* Happy Cotton de DMC: fotos reales de cada color (carpeta de Drive «Web Valenciana» › Hilos y lanas › Happy Cotton DMC).
+   Las fotos están en assets/tienda/fotos/happy-cotton/<número>.webp. */
+{ const F = n => `assets/tienda/fotos/happy-cotton/${n}.webp`;
+p("happy-cotton","merceria","lanas","Happy Cotton DMC 20 g",1.75,"ovillo",[
+  {n:"750 Beach Hut",c:"#69898D",foto:F("750")},
+  {n:"751 Tea Time",c:"#B8C2ED",foto:F("751")},
+  {n:"752 Zesty",c:"#D8CB2D",foto:F("752")},
+  {n:"753 Freckle",c:"#FC7D57",foto:F("753")},
+  {n:"754 Cherryade",c:"#CF1441",foto:F("754")},
+  {n:"755 Jammy",c:"#DA185B",foto:F("755")},
+  {n:"756 Currant Bun",c:"#5D2350",foto:F("756")},
+  {n:"757 Moonbeam",c:"#CCC4C3",foto:F("757")},
+  {n:"758 School Days",c:"#192850",foto:F("758")},
+  {n:"759 Pebble",c:"#C0B0AD",foto:F("759")},
+  {n:"760 Flamingo",c:"#EFB8C7",foto:F("760")},
+  {n:"761 Dolly",c:"#F7F5F2",foto:F("761")},
+  {n:"763 Puff",c:"#F9DEE4",foto:F("763")},
+  {n:"764 Piggy",c:"#FCBBC6",foto:F("764")},
+  {n:"765 Bath Time",c:"#E9EDEC",foto:F("765")},
+  {n:"766 Frilly",c:"#FCE4F2",foto:F("766")},
+  {n:"767 Splash",c:"#95AAB1",foto:F("767")},
+  {n:"768 Sulk",c:"#C6939B",foto:F("768")},
+  {n:"769 Unicorn",c:"#E5B5CB",foto:F("769")},
+  {n:"771 Buttercup",c:"#EFD45E",foto:F("771")},
+  {n:"772 Safari",c:"#D0AB73",foto:F("772")},
+  {n:"775 Liquorice",c:"#1E1D22",foto:F("775")},
+  {n:"776 Biscuit",c:"#AC8354",foto:F("776")},
+  {n:"777 Cookie",c:"#664432",foto:F("777")},
+  {n:"778 Sherbet",c:"#D5D791",foto:F("778")},
+  {n:"779 Fizz",c:"#BAE06A",foto:F("779")},
+  {n:"780 Treetop",c:"#5C9149",foto:F("780")},
+  {n:"781 Wicket",c:"#089B59",foto:F("781")},
+  {n:"782 Laundry",c:"#75CB93",foto:F("782")},
+  {n:"784 Seaside",c:"#3CBEBE",foto:F("784")},
+  {n:"785 Bubbly",c:"#8EDBF3",foto:F("785")},
+  {n:"786 Yarch",c:"#0B8DB3",foto:F("786")},
+  {n:"787 Sunday",c:"#EDD98B",foto:F("787")},
+  {n:"788 Quack",c:"#F6E503",foto:F("788")},
+  {n:"789 Lippy",c:"#CB0420",foto:F("789")},
+  {n:"790 Ketchup",c:"#D8553A",foto:F("790")},
+  {n:"791 Chilli",c:"#871D2A",foto:F("791")},
+  {n:"792 Juicy",c:"#F69404",foto:F("792")},
+  {n:"793 Sorbet",c:"#FD8F6F",foto:F("793")},
+  {n:"794 Melon",c:"#F1AC10",foto:F("794")},
+  {n:"795 Giggle",c:"#C65C9D",foto:F("795")},
+  {n:"796 Angel",c:"#C1C8DA",foto:F("796")},
+  {n:"797 Bunting",c:"#7A87C7",foto:F("797")},
+  {n:"798 Princess",c:"#3A4A89",foto:F("798")},
+  {n:"799 Bubblegum",c:"#FA7199",foto:F("799")},
+  {n:"801 Slipper",c:"#FDD3C6",foto:F("801")},
+  {n:"802 Peachy",c:"#F9B594",foto:F("802")},
+  {n:"804 Cinnabun",c:"#BF7B69",foto:F("804")},
+  {n:"805 Treacle",c:"#74301F",foto:F("805")}
+],"Ovillo de algodón 100 % de DMC, suave y con brillo, en 49 colores. Ideal para amigurumis, ganchillo y pequeñas labores de punto.",{detalles:["20 g, unos 43 m","100 % algodón","Ganchillo o agujas de 3 mm"]}); }
 p("agujas-punto","merceria","lanas","Agujas de punto de bambú (par)",4.95,"agujas-punto",tallas("3 mm","3,5 mm","4 mm","4,5 mm","5 mm","6 mm","8 mm"),"Ligeras y cálidas al tacto, no resbalan los puntos.",{detalles:["Par de agujas","Largo 35 cm"]});
 p("ganchillo","merceria","lanas","Aguja de ganchillo con mango blando",3.60,"ganchillo",tallas("2 mm","2,5 mm","3 mm","3,5 mm","4 mm","5 mm","6 mm"),"Mango ergonómico que cansa menos la mano. Recomendado si se teje mucho rato.");
 p("bastidor","merceria","lanas","Bastidor de bordar de madera",3.25,"bastidor",tallas("15 cm","20 cm","25 cm"),"Mantiene la tela tensa para bordar con comodidad.");
@@ -262,7 +333,7 @@ p("boton-nacar","merceria","botones","Botones de nácar (6 ud.)",2.40,"boton",co
 
 const PORID = Object.fromEntries(PRODUCTOS.map(x=>[x.id,x]));
 /* «Lo que más nos piden» (portada) y «Novedades» (temporada de otoño-invierno). Listas de ids editables. */
-const NOVEDADES = ["ovillo-bebe","bufanda-punto","calcetin-termico","panti-tupido","kit-iniciacion-punto","capsula-invierno","ganchillo","fular","paraguas-plegable"].filter(id=>PORID[id]);
+const NOVEDADES = ["happy-cotton","ovillo-bebe","bufanda-punto","calcetin-termico","panti-tupido","kit-iniciacion-punto","capsula-invierno","ganchillo","fular","paraguas-plegable"].filter(id=>PORID[id]);
 NOVEDADES.forEach(id => { PORID[id].novedad = true; });
 const DESTACADOS = ["panti-descanso","hilo-coser-100","ovillo-acrilico","monedero","boton-camisa","abanico-madera","calcetin-diabetico","kit-costurero"].filter(id=>PORID[id]);
 

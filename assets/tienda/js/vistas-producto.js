@@ -69,7 +69,7 @@ function galeria(st){
   const { prod, ids } = st, U = LV.util;
   const minis = hayVistas() ? `
     <div class="fic-vistas" role="group" aria-label="Vistas de la ilustración">
-      ${VISTAS.map(([v, t], i) => `
+      ${VISTAS.filter(([v]) => !LV.ilus.tieneVista || LV.ilus.tieneVista(prod, v)).map(([v, t], i) => `
         <button type="button" class="fic-vista" data-fic="vista" data-valor="${v}" aria-pressed="${i === 0}">
           <span class="fic-vista__dibujo">${ilustracion(prod, st.vi, v, true)}</span>
           <span class="fic-vista__texto">${t}</span>

@@ -498,6 +498,11 @@ function iniciar(){
     requestAnimationFrame(() => { pend = false; alScroll(); });
   }, { passive: true });
   window.addEventListener("resize", () => { evaluarModo(); alScroll(); medir(); }, { passive: true });
+  // En algunos móviles el ancho real (meta viewport) aún no está aplicado al arrancar (innerWidth = 980)
+  // y no llega ningún «resize»: se vuelve a mirar cuando cambia la consulta de ancho y al terminar de cargar.
+  const reevaluar = () => { evaluarModo(); alScroll(); medir(); };
+  window.addEventListener("load", reevaluar, { once: true });
+  requestAnimationFrame(() => requestAnimationFrame(reevaluar));
   if (window.ResizeObserver) new ResizeObserver(() => medir()).observe(barra);
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(medir).catch(() => {});
   barra.addEventListener("animationend", () => barra.classList.remove("cab-barra--entra"));

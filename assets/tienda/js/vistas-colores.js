@@ -40,7 +40,7 @@ function conColores(nombres){
   const out = [];
   for (const p of D().PRODUCTOS){
     if (!p.conColor) continue;
-    const i = p.variantes.findIndex(v => set.has(v.n));
+    const i = p.variantes.findIndex(v => set.has(v.n) || set.has(v.fam));
     if (i >= 0) out.push([p, i]);
   }
   return out;

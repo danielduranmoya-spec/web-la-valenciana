@@ -331,6 +331,7 @@ function dibujar(prod, idx = 0, { decorativa = true, lienzo, vista = "principal"
   const info = { n: v ? v.n : "", prod, tipoVar: prod.tipoVar };
   const fondoCss = lienzo || (LV.datos && LV.datos.lienzo ? LV.datos.lienzo(prod) : "var(--c-rosa)");
   const alt = rotulo(prod, v);
+  if (v && v.foto) return foto(v.foto, { vista, decorativa, alt, clase });
   let inner, vb;
   if (vista === "detalle") {
     inner = cuerpo(nombre, c, info);
@@ -354,6 +355,16 @@ function icono(nombre, color, { decorativa = true, alt = "", lienzo = "var(--c-r
   return envolver(inner, { lienzo, lino, decorativa, alt, vb, clase });
 }
 
+/* Foto real de una versión (p. ej. cada color de Happy Cotton). Va dentro de un <svg class="ilu"> para que
+   herede el mismo tamaño y recorte que los dibujos. «De cerca» amplía la parte de arriba del ovillo. */
+function foto(url, { vista = "principal", decorativa = true, alt = "", clase = "" } = {}){
+  const aria = decorativa || !alt ? `aria-hidden="true" focusable="false"` : `role="img" aria-label="${esc(alt)}"`;
+  const vb = vista === "detalle" ? "52 28 96 96" : "0 0 200 200";
+  return `<svg class="ilu ilu--foto${clase ? " " + clase : ""}" viewBox="${vb}" preserveAspectRatio="xMidYMid slice" ${aria} xmlns="http://www.w3.org/2000/svg">` +
+    `<image href="${esc(url)}" x="0" y="0" width="200" height="200" preserveAspectRatio="xMidYMid slice"/></svg>`;
+}
+const conFotos = prod => !!(prod && (prod.variantes || []).some(v => v.foto));
+
 /** piezas: [{icono, color, x, y, rot=0, escala=1}] — x, y = centro de la pieza en el lienzo (ancho × alto);
     escala 1 = la pieza ocupa su tamaño de ficha (200 unidades). */
 function bodegon(piezas = [], { lienzo = "var(--c-rosa)", ancho = 200, alto = 200, alt = "", lino = true, clase = "" } = {}){
@@ -374,7 +385,9 @@ const tipos = () => Object.keys(D).sort();
 /** ¿Tiene sentido ofrecer esta vista para el producto? (B4/B5) */
 function tieneVista(prod, vista = "principal"){
   if (!prod) return false;
-  if (vista === "principal" || vista === "detalle" || vista === "escala") return true;
+  if (vista === "principal" || vista === "detalle") return true;
+  if (conFotos(prod)) return false;               // con foto real no hay «a escala» ni «combinada»
+  if (vista === "escala") return true;
   if (vista === "combinada") { try { return !!(LV.datos && LV.datos.aJuego && LV.datos.aJuego(prod, 1).length); } catch (e) { return false; } }
   return false;
 }

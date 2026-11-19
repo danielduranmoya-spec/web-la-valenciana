@@ -25,7 +25,7 @@ const conTiempo = (pr, ms) => Promise.race([pr, new Promise((_, mal) => setTimeo
 
 function estado(r){ return r.uds <= 0 ? "agotado" : r.uds <= r.umbral ? "pocas" : "si"; }
 function nuevo(r){
-  const porMetro = !!r.por_metro, variantes = (r.variantes && r.variantes.length ? r.variantes : [{ n: "Único" }]).map(v => ({ n: v.n, c: v.c || D.COL[v.n] || null }));
+  const porMetro = !!r.por_metro, variantes = (r.variantes && r.variantes.length ? r.variantes : [{ n: "Único" }]).map(v => ({ n: v.n, c: v.c || D.COL[v.n] || null, ...(v.foto ? { foto: v.foto } : {}) }));
   const conColor = variantes.some(v => v.c);
   return { id: r.id, cat: r.cat, sub: r.sub, nombre: r.nombre, precio: +r.precio, icono: r.icono || "kit", desc: r.descripcion || "",
     variantes, tipoVar: r.tipo_var || (conColor ? "color" : variantes.length > 1 ? "modelo" : null), conColor,
@@ -39,13 +39,17 @@ function aplicar(filas, ajustes, subs){
   // subsecciones nuevas o renombradas
   (subs || []).forEach(s => { const c = D.CATS[s.cat]; if (!c) return; c.subs[s.id] = { ...(c.subs[s.id] || {}), n: s.nombre, txt: s.texto || (c.subs[s.id] || {}).txt || "" }; });
   // quitar lo que ya no está (oculto o borrado)
-  for (let i = P.length - 1; i >= 0; i--) if (!porId[P[i].id]) { delete D.PORID[P[i].id]; P.splice(i, 1); }
+  //  (salvo los productos con fotos propias en el repositorio que aún no se han dado de alta en la base:
+  //   así se ven en cuanto se suben, antes de ejecutar el SQL que los añade a la trastienda)
+  const fotosRepo = x => (x.variantes || []).some(v => v.foto);
+  for (let i = P.length - 1; i >= 0; i--) if (!porId[P[i].id] && !fotosRepo(P[i])) { delete D.PORID[P[i].id]; P.splice(i, 1); }
   for (const r of filas) {
     let p = D.PORID[r.id];
     if (!p) { if (!D.subcategoria(r.cat, r.sub)) continue; p = nuevo(r); P.push(p); D.PORID[p.id] = p; }
     else {
       p.nombre = r.nombre; p.desc = r.descripcion || p.desc; p.cat = r.cat; p.sub = r.sub;
-      if (r.variantes && r.variantes.length) p.variantes = r.variantes.map(v => ({ n: v.n, c: v.c || D.COL[v.n] || null }));
+      const fotoDe = Object.fromEntries((p.variantes || []).filter(v => v.foto).map(v => [v.n, v.foto]));   // fotos del repositorio
+      if (r.variantes && r.variantes.length) p.variantes = r.variantes.map(v => ({ n: v.n, c: v.c || D.COL[v.n] || null, ...((v.foto || fotoDe[v.n]) ? { foto: v.foto || fotoDe[v.n] } : {}) }));
       if (Array.isArray(r.medidas)) p.medidas = r.medidas;
       if (r.detalles) p.detalles = r.detalles;
       p.etiqueta = r.etiqueta || null; p.destacado = !!r.destacado; p.novedad = !!r.novedad; p.precios = r.precios || null; p.orden = r.orden;

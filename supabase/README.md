@@ -25,6 +25,9 @@
   correo: activa `pg_net`, añade `pedidos.avisado` y `productos.aviso_stock`, y dos disparadores que llaman a la función `avisos`
   cuando entra un pedido (salvo los hechos en la tienda) o cuando un producto cruza su mínimo o se agota. Ajuste nuevo `avisos`
   `{correo, pedidos, stock}`, que se cambia en el panel. Ya va incluido al final de `instalar.sql`.
+- `actualizar-3.sql` (19-11-2026): da de alta el ovillo **Happy Cotton DMC** (49 colores, cada uno con su foto real en
+  `assets/tienda/fotos/happy-cotton/`) y borra el producto de muestra `ovillo-algodon`. Las fotos por color van en `variantes[].foto`;
+  la tienda las conserva aunque el panel guarde las versiones sin ese campo. Ya va incluido en `instalar.sql`.
 
 ## Avisos por correo (función `avisos`)
 
