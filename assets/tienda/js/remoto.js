@@ -45,7 +45,8 @@ function aplicar(filas, ajustes, subs){
   for (let i = P.length - 1; i >= 0; i--) if (!porId[P[i].id] && !fotosRepo(P[i])) { delete D.PORID[P[i].id]; P.splice(i, 1); }
   for (const r of filas) {
     let p = D.PORID[r.id];
-    // Regla de la tienda: solo se enseñan artículos con foto real (fotos subidas en la trastienda o foto por versión).
+    // Regla de la tienda: solo se enseñan artículos con foto real (fotos subidas en la trastienda o foto por versión),
+    // además de los ejemplos que siguen en datos.js.
     const conFoto = (Array.isArray(r.fotos) && r.fotos.some(u => /^https:\/\//.test(u))) || (r.variantes || []).some(v => v.foto);
     if (!p) { if (!conFoto || !D.subcategoria(r.cat, r.sub)) continue; p = nuevo(r); P.push(p); D.PORID[p.id] = p; }
     else {

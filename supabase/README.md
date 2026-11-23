@@ -28,7 +28,7 @@
 - `actualizar-3.sql` (19-11-2026): da de alta el ovillo **Happy Cotton DMC** (49 colores, cada uno con su foto real en
   `assets/tienda/fotos/happy-cotton/`) y borra el producto de muestra `ovillo-algodon`. Las fotos por color van en `variantes[].foto`;
   la tienda las conserva aunque el panel guarde las versiones sin ese campo. Ya va incluido en `instalar.sql`.
-- `actualizar-4.sql` (23-11-2026): da de alta **100% Baby 3 DMC** (7 colores con foto) y **oculta** en la tienda los productos que todavía no tienen foto real. No borra nada: para volver a enseñar uno, súbale una foto en la trastienda y márquelo como visible.
+- `actualizar-4.sql` (23-11-2026): da de alta **100% Baby 3 DMC** (7 colores con foto) y **oculta** en la tienda los productos que todavía no tienen foto real, salvo un ejemplo por subsección. No borra nada: para volver a enseñar uno, súbale una foto en la trastienda y márquelo como visible.
 
 ## Avisos por correo (función `avisos`)
 
