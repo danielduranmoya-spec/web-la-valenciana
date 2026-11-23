@@ -45,7 +45,9 @@ function aplicar(filas, ajustes, subs){
   for (let i = P.length - 1; i >= 0; i--) if (!porId[P[i].id] && !fotosRepo(P[i])) { delete D.PORID[P[i].id]; P.splice(i, 1); }
   for (const r of filas) {
     let p = D.PORID[r.id];
-    if (!p) { if (!D.subcategoria(r.cat, r.sub)) continue; p = nuevo(r); P.push(p); D.PORID[p.id] = p; }
+    // Regla de la tienda: solo se enseñan artículos con foto real (fotos subidas en la trastienda o foto por versión).
+    const conFoto = (Array.isArray(r.fotos) && r.fotos.some(u => /^https:\/\//.test(u))) || (r.variantes || []).some(v => v.foto);
+    if (!p) { if (!conFoto || !D.subcategoria(r.cat, r.sub)) continue; p = nuevo(r); P.push(p); D.PORID[p.id] = p; }
     else {
       p.nombre = r.nombre; p.desc = r.descripcion || p.desc; p.cat = r.cat; p.sub = r.sub;
       const fotoDe = Object.fromEntries((p.variantes || []).filter(v => v.foto).map(v => [v.n, v.foto]));   // fotos del repositorio
