@@ -1,0 +1,148 @@
+/* =========================================================
+   LA VALENCIANA · hilos.css
+   Portada orientativa (empezar, crear, tipos de hilo, servicios)
+   y página de cada tipo de hilo (valores y guía). Ver vistas-hilos.js.
+   Sin costuras en tarjetas ni botones (preferencia del cliente).
+   ========================================================= */
+
+.hil-seccion-cabeza { display: grid; gap: var(--s-3); max-width: 46rem; margin-bottom: var(--s-titulo-contenido); }
+.hil-seccion-cabeza h2, .hil-seccion-cabeza p { margin: 0; }
+.hil-seccion-cabeza > p:last-child { color: var(--c-tinta-suave); }
+
+/* ---------- círculos (empezar y tipos de hilo) ---------- */
+.hil-circulos { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: var(--s-6) var(--s-5); }
+.hil-circulo { display: grid; justify-items: center; gap: var(--s-2); text-align: center; text-decoration: none; color: var(--c-tinta); }
+.hil-circulo__img {
+  width: min(100%, 168px); aspect-ratio: 1; border-radius: 50%; overflow: hidden; display: grid; place-items: center;
+  background: radial-gradient(circle at 35% 30%, #fff, var(--hil-fondo, var(--c-rosa)) 75%);
+  box-shadow: inset 0 0 0 1px rgba(122, 78, 45, .08), var(--sombra-flotante);
+  transition: transform .35s var(--ease-salida), box-shadow .35s var(--ease-salida);
+}
+.hil-circulo__img img { width: 100%; height: 100%; object-fit: cover; }
+.hil-circulo__img svg { width: 100%; height: 100%; }
+.hil-circulo__t { font-family: var(--f-titulo); font-size: 1.3rem; line-height: 1.2; }
+.hil-circulo__sub { font-size: var(--t-pequeno); color: var(--c-acento); text-decoration: underline; text-underline-offset: .2em; }
+.hil-circulo:hover .hil-circulo__img, .hil-circulo:focus-visible .hil-circulo__img { transform: translateY(-4px) scale(1.03); box-shadow: inset 0 0 0 1px rgba(122, 78, 45, .12), var(--sombra-panel); }
+.hil-circulo:focus-visible { outline: none; }
+.hil-circulo:focus-visible .hil-circulo__img { outline: 3px solid var(--c-acento); outline-offset: 4px; }
+@media (min-width: 961px) { .hil-circulos--empezar { grid-template-columns: repeat(8, minmax(0, 1fr)); gap: var(--s-5) var(--s-4); } }
+.hil-circulos--tipos { grid-template-columns: repeat(auto-fill, minmax(180px, 220px)); }
+.hil-circulos--tipos .hil-circulo__img { width: min(100%, 200px); }
+
+.hil-tipos__rejilla { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: var(--s-8); align-items: center; }
+.hil-tipos__rejilla .hil-seccion-cabeza { margin-bottom: 0; }
+.hil-tipos--lanas { padding-block: var(--s-8); }
+
+/* ---------- carrusel «¿Qué le apetece crear hoy?» ---------- */
+.hil-crear { padding-block: var(--s-seccion); }
+#hil-crear-lanas { padding-block: var(--s-8) 0; }
+.hil-crear__cabeza { display: grid; gap: var(--s-3); max-width: 46rem; margin-bottom: var(--s-6); }
+.hil-crear__cabeza h2, .hil-crear__cabeza p { margin: 0; }
+.hil-crear__entradilla { color: var(--c-tinta-suave); }
+.hil-crear__marco { position: relative; }
+.hil-crear__pista {
+  list-style: none; margin: 0; padding: 4px 2px var(--s-5); display: grid; grid-auto-flow: column;
+  grid-auto-columns: clamp(250px, 27%, 320px); gap: 20px; overflow-x: auto; scroll-snap-type: x mandatory;
+  scrollbar-width: thin; scrollbar-color: var(--c-arena) transparent; overscroll-behavior-x: contain;
+}
+.hil-crear__pista:focus-visible { outline: 3px solid var(--c-acento); outline-offset: 4px; border-radius: var(--r-tarjeta); }
+.hil-proy { scroll-snap-align: start; }
+.hil-proy__enlace {
+  position: relative; display: grid; grid-template-rows: auto 1fr auto; aspect-ratio: 4 / 5; padding: var(--s-5);
+  border-radius: 24px; overflow: hidden; text-decoration: none; color: var(--c-tinta);
+  background: radial-gradient(90% 70% at 70% 70%, #fff 0, transparent 70%), var(--hil-lienzo, var(--c-rosa));
+  box-shadow: inset 0 0 0 1px rgba(122, 78, 45, .08);
+  transition: transform .35s var(--ease-salida), box-shadow .35s var(--ease-salida);
+}
+.hil-proy__enlace:hover, .hil-proy__enlace:focus-visible { transform: translateY(-4px); box-shadow: inset 0 0 0 1px rgba(122, 78, 45, .1), var(--sombra-panel); }
+.hil-proy__enlace:focus-visible { outline: 3px solid var(--c-acento); outline-offset: 3px; }
+.hil-proy__t { position: relative; z-index: 1; font-family: var(--f-titulo); font-size: 1.55rem; line-height: 1.15; max-width: 9ch; }
+.hil-proy__dib { width: 92%; justify-self: end; align-self: end; filter: drop-shadow(0 12px 14px rgba(59, 42, 31, .14)); transition: transform .5s var(--ease-salida); }
+.hil-proy__enlace:hover .hil-proy__dib { transform: rotate(-3deg) scale(1.04); }
+.hil-proy .hil-flecha { position: absolute; left: 14%; top: 30%; width: 26%; opacity: .9; }
+.hil-proy__pie { font-size: var(--t-pequeno); color: var(--c-tinta-suave); }
+.hil-crear__botones { display: flex; gap: var(--s-3); justify-content: flex-end; }
+.hil-crear__boton { min-width: 52px; padding-inline: 0; justify-content: center; }
+.hil-crear__boton:disabled { opacity: .4; cursor: default; }
+.hil-crear--quieta .hil-crear__botones { display: none; }
+
+/* ---------- servicios ---------- */
+.hil-serv { border-block: 1px solid var(--c-filete); background: var(--c-fondo); }
+.hil-serv__lista { list-style: none; margin-block: 0; padding-block: var(--s-6); display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--s-5); }
+.hil-serv__lista li { display: flex; gap: var(--s-3); align-items: flex-start; }
+.hil-serv__lista strong { display: block; }
+.hil-serv__lista span span { color: var(--c-tinta-suave); font-size: var(--t-pequeno); }
+.hil-serv__ic { flex: none; width: 46px; height: 46px; border-radius: 50%; display: grid; place-items: center; background: var(--c-rosa); color: var(--c-acento); }
+.hil-serv__ic svg { width: 22px; height: 22px; }
+
+/* ---------- página del tipo de hilo ---------- */
+.hil-cab { padding-block: var(--s-6) var(--s-9); background: linear-gradient(180deg, var(--c-rosa-velo), var(--c-fondo)); }
+.hil-cab__rejilla { display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 5fr); gap: var(--s-8); align-items: center; }
+.hil-cab__texto { display: grid; gap: var(--s-4); }
+.hil-cab__texto h1, .hil-cab__texto p { margin: 0; }
+.hil-cab__anclas { list-style: none; margin: var(--s-2) 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: var(--s-2); }
+.hil-cab__foto { border-radius: 28px; overflow: hidden; aspect-ratio: 4 / 5; box-shadow: var(--sombra-panel); }
+.hil-cab__foto img { width: 100%; height: 100%; object-fit: cover; }
+
+.hil-labores { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-7) var(--s-6); }
+.hil-labor { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 3fr); gap: var(--s-5); align-items: start; scroll-margin-top: 140px; }
+.hil-labor__lienzo { aspect-ratio: 1; border-radius: 22px; display: grid; place-items: center; background: radial-gradient(80% 70% at 50% 60%, #fff, var(--hil-lienzo, var(--c-rosa)) 80%); box-shadow: inset 0 0 0 1px rgba(122, 78, 45, .08); }
+.hil-labor__dib { width: 86%; filter: drop-shadow(0 10px 12px rgba(59, 42, 31, .12)); }
+.hil-labor--elegida .hil-labor__lienzo { box-shadow: 0 0 0 3px var(--c-acento); }
+.hil-labor__cuerpo { display: grid; gap: var(--s-3); }
+.hil-labor__t { margin: 0; font-size: var(--t-h3); }
+.hil-labor__x { margin: 0; color: var(--c-tinta-suave); }
+.hil-labor__datos { display: flex; flex-wrap: wrap; gap: var(--s-2); margin: 0; }
+.hil-labor__datos div { padding: .3rem .8rem; border-radius: 999px; background: var(--c-rosa-velo); font-size: var(--t-pequeno); }
+.hil-labor__datos dt { display: inline; font-weight: 600; }
+.hil-labor__datos dt::after { content: ": "; }
+.hil-labor__datos dd { display: inline; margin: 0; }
+.hil-labor__material { margin: 0; font-size: var(--t-pequeno); }
+.hil-guia { border-top: 1px solid var(--c-filete); border-bottom: 1px solid var(--c-filete); padding-block: var(--s-2); }
+.hil-guia summary { cursor: pointer; font-weight: 600; color: var(--c-acento); min-height: var(--tactil, 44px); display: flex; align-items: center; }
+.hil-guia ol { margin: var(--s-2) 0; padding-left: 1.3em; display: grid; gap: var(--s-2); }
+.hil-guia__nota { margin: 0; font-size: var(--t-pequeno); color: var(--c-tinta-suave); }
+.hil-labor__botones { display: flex; flex-wrap: wrap; gap: var(--s-3); }
+.hil-nota { margin: var(--s-7) 0 0; font-size: var(--t-pequeno); color: var(--c-tinta-suave); }
+
+.hil-guia-gen__lista { margin: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s-5); }
+.hil-guia-gen__item { padding: var(--s-5); border-radius: 20px; background: var(--c-fondo); box-shadow: inset 0 0 0 1px var(--c-filete); }
+.hil-guia-gen__item dt { font-family: var(--f-titulo); font-size: 1.35rem; margin-bottom: var(--s-2); }
+.hil-guia-gen__item dd { margin: 0; color: var(--c-tinta-suave); }
+
+.hil-ayuda__rejilla { display: flex; flex-wrap: wrap; gap: var(--s-6); align-items: center; justify-content: space-between; }
+.hil-ayuda__rejilla h2 { margin: 0 0 var(--s-2); max-width: 22ch; }
+.hil-ayuda__rejilla p { margin: 0; color: var(--c-tinta-suave); }
+
+/* ---------- en la ficha del ovillo ---------- */
+.hil-ficha { padding-block: var(--s-8); }
+.hil-mini { list-style: none; margin: 0 0 var(--s-5); padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--s-4); }
+.hil-mini__enlace { display: grid; gap: var(--s-2); text-decoration: none; color: var(--c-tinta); }
+.hil-mini__lienzo { aspect-ratio: 1; border-radius: 18px; display: grid; place-items: center; background: radial-gradient(80% 70% at 50% 60%, #fff, var(--hil-lienzo, var(--c-rosa)) 80%); transition: transform .35s var(--ease-salida); }
+.hil-mini__enlace:hover .hil-mini__lienzo { transform: translateY(-3px); }
+.hil-mini__dib { width: 80%; }
+.hil-mini__t { font-family: var(--f-titulo); font-size: 1.15rem; line-height: 1.2; }
+.hil-mini__x { font-size: var(--t-pequeno); color: var(--c-tinta-suave); }
+
+@media (max-width: 960px) {
+  .hil-tipos__rejilla, .hil-cab__rejilla { grid-template-columns: 1fr; gap: var(--s-6); }
+  .hil-cab__foto { aspect-ratio: 4 / 3; }
+  .hil-labores { grid-template-columns: 1fr; }
+  .hil-guia-gen__lista { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .hil-serv__lista { grid-template-columns: repeat(2, 1fr); }
+  .hil-mini { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 600px) {
+  .hil-circulos--empezar { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s-5) var(--s-3); }
+  .hil-circulos--empezar .hil-circulo__t { font-size: 1rem; }
+  @media (min-width: 961px) { .hil-circulos--empezar { grid-template-columns: repeat(8, minmax(0, 1fr)); gap: var(--s-5) var(--s-4); } }
+.hil-circulos--tipos { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .hil-crear__pista { grid-auto-columns: 78%; }
+  .hil-labor { grid-template-columns: 1fr; }
+  .hil-labor__lienzo { max-width: 320px; }
+  .hil-guia-gen__lista { grid-template-columns: 1fr; }
+  .hil-serv__lista { grid-template-columns: 1fr; gap: var(--s-4); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hil-circulo__img, .hil-proy__enlace, .hil-proy__dib, .hil-mini__lienzo { transition: none; }
+}

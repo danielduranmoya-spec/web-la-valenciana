@@ -28,7 +28,8 @@ const url = {
   pedido: () => "#/pedido", hecho: () => "#/pedido/hecho",
   comoComprar: () => "#/como-comprar", visitanos: () => "#/visitanos", legal: () => "#/legal",
   horario: () => "#/horario", redes: () => "#/redes",
-  colores: (g, c) => `#/colores${g ? "/" + g : ""}${c ? "/" + c : ""}`
+  colores: (g, c) => `#/colores${g ? "/" + g : ""}${c ? "/" + c : ""}`,
+  hilo: (t, labor) => `#/hilo/${t}${labor ? "/" + labor : ""}`
 };
 
 /**
@@ -60,6 +61,11 @@ function resolver(hash){
   if (partes.length === 1 && a === "visitanos") return { vista: "visitanos", params: {} };
   if (partes.length === 1 && a === "legal") return { vista: "legal", params: {} };
   if (a === "colores" && partes.length <= 3) return { vista: "colores", params: { grupo: b || null, color: c || null } };
+  if (a === "hilo" && partes.length <= 3) {
+    const t = LV.hilos && LV.hilos.tipo(b); if (!t) return nf;
+    if (c && !LV.hilos.labor(t, c)) return nf;
+    return { vista: "hilo", params: { tipo: t, labor: c || null } };
+  }
   if (partes.length === 1 && a === "horario") return { vista: "horario", params: {} };
   if (partes.length === 1 && a === "redes") return { vista: "redes", params: {} };
   return nf;
@@ -75,12 +81,13 @@ const TITULOS = {
   pedido: () => "Hacer el pedido", confirmacion: () => "Pedido preparado",
   comoComprar: () => "Cómo comprar", visitanos: () => "Visítenos", legal: () => "Información legal",
   horario: () => "Horario", redes: () => "Redes sociales", colores: () => "Buscar por color",
+  hilo: p => `${p.tipo.titulo}: valores y guía`,
   noEncontrada: () => "Página no encontrada"
 };
 const NAV = {
   inicio: () => "#/", novedades: () => url.novedades(), categoria: p => url.categoria(p.cat), producto: p => url.categoria(p.prod.cat),
   comoComprar: () => url.comoComprar(), visitanos: () => url.visitanos(), legal: () => url.legal(),
-  horario: () => url.horario(), redes: () => url.redes()
+  horario: () => url.horario(), redes: () => url.redes(), hilo: () => url.categoria("merceria")
 };
 
 /* ---------------- secciones (vistas compuestas: portada) ---------------- */
