@@ -1,6 +1,7 @@
 /* =================================================================
    LA VALENCIANA · ovillo.js
-   Al entrar en el apartado de hilos (#/hilo/… o Mercería › Lanas y labores),
+   Al entrar en el apartado de hilos (#/hilo/… o Mercería › Lanas y labores)
+   y cada vez que se abre la ficha de un ovillo (con el color elegido),
    un ovillo entra por la izquierda a ras de la parte de abajo de la pantalla
    y rueda hacia la derecha dando botes, como una planta rodadora del oeste,
    deshaciéndose y dejando el hilo en el suelo. Cuando sale por la derecha,
@@ -32,6 +33,11 @@ function colorDe(d){
   const H = LV.hilos, tipos = H && H.TIPOS ? H.TIPOS : [];
   let c = null;
   if (d && d.vista === "hilo" && d.params && d.params.tipo) c = d.params.tipo.color;
+  else if (esOvillo(d)) {                          // ficha de un ovillo: el color elegido en la ficha
+    const prod = d.params.prod, r = document.querySelector('#contenido [role="radio"][aria-checked="true"][data-valor]');
+    const v = prod.variantes[r ? +r.dataset.valor || 0 : 0];
+    c = (v && v.c) || (H.deProducto(prod) || {}).color;
+  }
   else if (tipos.length) c = (tipos[Math.floor(Math.random() * tipos.length)] || {}).color;
   return aRGB(c) ? c : TEJA;
 }
@@ -44,6 +50,10 @@ function paleta(c){
     hilo: mezcla(c, "#2F2A26", claro ? .3 : .12)
   };
 }
+
+/* ficha de un ovillo (producto enlazado a un tipo de hilo: Happy Cotton, 100% Baby 3…) */
+const esOvillo = d => !!d && d.vista === "producto" && d.params && d.params.prod &&
+  !!(LV.hilos && LV.hilos.deProducto && LV.hilos.deProducto(d.params.prod));
 
 let enCurso = null;
 
@@ -166,8 +176,13 @@ function lanzar(colorBase){
 document.addEventListener("lv:ruta-cambiada", e => {
   const d = e.detail || {};
   if (d.parcial) return;
-  if (!enHilos(d)) { if (enCurso) enCurso.acabar(); return; }
-  if (enHilos(d.anterior)) return;              // ya estaba dentro: solo al entrar
+  if (enCurso) enCurso.acabar();
+  if (esOvillo(d)) {                            // en cada ficha de ovillo, siempre
+    setTimeout(() => lanzar(colorDe(d)), d.primera ? 900 : 450);
+    return;
+  }
+  if (!enHilos(d)) return;
+  if (enHilos(d.anterior)) return;              // entre páginas de hilos: solo al entrar
   const c = colorDe(d);
   setTimeout(() => lanzar(c), d.primera ? 900 : 450);    // tras la transición de página
 });
