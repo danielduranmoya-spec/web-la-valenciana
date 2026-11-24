@@ -182,9 +182,22 @@ document.addEventListener("lv:ruta-cambiada", e => {
     return;
   }
   if (!enHilos(d)) return;
-  if (enHilos(d.anterior)) return;              // entre páginas de hilos: solo al entrar
+  // Algodón, Merino…: cada vez que se entra en uno (también al pasar de uno a otro).
+  // Dentro del mismo tipo (sus labores) o en Lanas viniendo de hilos, no se repite.
+  const a = d.anterior;
+  if (d.vista === "hilo") { if (a && a.vista === "hilo" && a.params && a.params.tipo === d.params.tipo) return; }
+  else if (enHilos(a)) return;
   const c = colorDe(d);
   setTimeout(() => lanzar(c), d.primera ? 900 : 450);    // tras la transición de página
+});
+
+/* al cambiar de color en la ficha de un ovillo, sale otro ovillo de ese color */
+document.addEventListener("lv:variante-cambiada", e => {
+  const d = e.detail || {}, prod = d.prod;
+  if (!prod || !(LV.hilos && LV.hilos.deProducto && LV.hilos.deProducto(prod))) return;
+  const v = prod.variantes[d.vi]; if (!v || !v.c) return;
+  if (enCurso) enCurso.acabar();
+  lanzar(v.c);
 });
 
 LV.ovillo = { lanzar };

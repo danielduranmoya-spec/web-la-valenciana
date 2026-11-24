@@ -542,6 +542,7 @@ function montar(main, p){
     E.vi = +r.dataset.valor || 0;
     const n = $("[data-fic-nombre-v]", raiz); if (n) n.textContent = E.prod.variantes[E.vi].n;
     pintarLienzo(); actualizarPrecios();
+    document.dispatchEvent(new CustomEvent("lv:variante-cambiada", { detail: { prod: E.prod, vi: E.vi } }));
   });
   radiogrupo($('[data-fic-grupo="medida"]', raiz), r => {
     E.m = E.prod.medidas[+r.dataset.valor] || "";
