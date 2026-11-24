@@ -19,8 +19,31 @@ const reducido = () => !!(window.matchMedia && matchMedia("(prefers-reduced-moti
 const enHilos = d => !!d && (d.vista === "hilo" ||
   (d.vista === "categoria" && d.params && d.params.cat === "merceria" && d.params.sub === "lanas"));
 
-/* colores del ovillo: lana teja con hebras más oscuras (encaja con el kraft y el acento) */
-const LANA = "#C77E62", LANA_OSCURA = "#9C5A42", LANA_CLARA = "#E2A88E";
+/* color del ovillo = el del hilo en el que se entra:
+   - #/hilo/<tipo>: el color propio del tipo (LV.hilos, campo color)
+   - Mercería › Lanas: uno de los tipos al azar
+   Si falta, lana teja. Las hebras y el hilo del suelo van un poco más oscuros
+   para que se vean sobre el fondo blanco aunque el color sea muy claro. */
+const TEJA = "#C77E62";
+const aRGB = h => { const m = /^#?([0-9a-f]{6})$/i.exec(h || ""); if (!m) return null; const n = parseInt(m[1], 16); return [n >> 16, (n >> 8) & 255, n & 255]; };
+const mezcla = (a, b, t) => { const x = aRGB(a), y = aRGB(b); return "#" + x.map((v, i) => Math.round(v + (y[i] - v) * t).toString(16).padStart(2, "0")).join(""); };
+const luz = h => { const [r, g, b] = aRGB(h); return (.2126 * r + .7152 * g + .0722 * b) / 255; };
+function colorDe(d){
+  const H = LV.hilos, tipos = H && H.TIPOS ? H.TIPOS : [];
+  let c = null;
+  if (d && d.vista === "hilo" && d.params && d.params.tipo) c = d.params.tipo.color;
+  else if (tipos.length) c = (tipos[Math.floor(Math.random() * tipos.length)] || {}).color;
+  return aRGB(c) ? c : TEJA;
+}
+function paleta(c){
+  const claro = luz(c) > .72;                    // pasteles: oscurecer más el contorno y el hilo
+  return {
+    cuerpo: c,
+    hebra: mezcla(c, "#2F2A26", claro ? .38 : .28),
+    brillo: mezcla(c, "#FFFFFF", .45),
+    hilo: mezcla(c, "#2F2A26", claro ? .3 : .12)
+  };
+}
 
 let enCurso = null;
 
@@ -38,7 +61,8 @@ function suelo(){
   return innerHeight - 3;
 }
 
-function lanzar(){
+function lanzar(colorBase){
+  const P = paleta(colorBase || TEJA);
   if (enCurso || reducido() || document.hidden) return;
   const W = innerWidth, H = innerHeight, Y = suelo();
   const movil = W < 700;
@@ -54,7 +78,7 @@ function lanzar(){
   const svg = el("svg", { width: W, height: alto, viewBox: `0 0 ${W} ${alto}` });
   const g0 = alto;                                // y del suelo dentro del svg
 
-  const hilo = el("path", { class: "ovi-hilo", fill: "none", stroke: LANA, "stroke-width": movil ? 2 : 2.4, "stroke-linecap": "round", "stroke-linejoin": "round" });
+  const hilo = el("path", { class: "ovi-hilo", fill: "none", stroke: P.hilo, "stroke-width": movil ? 2 : 2.4, "stroke-linecap": "round", "stroke-linejoin": "round" });
   const sombra = el("ellipse", { class: "ovi-sombra", cx: 0, cy: g0 - 1.5, rx: R0, ry: 3.2, fill: "rgba(47,42,38,.16)" });
   const bola = el("g", {});
   const giro = el("g", {});
@@ -62,23 +86,28 @@ function lanzar(){
   const id = "ovi-c" + Date.now();
   const clip = el("clipPath", { id }); clip.appendChild(el("circle", { cx: 0, cy: 0, r: 1 }));
   const defs = el("defs", {}); defs.appendChild(clip);
-  giro.appendChild(el("circle", { cx: 0, cy: 0, r: 1, fill: LANA }));
-  const hebras = el("g", { "clip-path": `url(#${id})`, fill: "none", stroke: LANA_OSCURA, "stroke-width": .07, "stroke-linecap": "round" });
+  giro.appendChild(el("circle", { cx: 0, cy: 0, r: 1, fill: P.cuerpo }));
+  const hebras = el("g", { "clip-path": `url(#${id})`, fill: "none", stroke: P.hebra, "stroke-width": .07, "stroke-linecap": "round" });
   [[-.35, .95, 25], [-.05, .9, 25], [.25, .85, 25], [.55, .7, 25], [-.6, .7, 25]].forEach(([dx, ry, rot]) =>
     hebras.appendChild(el("ellipse", { cx: dx, cy: 0, rx: .38, ry, transform: `rotate(${rot})` })));
   [[-.5, -.2, -50], [.1, .45, -50], [.45, -.45, -50]].forEach(([dx, dy, rot]) =>
-    hebras.appendChild(el("ellipse", { cx: dx, cy: dy, rx: .75, ry: .3, transform: `rotate(${rot})`, stroke: LANA_CLARA })));
+    hebras.appendChild(el("ellipse", { cx: dx, cy: dy, rx: .75, ry: .3, transform: `rotate(${rot})`, stroke: P.brillo })));
   giro.appendChild(hebras);
-  giro.appendChild(el("circle", { cx: 0, cy: 0, r: .97, fill: "none", stroke: LANA_OSCURA, "stroke-width": .05, opacity: .6 }));
+  giro.appendChild(el("circle", { cx: 0, cy: 0, r: .97, fill: "none", stroke: P.hebra, "stroke-width": .05, opacity: .6 }));
   bola.appendChild(giro);
   svg.append(defs, sombra, hilo, bola);
   capa.appendChild(svg);
   document.body.appendChild(capa);
 
-  /* el hilo en el suelo: ondula un poco, como cuando se deja caer */
+  /* el hilo en el suelo: hace ondas y rizos (bucles) como cuando se suelta lana.
+     Trocoide: x = s - k·sen(ωs), y = suelo - k·(1 - cos(ωs))·0,7; con k·ω > 1 sale bucle. */
   const f1 = Math.random() * 6, f2 = Math.random() * 6;
-  const ondaY = x => g0 - 1.6 - 1.6 * Math.sin(x / 37 + f1) - 1.1 * Math.sin(x / 13 + f2);
+  const w = 2 * Math.PI / (movil ? 46 : 58);
+  const kMax = movil ? 13 : 17;
+  const kDe = s => Math.max(2, kMax * (.62 + .38 * Math.sin(s / 110 + f1)) + 2.5 * Math.sin(s / 31 + f2));
+  const curva = s => { const k = kDe(s); return [s - k * Math.sin(w * s), g0 - 2 - k * (1 - Math.cos(w * s)) * .7]; };
   const puntos = [];
+  let sHecho = -R0 * 2;
   let ang = 0, xPrev = -R0;
 
   const xDe = t => { const u = t + .025 * Math.sin(t * Math.PI * 4); return lerp(-R0 * 1.2, W + R0 * 2.2, suave(Math.min(1, Math.max(0, u)) * .85 + u * .15)); };
@@ -101,13 +130,13 @@ function lanzar(){
       sombra.setAttribute("rx", (r * (1 - sube / 60)).toFixed(1));
       sombra.setAttribute("opacity", (1 - sube / 40).toFixed(2));
       // el hilo queda en el suelo detrás del ovillo y sube hasta él
-      const xs = x - r * .55;
-      if (!puntos.length || xs - puntos[puntos.length - 1][0] > 5) puntos.push([xs, ondaY(xs)]);
+      const xs = x - r * 1.3;
+      while (sHecho + 2.5 <= xs) { sHecho += 2.5; puntos.push(curva(sHecho)); }
       const sale = [x - r * .82, cy + r * .5];
       let d = "";
       puntos.forEach((p, i) => { d += (i ? " L" : "M") + p[0].toFixed(1) + " " + p[1].toFixed(1); });
       const u = puntos[puntos.length - 1];
-      if (u) d += ` Q${(u[0] + 4).toFixed(1)} ${u[1].toFixed(1)} ${sale[0].toFixed(1)} ${sale[1].toFixed(1)}`;
+      if (u) d += ` C${(u[0] + 10).toFixed(1)} ${(g0 - 1).toFixed(1)} ${(sale[0] - 14).toFixed(1)} ${(sale[1] + 6).toFixed(1)} ${sale[0].toFixed(1)} ${sale[1].toFixed(1)}`;
       hilo.setAttribute("d", d);
       if (t >= 1) {
         fase = "recoger"; tRecoger = ahora;
@@ -139,7 +168,8 @@ document.addEventListener("lv:ruta-cambiada", e => {
   if (d.parcial) return;
   if (!enHilos(d)) { if (enCurso) enCurso.acabar(); return; }
   if (enHilos(d.anterior)) return;              // ya estaba dentro: solo al entrar
-  setTimeout(lanzar, d.primera ? 900 : 450);    // tras la transición de página
+  const c = colorDe(d);
+  setTimeout(() => lanzar(c), d.primera ? 900 : 450);    // tras la transición de página
 });
 
 LV.ovillo = { lanzar };
