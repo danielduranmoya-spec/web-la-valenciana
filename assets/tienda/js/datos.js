@@ -32,7 +32,7 @@ const TIENDA = {
     { red: "facebook",  nombre: "Facebook",  usuario: "La Valenciana · Mercería, Medias, Complementos", url: "https://www.facebook.com/mercerialavalenciana/",
       texto: "Avisos de la tienda, horarios especiales en fiestas y todo lo que nos llega para la temporada." },
     { red: "tiktok",    nombre: "TikTok",    usuario: "@_lavalenciana_", url: "https://www.tiktok.com/@_lavalenciana_",
-      texto: "Vídeos cortos de la tienda por dentro, ideas y artículos que le enseñamos de cerca." }
+      texto: "Vídeos cortos de la tienda por dentro, ideas y artículos que te enseñamos de cerca." }
   ],
   festivos: ["2026-12-08","2026-12-25","2027-01-01","2027-01-06"]
 };
@@ -54,10 +54,10 @@ const CATS = {
     id:"merceria", nombre:"Mercería", corto:"la mercería", lienzo:"rosa",
     texto:"Lo que hace falta para coser, arreglar y terminar bien: hilos, agujas, botones, cintas y cremalleras.",
     subs:{
-      hilos:{n:"Hilos", txt:"Para coser a mano y a máquina, bordar y rematar. Si duda con el tono, envíenos una foto de la tela."},
-      botones:{n:"Botones", txt:"De camisa, de abrigo, de madera y para forrar. Le ayudamos a encontrar el que se le ha caído."},
+      hilos:{n:"Hilos", txt:"Para coser a mano y a máquina, bordar y rematar. Si dudas con el tono, envíanos una foto de la tela."},
+      botones:{n:"Botones", txt:"De camisa, de abrigo, de madera y para forrar. Te ayudamos a encontrar el que se te ha caído."},
       cremalleras:{n:"Cremalleras", txt:"Fijas, invisibles, separables y metálicas, en varias medidas."},
-      cintas:{n:"Cintas y puntillas", txt:"Raso, terciopelo, bies y puntillas de algodón. Las de metro se cortan a la medida que pida."},
+      cintas:{n:"Cintas y puntillas", txt:"Raso, terciopelo, bies y puntillas de algodón. Las de metro se cortan a la medida que pidas."},
       agujas:{n:"Agujas y alfileres", txt:"Agujas de mano y de máquina, alfileres, dedales y enhebradores."},
       lanas:{n:"Lanas y labores", txt:"Ovillos, agujas de punto, ganchillos y bastidores para tejer y bordar."},
       corte:{n:"Tijeras y medición", txt:"Tijeras de costura, cintas métricas y lo necesario para marcar y descoser."},
@@ -84,9 +84,9 @@ const CATS = {
     id:"capsulas", nombre:"Cápsulas", corto:"las cápsulas", lienzo:"mantequilla",
     texto:"Selecciones cerradas y preparadas en una caja: para empezar una labor, para la temporada o para regalar.",
     subs:{
-      empezar:{n:"Para empezar", txt:"Todo lo necesario para su primera labor, con un patrón sencillo explicado paso a paso."},
+      empezar:{n:"Para empezar", txt:"Todo lo necesario para tu primera labor, con un patrón sencillo explicado paso a paso."},
       temporada:{n:"De temporada", txt:"Lo que más se lleva cuando cambia el tiempo, ya combinado."},
-      regalar:{n:"Para regalar", txt:"Detalles preparados en caja con lazo. Si quiere, le añadimos una tarjeta escrita."}
+      regalar:{n:"Para regalar", txt:"Detalles preparados en caja con lazo. Si quieres, te añadimos una tarjeta escrita."}
     }
   }
 };

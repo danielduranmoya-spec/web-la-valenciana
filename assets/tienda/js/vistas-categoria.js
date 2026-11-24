@@ -83,10 +83,10 @@ function ayudaHTML(){
   const u = U(), T = D().TIENDA;
   return `<aside class="lis-ayuda contenedor" aria-labelledby="lis-ayuda-t">
 <div class="lis-ayuda__texto"><h2 id="lis-ayuda-t" class="lis-ayuda__titulo" data-r>¿No lo encuentra?</h2>
-<p data-r>Pregúntenos por WhatsApp: a veces lo tenemos en la tienda y aún no está en la web.</p></div>
+<p data-r>Pregúntanos por WhatsApp: a veces lo tenemos en la tienda y aún no está en la web.</p></div>
 <div class="lis-ayuda__acciones" data-r>
 <a class="boton boton--secundario" href="${u.esc(u.whatsURL("Hola, estoy buscando: "))}" target="_blank" rel="noopener">${ic("whats")}<span>Escribir por WhatsApp</span></a>
-<p class="lis-ayuda__tel">o llame al <a href="${u.telURL()}">${T.tel.replace(/ /g, "&nbsp;")}</a></p>
+<p class="lis-ayuda__tel">o llámanos al <a href="${u.telURL()}">${T.tel.replace(/ /g, "&nbsp;")}</a></p>
 </div>
 </aside>`;
 }
@@ -118,7 +118,7 @@ function rejillaCon(lista, opcionesDe){
   if (!opcionesDe) return LV.tarjeta.rejilla(lista);
   return `<div class="tarjeta-rejilla-marco"><div class="tarjeta-rejilla" data-r-grupo>${lista.map(p => LV.tarjeta.html(p, opcionesDe(p))).join("")}</div></div>`;
 }
-const vacioRejilla = () => `<p class="lis-vacio">Ahora mismo no tenemos artículos aquí. Pregúntenos: puede que esté en la tienda.</p>`;
+const vacioRejilla = () => `<p class="lis-vacio">Ahora mismo no tenemos artículos aquí. Pregúntanos: puede que esté en la tienda.</p>`;
 
 /* ---------------- listado genérico (rejilla + ver más + ordenar) ---------------- */
 /**
@@ -303,7 +303,7 @@ function formBusqueda(q){
   return `<form class="bus-form" role="search" data-bus-form>
 <label class="bus-form__etiqueta" for="${id}">¿Qué busca?</label>
 <div class="bus-form__fila">
-<input class="campo__control bus-form__campo" id="${id}" type="search" name="q" value="${u.esc(q)}" placeholder="Escriba aquí: botones, lana, medias…" autocomplete="off" enterkeyhint="search" spellcheck="false">
+<input class="campo__control bus-form__campo" id="${id}" type="search" name="q" value="${u.esc(q)}" placeholder="Escribe aquí: botones, lana, medias…" autocomplete="off" enterkeyhint="search" spellcheck="false">
 <button type="submit" class="boton boton--primario bus-form__boton">${ic("buscar")}<span>Buscar</span></button>
 </div>
 </form>`;
@@ -311,7 +311,7 @@ function formBusqueda(q){
 function pruebeHTML(){
   const url = LV.rutas.url;
   return `<section class="bus-pruebe" aria-labelledby="bus-pruebe-t">
-<h2 class="bus-pruebe__titulo" id="bus-pruebe-t">Pruebe con:</h2>
+<h2 class="bus-pruebe__titulo" id="bus-pruebe-t">Prueba con:</h2>
 <ul class="pildoras">${PRUEBE.map(t => `<li><a class="pildora" href="${url.buscar(t)}">${t}</a></li>`).join("")}</ul>
 </section>`;
 }
@@ -332,7 +332,7 @@ LV.vistas.buscar = {
     if (!q) {
       return `<div class="bus bus--vacia">
 <div class="contenedor bus-cab"><h1 class="bus-cab__h1" data-titular>Buscar en la tienda</h1>
-<p class="t-entradilla bus-cab__entradilla" data-r>Escriba lo que necesita, como lo diría en el mostrador.</p>
+<p class="t-entradilla bus-cab__entradilla" data-r>Escribe lo que necesitas, como lo dirías en el mostrador.</p>
 ${formBusqueda("")}${pruebeHTML()}</div>
 ${destacadosHTML()}
 </div>`;
@@ -345,7 +345,7 @@ ${destacadosHTML()}
       return `<div class="bus bus--sin">
 <div class="contenedor bus-cab">
 <h1 class="bus-cab__h1" data-titular>No encontramos «${u.esc(q)}»</h1>
-<p class="bus-sin__texto" data-r>Pruebe con otra palabra o pregúntenos por WhatsApp: a veces lo tenemos y aún no está en la web.</p>
+<p class="bus-sin__texto" data-r>Prueba con otra palabra o pregúntanos por WhatsApp: a veces lo tenemos y aún no está en la web.</p>
 <div class="bus-sin__acciones" data-r>
 <a class="boton boton--primario" href="${u.esc(u.whatsURL(`Hola, busco: ${q}. ¿Lo tienen?`))}" target="_blank" rel="noopener">${ic("whats")}<span>Escribir por WhatsApp</span></a>
 <a class="boton boton--secundario" href="${u.telURL()}">${ic("tel")}<span>Llamar al ${T.tel.replace(/ /g, "&nbsp;")}</span></a>
@@ -364,7 +364,7 @@ ${destacadosHTML()}
 <li><button type="button" class="pildora" data-lis-filtro="todo" aria-pressed="${st.filtro === "todo"}">${ch}<span>Todo</span> <span class="pildora__n">(${res.length})</span></button></li>
 ${cats.map(([c, n]) => `<li><button type="button" class="pildora" data-lis-filtro="${c}" aria-pressed="${st.filtro === c}">${ch}<span>${u.esc(D().categoria(c).nombre)}</span> <span class="pildora__n">(${n})</span></button></li>`).join("")}
 </ul></div>` : "";
-    const parcial = r.parcial ? `<div class="aviso bus-parcial" data-r>${ic("info")}<p><strong>No hay nada con todas sus palabras.</strong> Le mostramos lo que más se parece a «${u.esc(q)}».</p></div>` : "";
+    const parcial = r.parcial ? `<div class="aviso bus-parcial" data-r>${ic("info")}<p><strong>No hay nada con todas tus palabras.</strong> Te mostramos lo que más se parece a «${u.esc(q)}».</p></div>` : "";
     return `<div class="bus bus--con">
 <div class="contenedor bus-cab">
 <h1 class="bus-cab__h1" data-titular>Resultados para «${u.esc(q)}»</h1>
@@ -401,7 +401,7 @@ ${ayudaHTML()}
     });
     // la búsqueda mantiene el orden por relevancia (no hay «Ordenar»)
     ordenarRelevancia(ctlB);
-    U().anunciar(cuentaBusqueda(res.length) + (r.parcial ? ". No hay nada con todas sus palabras; le mostramos lo que más se parece." : "."));
+    U().anunciar(cuentaBusqueda(res.length) + (r.parcial ? ". No hay nada con todas tus palabras; te mostramos lo que más se parece." : "."));
   },
   desmontar(){ if (ctlB) ctlB.quitar(); ctlB = null; }
 };

@@ -142,7 +142,7 @@ function fondoInerte(activo, excepto){
 /* ---------- marcado común ---------- */
 /** Migas: migas([["Inicio","#/"],["Mercería","#/c/merceria"],["Hilos"]]) → <nav class="migas">… */
 function migas(items){
-  return `<nav class="migas" aria-label="Está usted en"><ol>${items.map((it,i) =>
+  return `<nav class="migas" aria-label="Estás en"><ol>${items.map((it,i) =>
     i === items.length-1 ? `<li><span aria-current="page">${esc(it[0])}</span></li>` : `<li><a href="${esc(it[1])}">${esc(it[0])}</a></li>`).join("")}</ol></nav>`;
 }
 /** CSS `background` para una muestra de color (hex o especiales linear/flores/lunares). */

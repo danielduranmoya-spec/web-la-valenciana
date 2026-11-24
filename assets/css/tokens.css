@@ -25,8 +25,8 @@
   --morado-oscuro: #5A3820;/* rellenos de botones (texto blanco encima) */
 
   /* Tipografía */
-  --fuente-display: "Playfair Display", Georgia, "Times New Roman", serif;
-  --fuente-texto: "Jost", "Helvetica Neue", Arial, sans-serif;
+  --fuente-display: "Federo", "Trebuchet MS", sans-serif;
+  --fuente-texto: "Oxygen", "Helvetica Neue", Arial, sans-serif;
 
   /* Espaciado (múltiplos de 4/8) y radios */
   --e1: 4px; --e2: 8px; --e3: 12px; --e4: 16px; --e5: 24px; --e6: 32px; --e7: 48px; --e8: 64px;

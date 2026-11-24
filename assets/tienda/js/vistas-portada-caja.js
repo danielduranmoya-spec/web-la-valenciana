@@ -31,14 +31,14 @@ function html(){
     <div class="caja-hero__texto">
       <p class="caja-antetitulo">Mercería · Complementos · Cápsulas · Almendralejo</p>
       <h1 class="caja-titular" id="caja-titular" aria-label="Hilos, botones, medias y abanicos, como en el mostrador.">${palabras}</h1>
-      <p class="caja-entradilla">Somos La Valenciana, mercería de Almendralejo desde el siglo&nbsp;XIX, en la calle Moreno Nieto. Elija con calma: se lo preparamos para recoger o se lo enviamos a casa.</p>
+      <p class="caja-entradilla">Somos La Valenciana, mercería de Almendralejo desde el siglo&nbsp;XIX, en la calle Moreno Nieto. Elige con calma: te lo preparamos para recoger o te lo enviamos a casa.</p>
       ${estadoPildora()}
       <div class="caja-botones">
         <a class="boton boton--primario boton--grande caja-boton" href="${url("merceria")}" data-iman><span>Ver Mercería</span><span class="caja-flecha" aria-hidden="true">→</span></a>
         <a class="boton boton--secundario boton--grande caja-boton" href="${url("complementos")}" data-iman><span>Ver Complementos</span><span class="caja-flecha" aria-hidden="true">→</span></a>
         <a class="boton boton--secundario boton--grande caja-boton" href="${url("capsulas")}" data-iman><span>Ver Cápsulas</span><span class="caja-flecha" aria-hidden="true">→</span></a>
       </div>
-      <p class="caja-llame">¿Prefiere hablar con nosotros? Llame al <a href="${LV.util && LV.util.telURL ? LV.util.telURL() : "tel:+34924670839"}">${esc(t.tel || "924 67 08 39").replace(/ /g, "&nbsp;")}</a>.</p>
+      <p class="caja-llame">¿Prefieres hablar con nosotros? Llama al <a href="${LV.util && LV.util.telURL ? LV.util.telURL() : "tel:+34924670839"}">${esc(t.tel || "924 67 08 39").replace(/ /g, "&nbsp;")}</a>.</p>
     </div>
 
     <div class="cv" aria-hidden="true">

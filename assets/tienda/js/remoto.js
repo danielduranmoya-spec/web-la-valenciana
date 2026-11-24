@@ -107,7 +107,7 @@ function parchear(){
   document.head.appendChild(st);
 }
 function aviso(){
-  const T = D.TIENDA, txt = T.vacaciones ? (T.avisoTexto || "La tienda está de vacaciones: puede ver el catálogo, pero ahora no admitimos pedidos.") : T.avisoTexto;
+  const T = D.TIENDA, txt = T.vacaciones ? (T.avisoTexto || "La tienda está de vacaciones: puedes ver el catálogo, pero ahora no admitimos pedidos.") : T.avisoTexto;
   if (!txt) return;
   const d = document.createElement("div");
   d.className = "lv-aviso-tienda"; d.setAttribute("role", "status"); d.textContent = txt;

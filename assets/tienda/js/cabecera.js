@@ -25,7 +25,7 @@ const DESTACADO = {
     piezas: [{ icono: "ovillo", color: "#B48AA3" }, { icono: "agujas-punto", color: "#E6CFAE" }, { icono: "ovillo", color: "#F1ECE4" }] },
   complementos: { sub: "medias", titulo: "Medias para el frío", frase: "Tupidas, transparentes y de descanso, en todas las tallas.", boton: "Ver medias y pantis",
     piezas: [{ icono: "media", color: "#24365C" }, { icono: "bufanda", color: "#7B2335" }, { icono: "calcetin", color: "#C9C9CC" }] },
-  capsulas: { sub: "empezar", titulo: "Para su primera labor", frase: "Todo lo necesario en una caja, con un patrón sencillo explicado paso a paso.", boton: "Ver cápsulas para empezar",
+  capsulas: { sub: "empezar", titulo: "Para tu primera labor", frase: "Todo lo necesario en una caja, con un patrón sencillo explicado paso a paso.", boton: "Ver cápsulas para empezar",
     piezas: [{ icono: "kit", color: "#E9B9C3" }, { icono: "costurero", color: "#B98A55" }, { icono: "vale", color: "#F1ECE4" }] }
 };
 
@@ -113,7 +113,7 @@ function htmlMenuMovil(){
             <li style="--i:4"><a class="mnu-fila" href="${LV.rutas.url.colores()}" data-nav><span>Buscar por color</span></a></li>
             <li style="--i:4"><a class="mnu-fila" href="${LV.rutas.url.horario()}" data-nav><span>Horario</span></a></li>
             <li style="--i:5"><a class="mnu-fila" href="${LV.rutas.url.redes()}" data-nav><span>Redes sociales</span></a></li>
-            <li style="--i:6"><a class="mnu-fila" href="${LV.rutas.url.visitanos()}" data-nav><span>Visítenos</span></a></li>
+            <li style="--i:6"><a class="mnu-fila" href="${LV.rutas.url.visitanos()}" data-nav><span>Visítanos</span></a></li>
           </ul>
         </nav>
         <div class="mnu-extra">
@@ -138,7 +138,7 @@ function htmlCabecera(){
   const T = D.TIENDA;
   return `<div class="cab-anuncio">
     <div class="contenedor cab-anuncio__in">
-      <p class="cab-anuncio__txt">Envío gratis desde ${String(T.envioGratis).replace(".", ",")}&nbsp;€. Pague con tarjeta o pídalo por WhatsApp: <a href="${U.whatsURL()}" target="_blank" rel="noopener">${U.esc(T.whatsTxt).replace(/ /g, "&nbsp;")}</a></p>
+      <p class="cab-anuncio__txt">Envío gratis desde ${String(T.envioGratis).replace(".", ",")}&nbsp;€. Paga con tarjeta o pídelo por WhatsApp: <a href="${U.whatsURL()}" target="_blank" rel="noopener">${U.esc(T.whatsTxt).replace(/ /g, "&nbsp;")}</a></p>
       ${htmlLetra("cab")}
     </div>
   </div>
@@ -164,7 +164,7 @@ function htmlCabecera(){
           <li class="cab-nav__item cab-nav__item--extra2"><a class="cab-nav__enlace" href="${LV.rutas.url.comoComprar()}" data-nav><span>Cómo comprar</span></a></li>
           <li class="cab-nav__item cab-nav__item--extra"><a class="cab-nav__enlace" href="${LV.rutas.url.horario()}" data-nav><span>Horario</span></a></li>
           <li class="cab-nav__item cab-nav__item--extra"><a class="cab-nav__enlace" href="${LV.rutas.url.redes()}" data-nav><span>Redes sociales</span></a></li>
-          <li class="cab-nav__item cab-nav__item--extra2"><a class="cab-nav__enlace" href="${LV.rutas.url.visitanos()}" data-nav><span>Visítenos</span></a></li>
+          <li class="cab-nav__item cab-nav__item--extra2"><a class="cab-nav__enlace" href="${LV.rutas.url.visitanos()}" data-nav><span>Visítanos</span></a></li>
         </ul>
       </nav>
     </div>
@@ -329,7 +329,7 @@ function montarBuscadores(){
     f.addEventListener("submit", e => {
       e.preventDefault();
       const campo = U.$("input", f), q = campo.value.trim();
-      if (!q){ campo.focus(); U.anunciar("Escriba lo que busca, por ejemplo: botones."); return; }
+      if (!q){ campo.focus(); U.anunciar("Escribe lo que buscas, por ejemplo: botones."); return; }
       cerrarPaneles(false);
       LV.rutas.ir(LV.rutas.url.buscar(q));
     });

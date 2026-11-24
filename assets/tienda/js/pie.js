@@ -51,7 +51,7 @@ function html(){
             <li><a class="pie-enlace" href="condiciones-de-venta/"><span>Condiciones de venta</span></a></li>
             <li><a class="pie-enlace" href="${R.horario()}" data-nav><span>Horario</span></a></li>
             <li><a class="pie-enlace" href="${R.redes()}" data-nav><span>Redes sociales</span></a></li>
-            <li><a class="pie-enlace" href="${R.visitanos()}" data-nav><span>Visítenos</span></a></li>
+            <li><a class="pie-enlace" href="${R.visitanos()}" data-nav><span>Visítanos</span></a></li>
             <li><a class="pie-enlace" href="aviso-legal/"><span>Aviso legal</span></a></li>
             <li><a class="pie-enlace" href="privacidad/"><span>Privacidad</span></a></li>
             <li><a class="pie-enlace" href="cookies/"><span>Cookies</span></a></li>
@@ -59,10 +59,10 @@ function html(){
           </ul>
         </nav>
         <section class="pie-col pie-col--whats" aria-labelledby="pie-t4">
-          <h2 class="pie-t" id="pie-t4">Pídalo por WhatsApp</h2>
-          <p class="pie-frase">Díganos qué necesita y se lo preparamos para recoger o se lo enviamos a casa. Envío ${U.euros(T.envio).replace(" ", "&nbsp;")}, gratis desde ${T.envioGratis}&nbsp;€.</p>
+          <h2 class="pie-t" id="pie-t4">Pídelo por WhatsApp</h2>
+          <p class="pie-frase">Dinos qué necesitas y te lo preparamos para recoger o te lo enviamos a casa. Envío ${U.euros(T.envio).replace(" ", "&nbsp;")}, gratis desde ${T.envioGratis}&nbsp;€.</p>
           <a class="boton boton--secundario pie-boton" href="${U.whatsURL("Hola, quería hacer un pedido.")}" target="_blank" rel="noopener">${IC.whats || ""}<span>Escribir por WhatsApp</span></a>
-          <p class="pie-nota">En la web puede pagar con tarjeta o PayPal. Por WhatsApp, paga al recoger o por Bizum.</p>
+          <p class="pie-nota">En la web puedes pagar con tarjeta o PayPal. Por WhatsApp, paga al recoger o por Bizum.</p>
         </section>
       </div>
       <div class="pie-final">

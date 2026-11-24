@@ -23,29 +23,29 @@ const TIPOS = [
       rinde: "Un ovillo de Happy Cotton (20 g) da unos 43 m: lo justo para una pieza pequeña o un posavasos y medio.",
       nivel: "Fácil. No se abre ni se enreda y deshacer no lo estropea, así que es muy agradecido para aprender ganchillo.",
       cuidado: "A mano o a máquina en programa delicado a 30 °C. Secar en plano y sin secadora para que no encoja.",
-      truco: "Use un marcador de puntos al empezar cada vuelta: en espiral, sin él, es muy fácil perder la cuenta."
+      truco: "Usa un marcador de puntos al empezar cada vuelta: en espiral, sin él, es muy fácil perder la cuenta."
     },
     labores: [
       { id: "conejito", t: "Conejito amigurumi", dib: "conejito", c: "#F7CBD3", c2: "#FFFFFF",
         x: "El primer amigurumi de casi todas: cuerpo, cabeza y orejas por separado, y se cosen al final.",
         material: "4 ovillos (3 del color del cuerpo y 1 para detalles), ganchillo de 2,5 mm, relleno y ojos de seguridad",
         nivel: "Intermedio", tiempo: "Unas 8 horas", mide: "Unos 20 cm",
-        pasos: ["Anillo mágico de 6 puntos bajos y aumentos hasta 36 para la cabeza.", "Cuerpo igual, algo más alargado; rellene antes de cerrar.", "Orejas en tubo de 6 a 10 puntos, sin rellenar.", "Cosa las piezas con aguja lanera y borde ojos y hocico."] },
+        pasos: ["Anillo mágico de 6 puntos bajos y aumentos hasta 36 para la cabeza.", "Cuerpo igual, algo más alargado; rellena antes de cerrar.", "Orejas en tubo de 6 a 10 puntos, sin rellenar.", "Cose las piezas con aguja lanera y borda ojos y hocico."] },
       { id: "posavasos", t: "Posavasos de colores", dib: "posavasos", c: "#69898D", c2: "#EFD45E",
         x: "Círculos en espiral cambiando de color: la labor perfecta para una tarde y para aprovechar restos.",
         material: "1 ovillo da para 2 posavasos; mejor combinar 2 o 3 colores. Ganchillo de 3 mm",
         nivel: "Fácil", tiempo: "40 minutos cada uno", mide: "10 cm de diámetro",
-        pasos: ["Anillo mágico con 12 puntos altos.", "Aumente 12 puntos en cada vuelta hasta tener 5 vueltas.", "Cambie de color en el último punto de la vuelta.", "Remate con una vuelta de punto cangrejo."] },
+        pasos: ["Anillo mágico con 12 puntos altos.", "Aumenta 12 puntos en cada vuelta hasta tener 5 vueltas.", "Cambia de color en el último punto de la vuelta.", "Remata con una vuelta de punto cangrejo."] },
       { id: "monedero", t: "Monedero con cremallera", dib: "monedero", c: "#FC7D57", c2: "#F9DEE4",
         x: "Un rectángulo doblado y una cremallera cosida a mano. Queda firme gracias al algodón.",
         material: "3 ovillos, ganchillo de 3 mm, una cremallera de 15 cm e hilo de coser del mismo tono",
         nivel: "Fácil", tiempo: "Unas 3 horas", mide: "15 × 10 cm",
-        pasos: ["Cadeneta de 30 puntos y filas de punto bajo hasta 20 cm.", "Doble por la mitad y cierre los laterales con punto raso.", "Hilvane la cremallera abierta y cósala a punto atrás.", "Si quiere, añada un pompón o una borla al tirador."] },
+        pasos: ["Cadeneta de 30 puntos y filas de punto bajo hasta 20 cm.", "Dobla por la mitad y cierra los laterales con punto raso.", "Hilvana la cremallera abierta y cósela a punto atrás.", "Si quieres, añade un pompón o una borla al tirador."] },
       { id: "frutas", t: "Frutitas para jugar", dib: "frutas", c: "#CB0420", c2: "#5C9149",
         x: "Fresas, cerezas y limones en miniatura. Sirven de llavero, de adorno o para la cocinita.",
         material: "1 ovillo de cada color de fruta y uno verde para las hojas; ganchillo de 2,5 mm y relleno",
         nivel: "Fácil", tiempo: "1 hora por fruta", mide: "4 a 6 cm",
-        pasos: ["Anillo mágico de 6 puntos y aumentos hasta 18.", "Tres vueltas rectas y disminuciones hasta cerrar.", "Rellene antes de las últimas disminuciones.", "Hojita en cadeneta y bordado de las pepitas con hilo amarillo."] }
+        pasos: ["Anillo mágico de 6 puntos y aumentos hasta 18.", "Tres vueltas rectas y disminuciones hasta cerrar.", "Rellena antes de las últimas disminuciones.", "Hojita en cadeneta y bordado de las pepitas con hilo amarillo."] }
     ]
   },
   {
@@ -59,29 +59,29 @@ const TIPOS = [
       rinde: "Un ovillo de 100% Baby 3 (50 g) da unos 165 m. Una chaquetita de 6 meses lleva 2 ovillos.",
       nivel: "Fácil. Es elástica y perdona la tensión irregular de las primeras labores.",
       cuidado: "Es superwash: a máquina en programa de lana a 30 °C, con jabón suave. Secar en plano, nunca colgada.",
-      truco: "Compre todos los ovillos de la misma partida (viene en la etiqueta): de una partida a otra el tono cambia un poco."
+      truco: "Compra todos los ovillos de la misma partida (viene en la etiqueta): de una partida a otra el tono cambia un poco."
     },
     labores: [
       { id: "chaquetita", t: "Chaquetita de 6 meses", dib: "chaquetita", c: "#BDD0DC", c2: "#F4EEE1",
         x: "Una pieza de arriba abajo, sin costuras: se teje el canesú y se separan mangas y cuerpo.",
         material: "2 ovillos, agujas circulares de 3 mm, 4 o 5 botones de 12 mm y marcadores",
         nivel: "Intermedio", tiempo: "Unas 15 horas", mide: "Talla 6 meses",
-        pasos: ["Monte 70 puntos y teja 6 vueltas de punto bobo para el cuello.", "Aumente en las cuatro marcas del raglán hasta tener 180 puntos.", "Deje las mangas en espera y siga con el cuerpo hasta 15 cm.", "Retome las mangas, remate con punto bobo y cosa los botones."] },
+        pasos: ["Monta 70 puntos y teje 6 vueltas de punto bobo para el cuello.", "Aumenta en las cuatro marcas del raglán hasta tener 180 puntos.", "Deja las mangas en espera y sigue con el cuerpo hasta 15 cm.", "Retoma las mangas, remata con punto bobo y cosa los botones."] },
       { id: "patucos", t: "Patucos con cordón", dib: "patucos", c: "#F7CFCC", c2: "#FFFFFF",
         x: "Los patucos de siempre: suela, empeine y una vuelta de calados para pasar la cinta.",
         material: "1 ovillo (sobra para dos pares), agujas de 3 mm y 1 m de cinta de raso",
         nivel: "Fácil", tiempo: "2 horas el par", mide: "0 a 6 meses",
-        pasos: ["Monte 36 puntos y teja la suela en punto bobo con aumentos en el centro.", "Teja 8 vueltas rectas para el lateral.", "Disminuya en el centro para formar el empeine.", "Haga una vuelta de calados y teja el puño; pase la cinta."] },
+        pasos: ["Monta 36 puntos y teje la suela en punto bobo con aumentos en el centro.", "Teje 8 vueltas rectas para el lateral.", "Disminuye en el centro para formar el empeine.", "Haz una vuelta de calados y teje el puño; pasa la cinta."] },
       { id: "gorrito", t: "Gorrito con pompón", dib: "gorrito", c: "#D4D9C1", c2: "#F4EEE1",
         x: "Tejido en redondo con elástico 1/1 y menguado en estrella. Se acaba en una tarde.",
         material: "1 ovillo, agujas circulares de 3 mm y un juego de agujas de doble punta",
         nivel: "Fácil", tiempo: "4 horas", mide: "3 a 6 meses",
-        pasos: ["Monte 88 puntos en redondo y teja 3 cm de elástico 1/1.", "Siga en punto jersey hasta 11 cm desde el inicio.", "Mengüe 8 puntos cada dos vueltas hasta que queden 8.", "Cierre pasando la hebra por los puntos y cosa el pompón."] },
+        pasos: ["Monta 88 puntos en redondo y teje 3 cm de elástico 1/1.", "Sigue en punto jersey hasta 11 cm desde el inicio.", "Mengua 8 puntos cada dos vueltas hasta que queden 8.", "Cierra pasando la hebra por los puntos y cose el pompón."] },
       { id: "manta", t: "Mantita de cochecito", dib: "manta", c: "#F4EEE1", c2: "#D3CAC4",
         x: "Punto arroz con borde de punto bobo: reversible, no se enrolla y es muy suave.",
         material: "7 ovillos y agujas circulares de 3,5 mm (para que quepan todos los puntos)",
         nivel: "Fácil", tiempo: "Unas 25 horas", mide: "70 × 80 cm",
-        pasos: ["Monte 180 puntos y teja 8 vueltas de punto bobo.", "Siga en punto arroz dejando 6 puntos de bobo a cada lado.", "Al llegar a 78 cm, termine con 8 vueltas de bobo.", "Cierre flojo y esconda las hebras; lávela y séquela en plano."] }
+        pasos: ["Monta 180 puntos y teje 8 vueltas de punto bobo.", "Sigue en punto arroz dejando 6 puntos de bobo a cada lado.", "Al llegar a 78 cm, termina con 8 vueltas de bobo.", "Cierra flojo y esconde las hebras; lávala y sécala en plano."] }
     ]
   }
 ];

@@ -1,0 +1,4 @@
+/* Ovillo que rueda al entrar en el apartado de hilos (js/ovillo.js) */
+.ovi { position: fixed; left: 0; right: 0; z-index: 85; pointer-events: none; overflow: visible; contain: layout; }
+.ovi svg { display: block; overflow: visible; }
+@media (prefers-reduced-motion: reduce) { .ovi { display: none; } }

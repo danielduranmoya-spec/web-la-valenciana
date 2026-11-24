@@ -1,0 +1,146 @@
+/* =================================================================
+   LA VALENCIANA · ovillo.js
+   Al entrar en el apartado de hilos (#/hilo/… o Mercería › Lanas y labores),
+   un ovillo entra por la izquierda a ras de la parte de abajo de la pantalla
+   y rueda hacia la derecha dando botes, como una planta rodadora del oeste,
+   deshaciéndose y dejando el hilo en el suelo. Cuando sale por la derecha,
+   el hilo se va recogiendo poco a poco.
+   - No bloquea nada (pointer-events: none) y no se anuncia (aria-hidden).
+   - Con «reducir movimiento» no aparece.
+   - En el móvil rueda sobre la barra inferior (.lv-dock) si está visible.
+   - Pruebas: LV.ovillo.lanzar() lo lanza a mano.
+   ================================================================= */
+(function () {
+"use strict";
+window.LV = window.LV || {};
+
+const NS = "http://www.w3.org/2000/svg";
+const reducido = () => !!(window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches);
+const enHilos = d => !!d && (d.vista === "hilo" ||
+  (d.vista === "categoria" && d.params && d.params.cat === "merceria" && d.params.sub === "lanas"));
+
+/* colores del ovillo: lana teja con hebras más oscuras (encaja con el kraft y el acento) */
+const LANA = "#C77E62", LANA_OSCURA = "#9C5A42", LANA_CLARA = "#E2A88E";
+
+let enCurso = null;
+
+const el = (n, at) => { const e = document.createElementNS(NS, n); for (const k in at) e.setAttribute(k, at[k]); return e; };
+const lerp = (a, b, t) => a + (b - a) * t;
+const suave = t => t < .5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+
+/* ¿Dónde está el «suelo»? Encima de la barra inferior del móvil si se ve; si no, el borde de abajo. */
+function suelo(){
+  const dock = document.querySelector(".lv-dock");
+  if (dock && !dock.hidden) {
+    const r = dock.getBoundingClientRect();
+    if (r.height > 0 && getComputedStyle(dock).display !== "none" && r.top < innerHeight) return r.top + 1;
+  }
+  return innerHeight - 3;
+}
+
+function lanzar(){
+  if (enCurso || reducido() || document.hidden) return;
+  const W = innerWidth, H = innerHeight, Y = suelo();
+  const movil = W < 700;
+  const R0 = movil ? 24 : 32, R1 = R0 * .5;      // el ovillo adelgaza al deshacerse
+  const DUR = movil ? 3400 : 4400, RECOGER = 1900;
+  const alto = Math.min(Y, 260);                 // la capa solo ocupa la franja de abajo
+
+  const capa = document.createElement("div");
+  capa.className = "ovi";
+  capa.setAttribute("aria-hidden", "true");
+  capa.style.top = (Y - alto) + "px";
+  capa.style.height = alto + "px";
+  const svg = el("svg", { width: W, height: alto, viewBox: `0 0 ${W} ${alto}` });
+  const g0 = alto;                                // y del suelo dentro del svg
+
+  const hilo = el("path", { class: "ovi-hilo", fill: "none", stroke: LANA, "stroke-width": movil ? 2 : 2.4, "stroke-linecap": "round", "stroke-linejoin": "round" });
+  const sombra = el("ellipse", { class: "ovi-sombra", cx: 0, cy: g0 - 1.5, rx: R0, ry: 3.2, fill: "rgba(47,42,38,.16)" });
+  const bola = el("g", {});
+  const giro = el("g", {});
+  // cuerpo del ovillo + hebras enrolladas (arcos recortados al círculo)
+  const id = "ovi-c" + Date.now();
+  const clip = el("clipPath", { id }); clip.appendChild(el("circle", { cx: 0, cy: 0, r: 1 }));
+  const defs = el("defs", {}); defs.appendChild(clip);
+  giro.appendChild(el("circle", { cx: 0, cy: 0, r: 1, fill: LANA }));
+  const hebras = el("g", { "clip-path": `url(#${id})`, fill: "none", stroke: LANA_OSCURA, "stroke-width": .07, "stroke-linecap": "round" });
+  [[-.35, .95, 25], [-.05, .9, 25], [.25, .85, 25], [.55, .7, 25], [-.6, .7, 25]].forEach(([dx, ry, rot]) =>
+    hebras.appendChild(el("ellipse", { cx: dx, cy: 0, rx: .38, ry, transform: `rotate(${rot})` })));
+  [[-.5, -.2, -50], [.1, .45, -50], [.45, -.45, -50]].forEach(([dx, dy, rot]) =>
+    hebras.appendChild(el("ellipse", { cx: dx, cy: dy, rx: .75, ry: .3, transform: `rotate(${rot})`, stroke: LANA_CLARA })));
+  giro.appendChild(hebras);
+  giro.appendChild(el("circle", { cx: 0, cy: 0, r: .97, fill: "none", stroke: LANA_OSCURA, "stroke-width": .05, opacity: .6 }));
+  bola.appendChild(giro);
+  svg.append(defs, sombra, hilo, bola);
+  capa.appendChild(svg);
+  document.body.appendChild(capa);
+
+  /* el hilo en el suelo: ondula un poco, como cuando se deja caer */
+  const f1 = Math.random() * 6, f2 = Math.random() * 6;
+  const ondaY = x => g0 - 1.6 - 1.6 * Math.sin(x / 37 + f1) - 1.1 * Math.sin(x / 13 + f2);
+  const puntos = [];
+  let ang = 0, xPrev = -R0;
+
+  const xDe = t => { const u = t + .025 * Math.sin(t * Math.PI * 4); return lerp(-R0 * 1.2, W + R0 * 2.2, suave(Math.min(1, Math.max(0, u)) * .85 + u * .15)); };
+  // botes de planta rodadora: cuatro saltos que van a menos
+  const BOTES = 4;
+  const boteY = t => { const p = t * BOTES; const n = Math.floor(p); const a = (movil ? 16 : 24) * Math.pow(.62, n); return a * Math.sin(Math.PI * (p - n)); };
+
+  const t0 = performance.now();
+  let fase = "rodar", tRecoger = 0, L = 0;
+
+  const paso = ahora => {
+    if (fase === "rodar") {
+      const t = Math.min(1, (ahora - t0) / DUR);
+      const x = xDe(t), r = lerp(R0, R1, t), sube = boteY(t);
+      const cy = g0 - r - sube;
+      ang += (x - xPrev) / r; xPrev = x;
+      bola.setAttribute("transform", `translate(${x.toFixed(1)} ${cy.toFixed(1)})`);
+      giro.setAttribute("transform", `rotate(${(ang * 180 / Math.PI).toFixed(1)}) scale(${r.toFixed(2)})`);
+      sombra.setAttribute("cx", x.toFixed(1));
+      sombra.setAttribute("rx", (r * (1 - sube / 60)).toFixed(1));
+      sombra.setAttribute("opacity", (1 - sube / 40).toFixed(2));
+      // el hilo queda en el suelo detrás del ovillo y sube hasta él
+      const xs = x - r * .55;
+      if (!puntos.length || xs - puntos[puntos.length - 1][0] > 5) puntos.push([xs, ondaY(xs)]);
+      const sale = [x - r * .82, cy + r * .5];
+      let d = "";
+      puntos.forEach((p, i) => { d += (i ? " L" : "M") + p[0].toFixed(1) + " " + p[1].toFixed(1); });
+      const u = puntos[puntos.length - 1];
+      if (u) d += ` Q${(u[0] + 4).toFixed(1)} ${u[1].toFixed(1)} ${sale[0].toFixed(1)} ${sale[1].toFixed(1)}`;
+      hilo.setAttribute("d", d);
+      if (t >= 1) {
+        fase = "recoger"; tRecoger = ahora;
+        bola.remove(); sombra.remove();
+        L = hilo.getTotalLength();
+        hilo.style.strokeDasharray = `${L} ${L}`;
+      }
+    } else {
+      // se recoge desde el cabo de la izquierda hacia la derecha, como si tiraran del ovillo
+      const t = Math.min(1, (ahora - tRecoger) / RECOGER);
+      hilo.style.strokeDashoffset = String(-L * suave(t));
+      if (t >= 1) return acabar();
+    }
+    enCurso.raf = requestAnimationFrame(paso);
+  };
+  const acabar = () => {
+    if (!enCurso) return;
+    cancelAnimationFrame(enCurso.raf);
+    capa.remove();
+    removeEventListener("resize", acabar);
+    enCurso = null;
+  };
+  enCurso = { raf: requestAnimationFrame(paso), acabar };
+  addEventListener("resize", acabar);           // si cambia el tamaño de la pantalla, se quita sin más
+}
+
+document.addEventListener("lv:ruta-cambiada", e => {
+  const d = e.detail || {};
+  if (d.parcial) return;
+  if (!enHilos(d)) { if (enCurso) enCurso.acabar(); return; }
+  if (enHilos(d.anterior)) return;              // ya estaba dentro: solo al entrar
+  setTimeout(lanzar, d.primera ? 900 : 450);    // tras la transición de página
+});
+
+LV.ovillo = { lanzar };
+})();

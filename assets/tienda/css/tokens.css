@@ -38,8 +38,8 @@
   --c-velo-modal:   rgba(47, 42, 38, .42); /* velo tras panel lateral / menú */
 
   /* ---------- TIPOGRAFÍA ---------- */
-  --f-titulo: "Playfair Display", "Iowan Old Style", Georgia, serif;
-  --f-texto:  "Jost", "Helvetica Neue", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --f-titulo: "Federo", "Trebuchet MS", "Gill Sans", sans-serif;
+  --f-texto:  "Oxygen", "Helvetica Neue", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
 
   /* tamaños (html = 100 % = 16px; todo en rem para que escale con el control de letra) */
   --t-display:    clamp(2.625rem, 1.35rem + 5.2vw, 5.5rem);    /* 42 → 88px  hero */

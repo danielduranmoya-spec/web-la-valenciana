@@ -112,7 +112,7 @@ function htmlHero(){
     <div class="por-hero__texto">
       <h1 class="t-display por-hero__titular" id="por-titular">${lineas}</h1>
       <div class="por-hero__costura" aria-hidden="true"></div>
-      <p class="t-entradilla por-hero__entradilla">Somos La Valenciana, mercería de Almendralejo desde el siglo&nbsp;XIX, en la calle Moreno Nieto. Elija con calma: se lo preparamos para recoger o se lo enviamos a casa.</p>
+      <p class="t-entradilla por-hero__entradilla">Somos La Valenciana, mercería de Almendralejo desde el siglo&nbsp;XIX, en la calle Moreno Nieto. Elige con calma: te lo preparamos para recoger o te lo enviamos a casa.</p>
       <nav class="por-puertas" aria-label="Secciones de la tienda">
         <a class="puerta puerta--merceria" href="${url.cat("merceria")}">
           ${dibujoPuerta("bobina", COLOR.rosaPalo)}
@@ -123,7 +123,7 @@ function htmlHero(){
           <span class="puerta__textos"><span class="puerta__titulo">Complementos</span><span class="puerta__linea">Medias, calcetines, pañuelos, bolsos</span></span>
         </a>
       </nav>
-      <p class="por-hero__llame">¿Prefiere hablar con nosotros? Llame al <a href="${telHref()}">${telTxt()}</a>.</p>
+      <p class="por-hero__llame">¿Prefieres hablar con nosotros? Llama al <a href="${telHref()}">${telTxt()}</a>.</p>
     </div>
     <figure class="por-bodegon con-lino" aria-hidden="true">${bodegonHero()}</figure>
   </div>

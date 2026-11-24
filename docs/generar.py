@@ -128,8 +128,8 @@ def doc(p,titulo,desc,cuerpo,actual,clase='',extra_css='',extra_head=''):
 <meta property="og:type" content="website">
 <meta property="og:locale" content="es_ES">
 <link rel="icon" href="{p}favicon.svg" type="image/svg+xml">
-<link rel="preload" href="{p}assets/fonts/PlayfairDisplay.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="{p}assets/fonts/Jost.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="{p}assets/fonts/Federo.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="{p}assets/fonts/Oxygen-400.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="{p}assets/fonts/fuentes.css">
 <link rel="stylesheet" href="{p}assets/css/tokens.css">
 <link rel="stylesheet" href="{p}assets/css/estilos.css">

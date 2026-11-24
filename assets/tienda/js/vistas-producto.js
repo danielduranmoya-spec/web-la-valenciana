@@ -46,7 +46,7 @@ function textoPreguntaWhats(st){
 }
 /* «Otro formato» = el mismo artículo en otra presentación (p. ej. hilo de 100 m y de 500 m):
    mismo icono y subcategoría (LV.datos.hermanos) Y el mismo nombre quitando cifras, unidades y paréntesis.
-   Dos abanicos o dos cintas distintas NO son otro formato: van a «Le pueden interesar». (R3) */
+   Dos abanicos o dos cintas distintas NO son otro formato: van a «Te pueden interesar». (R3) */
 const nombreBase = n => n.toLowerCase().replace(/\([^)]*\)/g, " ")
   .replace(/\b\d+([.,]\d+)?\s*(m|cm|mm|g|kg|ud\.?|uds\.?|den|ml)?(?=\s|$)/g, " ").replace(/\s+/g, " ").trim();
 function formatosDe(prod){
@@ -135,10 +135,10 @@ function selector(st){
     h += `<div class="fic-grupo" data-r><p class="fic-grupo__rotulo">${U.esc(D.rotulo(prod.tipoMedida))}: <strong>${U.esc(prod.medidas[0])}</strong></p></div>`;
   }
   if (prod.tipoMedida === "talla" || prod.tipoVar === "talla") {
-    h += `<p class="fic-ayuda" data-r><a href="${U.esc(U.whatsURL(`Hola, tengo una duda con la talla de «${nombreCorto(prod)}».`))}" target="_blank" rel="noopener" data-fic="whats-talla">¿Dudas con la talla? Pregúntenos por WhatsApp<span class="visualmente-oculto"> (se abre WhatsApp)</span></a></p>`;
+    h += `<p class="fic-ayuda" data-r><a href="${U.esc(U.whatsURL(`Hola, tengo una duda con la talla de «${nombreCorto(prod)}».`))}" target="_blank" rel="noopener" data-fic="whats-talla">¿Dudas con la talla? Pregúntanos por WhatsApp<span class="visualmente-oculto"> (se abre WhatsApp)</span></a></p>`;
   }
   if (!h) {
-    h = `<p class="fic-unica" data-r>Este artículo se vende en una sola versión. Si busca otro color o medida, pregúntenos: a veces lo tenemos en la tienda.</p>`;
+    h = `<p class="fic-unica" data-r>Este artículo se vende en una sola versión. Si buscas otro color o medida, pregúntanos: a veces lo tenemos en la tienda.</p>`;
   }
   const form = st.listas.formatos;
   if (form.length) {
@@ -184,11 +184,11 @@ function compra(st){
     <div class="fic-precio" data-r>
       <p class="fic-precio__linea"><span class="fic-precio__cifra" data-fic-precio>${U.euros(precioUd(st))}</span>
         <span class="fic-precio__nota">${prod.porMetro ? "el metro, IVA incluido" : "IVA incluido"}</span></p>
-      ${prod.stock === "agotado" ? `<span class="etiqueta lv-pocas">Agotado por ahora: pregúntenos por WhatsApp cuándo llega</span>` : prod.stock === "pocas" ? `<span class="etiqueta lv-pocas">Quedan pocas unidades</span>` : `<span class="etiqueta etiqueta--salvia">${IC("check")}Disponible</span>`}
+      ${prod.stock === "agotado" ? `<span class="etiqueta lv-pocas">Agotado por ahora: pregúntanos por WhatsApp cuándo llega</span>` : prod.stock === "pocas" ? `<span class="etiqueta lv-pocas">Quedan pocas unidades</span>` : `<span class="etiqueta etiqueta--salvia">${IC("check")}Disponible</span>`}
     </div>
     <hr class="filete fic-filete">
     <div class="fic-elegir" id="${ids.elegir}" data-fic-destino="versiones">
-      <h2 class="visualmente-oculto">Elija su versión</h2>
+      <h2 class="visualmente-oculto">Elige tu versión</h2>
       ${selector(st)}
       ${cantidad(st)}
       <div class="fic-acciones" data-r>
@@ -236,7 +236,7 @@ function masOpciones(st){
     <ul class="fic-mas__lista">
       ${op(pv, iv, tv, sv)}
       ${parecidos.length ? op("parecidos", "parecidos", "Productos parecidos", `${art(parecidos.length)} para comparar`) : ""}
-      ${juego.length ? op("juego", "juego", "Llévelo a juego", `${art(juego.length)} que combinan`) : ""}
+      ${juego.length ? op("juego", "juego", "Llévatelo a juego", `${art(juego.length)} que combinan`) : ""}
       <li><a class="boton boton--secundario fic-opcion" data-fic="preguntar-whats" target="_blank" rel="noopener"
         href="${U.esc(U.whatsURL(textoPreguntaWhats(st)))}">${cuerpo("whats", "Preguntar por WhatsApp", `Escríbanos al ${T.whatsTxt.replace(/ /g, "&nbsp;")}`)}<span class="visualmente-oculto"> (se abre WhatsApp)</span></a></li>
     </ul>
@@ -262,14 +262,14 @@ function detalles(st){
   const medidasTxt = [];
   if (prod.medidas.length) medidasTxt.push(`${U.esc(D.PLURALES[prod.tipoMedida] ? D.PLURALES[prod.tipoMedida][0].toUpperCase() + D.PLURALES[prod.tipoMedida].slice(1) : "Medidas")} disponibles: ${prod.medidas.map(U.esc).join(", ")}.`);
   if (!prod.conColor && prod.variantes.length > 1) medidasTxt.push(`${U.esc(D.rotulo(prod.tipoVar))}: ${prod.variantes.map(v => U.esc(v.n)).join(", ")}.`);
-  if (prod.porMetro) medidasTxt.push(`Se vende por metros, desde ${U.num(prod.min)} m y de medio en medio metro. Lo cortamos en la tienda a la medida que pida.`);
-  if (prod.tipoMedida === "talla") medidasTxt.push("Si duda entre dos tallas, díganos su talla habitual y le aconsejamos.");
-  medidasTxt.push("Para lavar y planchar, siga las indicaciones de la etiqueta del artículo. Si tiene dudas, pregúntenos.");
+  if (prod.porMetro) medidasTxt.push(`Se vende por metros, desde ${U.num(prod.min)} m y de medio en medio metro. Lo cortamos en la tienda a la medida que pidas.`);
+  if (prod.tipoMedida === "talla") medidasTxt.push("Si dudas entre dos tallas, dinos tu talla habitual y te aconsejamos.");
+  medidasTxt.push("Para lavar y planchar, sigue las indicaciones de la etiqueta del artículo. Si tienes dudas, pregúntanos.");
   const envios = `
     <p>Envío a la Península por ${U.euros(T.envio)}, y gratis a partir de ${T.envioGratis}&nbsp;€. Tarda de ${U.esc(T.plazoEnvio)}; si hace el pedido antes de las ${T.horaCorte}:00, sale el mismo día.</p>
-    <p>También puede recogerlo en la tienda, sin coste: ${U.esc(T.dir)}.</p>
-    <p>Tiene ${T.diasCambio} días para cambiarlo. No admitimos cambios de ${U.esc(T.sinCambio)}.${prod.porMetro ? " Este artículo se corta a medida, así que no admite cambio." : ""}</p>
-    <p>Puede pagar con tarjeta o PayPal en la web: solo reservamos el importe y no se cobra hasta que comprobemos que tenemos todo. Si lo prefiere, envíenos el pedido por WhatsApp o por correo y pague al recoger o por Bizum.</p>`;
+    <p>También puedes recogerlo en la tienda, sin coste: ${U.esc(T.dir)}.</p>
+    <p>Tienes ${T.diasCambio} días para cambiarlo. No admitimos cambios de ${U.esc(T.sinCambio)}.${prod.porMetro ? " Este artículo se corta a medida, así que no admite cambio." : ""}</p>
+    <p>Puedes pagar con tarjeta o PayPal en la web: solo reservamos el importe y no se cobra hasta que comprobemos que tenemos todo. Si lo prefieres, envíanos el pedido por WhatsApp o por correo y paga al recoger o por Bizum.</p>`;
   let estado = "";
   try { estado = U.estadoTienda().txt + "."; } catch (e) {}
   const dudas = `
@@ -286,7 +286,7 @@ function detalles(st){
     ${acordeon(ids.acc + "-1", "Descripción y detalles", desc, true)}
     ${acordeon(ids.acc + "-2", "Medidas y cuidados", medidasTxt.map(t => `<p>${t}</p>`).join(""), false)}
     ${acordeon(ids.acc + "-3", "Envíos y cambios", envios, false)}
-    ${acordeon(ids.acc + "-4", "¿Tiene dudas?", dudas, false)}
+    ${acordeon(ids.acc + "-4", "¿Tienes dudas?", dudas, false)}
   </section>`;
 }
 
@@ -364,8 +364,8 @@ function html(p){
       </div>
     </div>
     ${bloque("versiones-otras", ids.bloqueVersiones, "Otros formatos de este producto", "", formatos)}
-    ${bloque("juego", ids.bloqueJuego, "Llévelo a juego", "", juego)}
-    ${bloque("parecidos", ids.bloqueParecidos, "Le pueden interesar", "", parecidos)}
+    ${bloque("juego", ids.bloqueJuego, "Llévatelo a juego", "", juego)}
+    ${bloque("parecidos", ids.bloqueParecidos, "Te pueden interesar", "", parecidos)}
     ${barra(E)}
   </article>`;
 }
@@ -472,7 +472,7 @@ function textoYa(){
   const n = T.cantidadDe ? T.cantidadDe(prod.id) : 0;
   if (!n) { el.hidden = true; el.innerHTML = ""; return; }
   el.hidden = false;
-  el.innerHTML = `${IC("check")}<span>Ya tiene ${U.esc(textoUnidades(prod, n))} en su cesta.</span>
+  el.innerHTML = `${IC("check")}<span>Ya tienes ${U.esc(textoUnidades(prod, n))} en tu cesta.</span>
     <button type="button" class="boton boton--texto fic-ya__ver" data-fic="ver-cesta">Ver mi cesta</button>`;
 }
 
@@ -492,7 +492,7 @@ function anadir(boton){
   if (r.limitado) { E.tocoMax = true; const lim = $("[data-fic-limite]", E.main); if (lim) lim.hidden = false; }
   // si no hay mini-panel de B6 que lo anuncie, lo anunciamos aquí
   if (!document.querySelector(".anadido")) {
-    U.anunciar(`Añadido: ${prod.nombre}. Su cesta tiene ${T.articulos()} ${T.articulos() === 1 ? "artículo" : "artículos"}.`);
+    U.anunciar(`Añadido: ${prod.nombre}. Tu cesta tiene ${T.articulos()} ${T.articulos() === 1 ? "artículo" : "artículos"}.`);
   }
 }
 

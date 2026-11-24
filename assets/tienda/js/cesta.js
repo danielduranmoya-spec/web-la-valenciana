@@ -42,21 +42,21 @@ function htmlEstructura(){
   <div class="ces-velo" data-ces="cerrar" hidden></div>
   <section class="panel" id="ces-panel" role="dialog" aria-modal="true" aria-labelledby="${idT}" hidden>
     <header class="ces-cab">
-      <h2 class="ces-cab__titulo" id="${idT}">Su cesta</h2>
+      <h2 class="ces-cab__titulo" id="${idT}">Tu cesta</h2>
       <button type="button" class="ces-cerrar" data-ces="cerrar">${ic("cerrar")}<span>Cerrar</span></button>
     </header>
     <div class="ces-cuerpo" tabindex="-1"></div>
     <footer class="ces-pie"></footer>
   </section>
-  <div class="anadido" role="region" aria-label="Producto añadido a su cesta" hidden></div>`;
+  <div class="anadido" role="region" aria-label="Producto añadido a tu cesta" hidden></div>`;
 }
 
 function htmlEnvio(){
   const t = T(), falta = t.faltaEnvioGratis(), p = t.progresoEnvio(), gratis = falta <= 0;
   return `<div class="ces-envio${gratis ? " ces-envio--gratis" : ""}">
     <p class="ces-envio__txt">${gratis
-      ? `${ic("check")}<span>Su pedido tiene envío gratis.</span>`
-      : `<span>Le faltan <strong>${euros(falta)}</strong> para el envío gratis.</span>`}</p>
+      ? `${ic("check")}<span>¡Tu pedido tiene envío gratis!</span>`
+      : `<span>Te faltan <strong>${euros(falta)}</strong> para el envío gratis.</span>`}</p>
     <div class="ces-hilo" aria-hidden="true" style="--p:${p.toFixed(3)}">
       <span class="ces-hilo__base"></span>
       <span class="ces-hilo__lleno"></span>
@@ -77,7 +77,7 @@ function htmlCantidad(l){
 }
 
 function textoLimite(prod){
-  return prod.porMetro ? "Para más de 50 metros, llámenos y le hacemos precio." : "Para más de 20 unidades, llámenos y le hacemos precio.";
+  return prod.porMetro ? "Para más de 50 metros, llámanos y te hacemos precio." : "Para más de 20 unidades, llámanos y te hacemos precio.";
 }
 
 function htmlLinea(l){
@@ -109,7 +109,7 @@ function htmlRecos(){
   const recos = T().recomendaciones(2);
   if (!recos.length) return "";
   return `<section class="ces-recos" aria-labelledby="ces-recos-t">
-    <h3 class="ces-recos__titulo" id="ces-recos-t">Le puede interesar</h3>
+    <h3 class="ces-recos__titulo" id="ces-recos-t">Te puede interesar</h3>
     <ul class="ces-recos__lista">${recos.map(p => {
       const url = LV.rutas.url.producto(p.id), elegir = LV.datos.hayQueElegir(p);
       const rot = p.variantes.length > 1 ? LV.datos.rotulo(p.tipoVar) : LV.datos.rotulo(p.tipoMedida);
@@ -130,13 +130,13 @@ function htmlRecos(){
 function htmlPago(){
   return `<div class="ces-pago">
     ${ic("info")}
-    <p>Puede pagar con tarjeta o PayPal en la web: solo reservamos el importe y no se cobra hasta que comprobemos que tenemos todo. Si lo prefiere, envíenos el pedido por WhatsApp o por correo y pague al recoger o por Bizum.</p>
+    <p>Puedes pagar con tarjeta o PayPal en la web: solo reservamos el importe y no se cobra hasta que comprobemos que tenemos todo. Si lo prefieres, envíanos el pedido por WhatsApp o por correo y paga al recoger o por Bizum.</p>
   </div>`;
 }
 
 /* En teléfono, «¿Dudas?» baja al cuerpo para que el pie fijo deje sitio a los artículos (rev. R1) */
 function htmlDudasCuerpo(){
-  return `<p class="ces-dudas-cuerpo"><a class="ces-pie__tel" href="${U().telURL()}">${ic("tel")}<span>¿Dudas? Llame al ${esc(LV.datos.TIENDA.tel).replace(/ /g, "\u00a0")}</span></a></p>`;
+  return `<p class="ces-dudas-cuerpo"><a class="ces-pie__tel" href="${U().telURL()}">${ic("tel")}<span>¿Dudas? Llámanos al ${esc(LV.datos.TIENDA.tel).replace(/ /g, "\u00a0")}</span></a></p>`;
 }
 
 function htmlVacia(){
@@ -145,8 +145,8 @@ function htmlVacia(){
   try { dib = LV.ilus.icono("costurero", "#E9B9C3", { decorativa: true, lino: false }); } catch (e) {}
   return `<div class="ces-vacia">
     <div class="ces-vacia__dibujo" aria-hidden="true">${dib}</div>
-    <p class="ces-vacia__titulo">Su cesta está vacía.</p>
-    <p class="ces-vacia__txt">Cuando vea algo que le guste, pulse «Añadir a la cesta» y lo guardaremos aquí.</p>
+    <p class="ces-vacia__titulo">Tu cesta está vacía. ¡Llénala!</p>
+    <p class="ces-vacia__txt">Cuando veas algo que te guste, pulsa «Añadir a la cesta» y lo guardamos aquí.</p>
     <div class="ces-vacia__botones">
       <a class="boton boton--secundario boton--ancho" href="${LV.rutas.url.categoria("merceria")}">Ver la mercería</a>
       <a class="boton boton--secundario boton--ancho" href="${LV.rutas.url.categoria("complementos")}">Ver los complementos</a>
@@ -164,7 +164,7 @@ function htmlPie(){
     <a class="boton boton--primario boton--ancho boton--grande ces-pedir" href="${LV.rutas.url.pedido()}" data-ces="pedir">Hacer el pedido</a>
     <div class="ces-pie__fila">
       <button type="button" class="boton boton--texto" data-ces="cerrar">Seguir comprando</button>
-      <a class="ces-pie__tel" href="${U().telURL()}">${ic("tel")}<span>¿Dudas? Llame al ${esc(D.tel).replace(/ /g, " ")}</span></a>
+      <a class="ces-pie__tel" href="${U().telURL()}">${ic("tel")}<span>¿Dudas? Llámanos al ${esc(D.tel).replace(/ /g, " ")}</span></a>
     </div>`;
 }
 
@@ -172,7 +172,7 @@ function htmlPie(){
 function pintar({ animarHilo = false } = {}){
   if (!panel) return;
   const t = T(), vacia = t.vacia();
-  titulo.textContent = vacia ? "Su cesta" : `Su cesta (${t.articulos()})`;
+  titulo.textContent = vacia ? "Tu cesta" : `Tu cesta (${t.articulos()})`;
   if (vacia && !quitado) {
     cuerpo.innerHTML = htmlVacia();
     pie.innerHTML = ""; pie.hidden = true;
@@ -180,8 +180,8 @@ function pintar({ animarHilo = false } = {}){
     const lineas = t.lista().map(htmlLinea);
     if (quitado) lineas.splice(Math.min(quitado.idx, lineas.length), 0, htmlQuitado(quitado));
     cuerpo.innerHTML = `${vacia ? "" : htmlEnvio()}
-      <ul class="ces-lineas" aria-label="Artículos de su cesta">${lineas.join("")}</ul>
-      ${vacia ? `<p class="ces-vacia__txt ces-vacia__txt--tras">Su cesta está vacía.</p>` : htmlPago() + htmlDudasCuerpo() + htmlRecos()}`;
+      <ul class="ces-lineas" aria-label="Artículos de tu cesta">${lineas.join("")}</ul>
+      ${vacia ? `<p class="ces-vacia__txt ces-vacia__txt--tras">Tu cesta está vacía.</p>` : htmlPago() + htmlDudasCuerpo() + htmlRecos()}`;
     if (vacia) { pie.innerHTML = ""; pie.hidden = true; }
     else { pie.innerHTML = htmlPie(); pie.hidden = false; }
   }
@@ -215,7 +215,7 @@ function actualizarLinea(k){
   const pAnterior = hiloViejo ? hiloViejo.style.getPropertyValue("--p") : 0;
   if (viejo) { viejo.outerHTML = htmlEnvio(); animarEnvio(pAnterior); }
   pie.innerHTML = htmlPie();
-  titulo.textContent = `Su cesta (${T().articulos()})`;
+  titulo.textContent = `Tu cesta (${T().articulos()})`;
 }
 
 /* ---------------- abrir / cerrar ---------------- */
@@ -292,7 +292,7 @@ function alPulsar(e){
     quitado = null; clearTimeout(tQuitado);
     const l = T().deshacer();
     if (l) {
-      U().anunciar(`Vuelve a estar en su cesta: ${nombreCorto(l.prod)}.`);
+      U().anunciar(`Vuelve a estar en tu cesta: ${nombreCorto(l.prod)}.`);
       enfocar(`.ces-linea[data-k="${CSS.escape(l.k || kq)}"] .ces-linea__nombre a`);
     } else pintar();
     return;
@@ -301,7 +301,7 @@ function alPulsar(e){
     e.preventDefault();
     const r = T().anadir(b.dataset.id, null, null, 1, b);
     if (r) {
-      U().anunciar(`Añadido: ${nombreCorto(r.linea.prod)}. Su cesta tiene ${T().articulos()} ${T().articulos() === 1 ? "artículo" : "artículos"}.`);
+      U().anunciar(`Añadido: ${nombreCorto(r.linea.prod)}. Tu cesta tiene ${T().articulos()} ${T().articulos() === 1 ? "artículo" : "artículos"}.`);
       enfocar(`.ces-linea[data-k="${CSS.escape(r.linea.k)}"] .ces-linea__nombre a`);
       const li2 = cuerpo.querySelector(`.ces-linea[data-k="${CSS.escape(r.linea.k)}"]`);
       if (li2) li2.classList.add("ces-linea--nueva");
@@ -315,7 +315,7 @@ function quitarLinea(k){
   clearTimeout(tQuitado);
   T().quitar(k);   // → evento «quitar» → pintar()
   enfocar(".ces-deshacer");
-  U().anunciar(`Quitado: ${quitado.nombre}. Puede deshacerlo durante unos segundos.`);
+  U().anunciar(`Quitado: ${quitado.nombre}. Puedes deshacerlo durante unos segundos.`);
   tQuitado = setTimeout(() => {
     const habiaFoco = cuerpo.contains(document.activeElement) && document.activeElement.matches(".ces-deshacer");
     quitado = null;
@@ -343,7 +343,7 @@ function mostrarAviso(det){
   aviso.innerHTML = `
     <div class="anadido__mini" aria-hidden="true" style="background:${LV.datos.lienzo(p)}">${mini(p, l.vi)}</div>
     <div class="anadido__texto">
-      <p class="anadido__titulo">${ic("check")}<span>Añadido a su cesta</span></p>
+      <p class="anadido__titulo">${ic("check")}<span>Añadido a tu cesta</span></p>
       <p class="anadido__nombre">${esc(nombreCorto(p))}</p>
       ${partes ? `<p class="anadido__version">${esc(partes)}</p>` : ""}
       ${det.limitado ? `<p class="anadido__limite">${textoLimite(p)}</p>` : ""}
@@ -361,7 +361,7 @@ function mostrarAviso(det){
   aviso.classList.add("anadido--visible");
   const barra = aviso.querySelector(".anadido__tiempo");
   barra.addEventListener("animationend", () => cerrarAviso(), { once: true });
-  U().anunciar(`Añadido: ${nombreCorto(p)}. Su cesta tiene ${n} ${n === 1 ? "artículo" : "artículos"}.`);
+  U().anunciar(`Añadido: ${nombreCorto(p)}. Tu cesta tiene ${n} ${n === 1 ? "artículo" : "artículos"}.`);
   if (det.limitado) setTimeout(() => U().anunciar(textoLimite(p), true), 400);
 }
 /** Justo bajo la cabecera visible (fija, encogida o en su sitio). Se recoloca al hacer scroll

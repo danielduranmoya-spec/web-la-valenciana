@@ -59,7 +59,7 @@ function botones(paypal, cont, { validar, datos, decir, hecho }){
   return paypal.Buttons({
     style: { layout: "vertical", shape: "pill", color: "black", label: "pay", height: 52, tagline: false },
     onClick: (d, a) => {
-      if (!validar()) { decir("Antes de pagar, complete sus datos.", true); return a.reject(); }
+      if (!validar()) { decir("Antes de pagar, completa tus datos.", true); return a.reject(); }
       decir(""); return a.resolve();
     },
     createOrder: (d, a) => {
@@ -94,13 +94,13 @@ function botones(paypal, cont, { validar, datos, decir, hecho }){
         const pu = det && det.purchase_units && det.purchase_units[0];
         const au = pu && pu.payments && pu.payments.authorizations && pu.payments.authorizations[0];
         if (!(det.status === "COMPLETED" || (au && (au.status === "CREATED" || au.status === "PENDING")))) {
-          decir("El pago no se ha completado. No se ha cobrado nada; inténtelo de nuevo.", true); return;
+          decir("El pago no se ha completado. No se ha cobrado nada; inténtalo de nuevo.", true); return;
         }
         hecho(datos(), { ref: ref || det.id, id: det.id });
       });
     },
-    onCancel: () => decir("Ha cancelado el pago. No se ha cobrado nada y su cesta sigue guardada."),
-    onError: () => decir("Ha habido un problema con el pago y no se ha cobrado nada. Inténtelo otra vez o envíenos el pedido por WhatsApp.", true)
+    onCancel: () => decir("Has cancelado el pago. No se ha cobrado nada y tu cesta sigue guardada."),
+    onError: () => decir("Ha habido un problema con el pago y no se ha cobrado nada. Inténtalo otra vez o envíanos el pedido por WhatsApp.", true)
   }).render(cont);
 }
 

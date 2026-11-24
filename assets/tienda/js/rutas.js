@@ -79,7 +79,7 @@ const TITULOS = {
   buscar: p => p.q ? `Buscar «${p.q}»` : "Buscar",
   novedades: () => "Novedades",
   pedido: () => "Hacer el pedido", confirmacion: () => "Pedido preparado",
-  comoComprar: () => "Cómo comprar", visitanos: () => "Visítenos", legal: () => "Información legal",
+  comoComprar: () => "Cómo comprar", visitanos: () => "Visítanos", legal: () => "Información legal",
   horario: () => "Horario", redes: () => "Redes sociales", colores: () => "Buscar por color",
   hilo: p => `${p.tipo.titulo}: valores y guía`,
   noEncontrada: () => "Página no encontrada"
@@ -214,7 +214,7 @@ function calcularNav(vista, nombre, params){
   try { if (typeof vista.nav === "function") return vista.nav(params); } catch (e) { console.error(e); }
   return NAV[nombre] ? NAV[nombre](params) : "";
 }
-const errorHTML = () => `<div class="contenedor"><h1>Algo no ha ido bien</h1><p>No hemos podido mostrar esta página. Pruebe a recargarla o llámenos al ${U.esc(D.TIENDA.tel)}.</p><p><a href="#/">Volver al inicio</a></p></div>`;
+const errorHTML = () => `<div class="contenedor"><h1>Algo no ha ido bien</h1><p>No hemos podido mostrar esta página. Prueba a recargarla o llámanos al ${U.esc(D.TIENDA.tel)}.</p><p><a href="#/">Volver al inicio</a></p></div>`;
 
 /* ---------------- navegación ---------------- */
 /** Navega a un hash ("#/c/merceria"). reemplazar=true no crea entrada en el historial. */

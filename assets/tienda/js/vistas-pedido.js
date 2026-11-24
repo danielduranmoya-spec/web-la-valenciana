@@ -1,7 +1,7 @@
 /* =========================================================
    LA VALENCIANA v2 · vistas/pedido.js · PROPIETARIO: B6
    LV.vistas.pedido        #/pedido        una página, 3 pasos, resumen fijo
-   LV.vistas.confirmacion  #/pedido/hecho  «Su pedido está preparado» (M23)
+   LV.vistas.confirmacion  #/pedido/hecho  «Tu pedido está listo» (M23)
    Caminos: tarjeta o PayPal (pasarela de PayPal, solo autoriza el importe;
    la tienda lo cobra después de comprobar que tiene todo), WhatsApp y correo.
    Configuración de la pasarela: assets/js/pago-config.js (window.LV_PAGO).
@@ -28,7 +28,7 @@ function mini(prod, vi){
 /* ---------------- validación ---------------- */
 const soloCifras = s => String(s || "").replace(/\D/g, "");
 const REGLAS = {
-  nombre: v => v.trim().length < 3 || !/\s/.test(v.trim()) ? "Escriba su nombre y apellidos." : "",
+  nombre: v => v.trim().length < 3 || !/\s/.test(v.trim()) ? "Escribe tu nombre y apellidos." : "",
   tel: v => {
     let c = soloCifras(v);
     if (c.length === 11 && c.startsWith("34")) c = c.slice(2);
@@ -37,19 +37,19 @@ const REGLAS = {
   },
   email: v => {
     v = v.trim(); if (!v) return "";
-    if (!v.includes("@")) return "Revise el correo: falta la @.";
-    return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v) ? "" : "Revise el correo: parece incompleto, por ejemplo nombre@correo.es.";
+    if (!v.includes("@")) return "Revisa el correo: falta la @.";
+    return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v) ? "" : "Revisa el correo: parece incompleto, por ejemplo nombre@correo.es.";
   },
-  dir: v => v.trim().length < 5 ? "Escriba la calle y el número donde quiere recibirlo." : "",
+  dir: v => v.trim().length < 5 ? "Escribe la calle y el número donde quieres recibirlo." : "",
   cp: v => {
     const c = soloCifras(v);
     if (c.length !== 5 || c !== v.trim()) return "El código postal tiene 5 cifras.";
     const pr = +c.slice(0, 2);
     if (pr < 1 || pr > 52) return "El código postal tiene 5 cifras.";
-    if ([7, 35, 38, 51, 52].includes(pr)) return `Por ahora solo enviamos a la Península. Llámenos al ${D().TIENDA.tel} y lo vemos.`;
+    if ([7, 35, 38, 51, 52].includes(pr)) return `Por ahora solo enviamos a la Península. Llámanos al ${D().TIENDA.tel} y lo vemos.`;
     return "";
   },
-  loc: v => v.trim().length < 2 ? "Escriba la localidad." : ""
+  loc: v => v.trim().length < 2 ? "Escribe la localidad." : ""
 };
 
 /* ---------------- marcado del pedido ---------------- */
@@ -107,13 +107,13 @@ function htmlCodigo(){
   const c = T().codigoActual();
   if (c) return `<div class="ped-codigo ped-codigo--hecho"><p>${ic("check")}<span>Código <strong>${esc(c.codigo)}</strong> aplicado</span></p><button type="button" class="boton boton--texto" data-cod="quitar">Quitar</button></div>`;
   const id = "cod-" + (++nCodigo);
-  return `<details class="ped-codigo"><summary>¿Tiene un código de descuento?</summary>
+  return `<details class="ped-codigo"><summary>¿Tienes un código de descuento?</summary>
     <div class="ped-codigo__fila"><label class="visualmente-oculto" for="${id}">Código de descuento</label>
-    <input class="campo__control ped-codigo__campo" id="${id}" data-cod="campo" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="Escriba el código">
+    <input class="campo__control ped-codigo__campo" id="${id}" data-cod="campo" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="Escribe el código">
     <button type="button" class="boton boton--secundario" data-cod="aplicar">Aplicar</button></div>
     <p class="ped-codigo__msg" data-cod="msg" role="status"></p></details>`;
 }
-function textoBoton(pago){ return pago === "tarjeta" ? "Pagar con tarjeta" : pago === "correo" ? "Enviar pedido por correo" : "Enviar pedido por WhatsApp"; }
+function textoBoton(pago){ return pago === "tarjeta" ? "Paga con tarjeta" : pago === "correo" ? "Envía el pedido por correo" : "Envía el pedido por WhatsApp"; }
 const iconoPago = pago => ic(pago === "tarjeta" ? "candado" : pago === "correo" ? "correo" : "whats");
 function htmlBotonEnviar(pago, idForm, extraClase = ""){
   return `<button type="submit" form="${idForm}" class="boton boton--primario boton--ancho boton--grande ped-enviar ${extraClase}">${iconoPago(pago)}<span>${textoBoton(pago)}</span></button>`;
@@ -123,20 +123,20 @@ function htmlConfianza(){
   return `<ul class="ped-confianza">
     <li>${ic("tienda")}<span>Tienda en Almendralejo desde el siglo XIX, en la calle Moreno Nieto.</span></li>
     <li>${ic("tel")}<span>Atención en el <a href="${U().telURL()}">${telTxt()}</a> y por WhatsApp en el ${esc(D().TIENDA.whatsTxt).replace(/ /g, " ")}. <span class="ped-estado${e.abierto ? " ped-estado--abierto" : ""}">${esc(e.txt)}.</span></span></li>
-    <li>${ic("cambio")}<span>Tiene ${D().TIENDA.diasCambio} días para cambiarlo.</span></li>
+    <li>${ic("cambio")}<span>Tienes ${D().TIENDA.diasCambio} días para cambiarlo.</span></li>
   </ul>`;
 }
 
 function htmlVacio(){
   return `<div class="ped ped--vacio contenedor">
     <h1 data-titular>Hacer el pedido</h1>
-    <p class="t-entradilla ped-vacio__txt">Todavía no ha elegido nada.</p>
-    <p class="ped-vacio__ayuda">Cuando añada algo a su cesta, aquí podrá pagarlo con tarjeta o enviarnos el pedido por WhatsApp o por correo.</p>
+    <p class="t-entradilla ped-vacio__txt">Tu cesta está vacía. ¡Llénala!</p>
+    <p class="ped-vacio__ayuda">Cuando añadas algo a tu cesta, aquí podrás pagarlo con tarjeta o enviarnos el pedido por WhatsApp o por correo.</p>
     <div class="ped-vacio__botones">
       <a class="boton boton--primario" href="${LV.rutas.url.categoria("merceria")}">Ver la mercería</a>
       <a class="boton boton--secundario" href="${LV.rutas.url.categoria("complementos")}">Ver los complementos</a>
     </div>
-    <p class="ped-vacio__tel">¿Prefiere pedirlo por teléfono? Llame al <a href="${U().telURL()}">${telTxt()}</a>.</p>
+    <p class="ped-vacio__tel">¿Prefieres pedirlo por teléfono? Llama al <a href="${U().telURL()}">${telTxt()}</a>.</p>
   </div>`;
 }
 
@@ -151,7 +151,7 @@ function htmlPedido(){
   return `<div class="ped contenedor" data-entrega="${entrega}" data-pago="${pago}">
   <header class="ped-cab">
     <h1 data-titular>Hacer el pedido</h1>
-    <div class="aviso ped-aviso" data-r="fundir">${ic("info")}<p>Pague con tarjeta o PayPal: solo reservamos el importe y no se cobra hasta que comprobemos que tenemos todo. Si lo prefiere, envíenos el pedido por WhatsApp o por correo y pague al recoger o por Bizum.${prueba ? " <strong>La pasarela está en modo de prueba: no se cobra nada de verdad.</strong>" : ""}</p></div>
+    <div class="aviso ped-aviso" data-r="fundir">${ic("info")}<p>Paga con tarjeta o PayPal: solo reservamos el importe y no se cobra hasta que comprobemos que tenemos todo. Si lo prefieres, envíanos el pedido por WhatsApp o por correo y pague al recoger o por Bizum.${prueba ? " <strong>La pasarela está en modo de prueba: no se cobra nada de verdad.</strong>" : ""}</p></div>
   </header>
 
   <details class="ped-resumen-movil">
@@ -163,7 +163,7 @@ function htmlPedido(){
     <form class="ped-form" id="${f}" novalidate>
       <nav class="ped-pasos" aria-label="Pasos del pedido">
         <ol>
-          <li><a href="#${p}-1" data-paso="1" aria-current="step"><span class="ped-pasos__n">1</span><span class="ped-pasos__t">Sus datos</span></a></li>
+          <li><a href="#${p}-1" data-paso="1" aria-current="step"><span class="ped-pasos__n">1</span><span class="ped-pasos__t">Tus datos</span></a></li>
           <li><a href="#${p}-2" data-paso="2"><span class="ped-pasos__n">2</span><span class="ped-pasos__t">Entrega</span></a></li>
           <li><a href="#${p}-3" data-paso="3"><span class="ped-pasos__n">3</span><span class="ped-pasos__t">Pago</span></a></li>
         </ol>
@@ -174,10 +174,10 @@ function htmlPedido(){
       <section class="ped-paso" id="${p}-1" aria-labelledby="${p}-1t" data-r>
         <span class="ped-paso__num" aria-hidden="true">1</span>
         <div class="ped-paso__cuerpo">
-          <h2 id="${p}-1t"><span class="visualmente-oculto">Paso 1: </span>Sus datos</h2>
+          <h2 id="${p}-1t"><span class="visualmente-oculto">Paso 1: </span>Tus datos</h2>
           <div class="ped-campos">
             ${campo(`${f}-nombre`, "nombre", "Nombre y apellidos", { auto: "name" })}
-            ${campo(`${f}-tel`, "tel", "Teléfono", { tipo: "tel", auto: "tel", modo: "tel", ayuda: "Solo le llamaremos si hay alguna duda con el pedido." })}
+            ${campo(`${f}-tel`, "tel", "Teléfono", { tipo: "tel", auto: "tel", modo: "tel", ayuda: "Solo te llamaremos si hay alguna duda con el pedido." })}
             ${campo(`${f}-email`, "email", "Correo electrónico", { tipo: "email", auto: "email", modo: "email", opcional: true, ayuda: "Si nos lo deja, también podemos contestarle por correo." })}
           </div>
         </div>
@@ -190,9 +190,9 @@ function htmlPedido(){
           <fieldset class="ped-grupo">
             <legend class="visualmente-oculto">¿Cómo lo recibe?</legend>
             ${opcion("entrega", "tienda", { titulo: "Lo recojo en la tienda. Gratis.", icono: "tienda", marcado: entrega === "tienda",
-              detalle: `${esc(TI.calle || "Calle Moreno Nieto, 7")}, Almendralejo. Le avisamos cuando esté preparado.` })}
+              detalle: `${esc(TI.calle || "Calle Moreno Nieto, 7")}, Almendralejo. Te avisamos cuando esté listo.` })}
             ${opcion("entrega", "casa", { titulo: `Envío a casa. ${euros(TI.envio)} (gratis desde ${euros(TI.envioGratis)}).`, icono: "camion", marcado: entrega === "casa",
-              etiqueta: gratisCasa ? `<span class="etiqueta etiqueta--salvia ped-etq">Gratis para su pedido</span>` : "",
+              etiqueta: gratisCasa ? `<span class="etiqueta etiqueta--salvia ped-etq">Gratis para tu pedido</span>` : "",
               detalle: `A la Península, en 2 a 4 días laborables. Si pide antes de las 14:00, sale hoy.` })}
           </fieldset>
           <div class="ped-direccion" data-ped="direccion"${entrega === "casa" ? "" : " hidden"}>
@@ -208,29 +208,29 @@ function htmlPedido(){
       <section class="ped-paso" id="${p}-3" aria-labelledby="${p}-3t" data-r>
         <span class="ped-paso__num" aria-hidden="true">3</span>
         <div class="ped-paso__cuerpo">
-          <h2 id="${p}-3t"><span class="visualmente-oculto">Paso 3: </span>¿Cómo quiere pagar?</h2>
+          <h2 id="${p}-3t"><span class="visualmente-oculto">Paso 3: </span>¿Cómo quieres pagar?</h2>
           <fieldset class="ped-grupo">
-            <legend class="visualmente-oculto">¿Cómo quiere pagar?</legend>
+            <legend class="visualmente-oculto">¿Cómo quieres pagar?</legend>
             ${opcion("pago", "tarjeta", { titulo: "Tarjeta o PayPal, ahora", icono: "candado", marcado: pago === "tarjeta",
               etiqueta: `<span class="etiqueta etiqueta--salvia ped-etq">Pago seguro</span>`,
               detalle: "Con tarjeta de débito o crédito, sin necesidad de cuenta de PayPal. Solo reservamos el importe: no se cobra hasta que comprobemos que tenemos todo." })}
             ${opcion("pago", "whatsapp", { titulo: "Enviar el pedido por WhatsApp", icono: "whats", marcado: pago === "whatsapp",
               detalle: "Se abre WhatsApp con el pedido ya escrito. Paga al recoger o por Bizum cuando se lo confirmemos." })}
             ${opcion("pago", "correo", { titulo: "Enviar el pedido por correo", icono: "correo", marcado: pago === "correo",
-              detalle: `Se abre su correo con el pedido escrito, dirigido a ${esc(T().correoPedido())}. Paga al recoger o por Bizum.` })}
+              detalle: `Se abre tu correo con el pedido escrito, dirigido a ${esc(T().correoPedido())}. Paga al recoger o por Bizum.` })}
           </fieldset>
           <div class="campo ped-campo ped-notas">
             <label class="campo__etiqueta" for="${f}-notas">Notas para la tienda <span class="ped-opcional">(opcional)</span></label>
-            <p class="campo__ayuda" id="${f}-notas-ayuda">Por ejemplo, si le vale un color parecido cuando no quede el que ha elegido.</p>
+            <p class="campo__ayuda" id="${f}-notas-ayuda">Por ejemplo, si te vale un color parecido cuando no quede el que has elegido.</p>
             <textarea class="campo__control" id="${f}-notas" name="notas" rows="3" aria-describedby="${f}-notas-ayuda"></textarea>
           </div>
           <div class="ped-final">
             ${htmlBotonEnviar(pago, f, "ped-enviar--form")}
-            <p class="ped-sin">${ic("candado")}<span>Sin registro. No se cobra nada hasta que lo confirmemos con usted.</span></p>
+            <p class="ped-sin">${ic("candado")}<span>Sin registro. No se cobra nada hasta que lo confirmemos contigo.</span></p>
           </div>
             <div class="ped-pasarela" data-ped="pasarela" tabindex="-1" hidden>
-              <p class="ped-pasarela__titulo">Último paso: elija cómo pagar ${euros(T().total(entrega))}</p>
-              <p class="ped-pasarela__txt">Se abre la ventana segura de PayPal. Puede pagar con tarjeta sin tener cuenta.</p>
+              <p class="ped-pasarela__titulo">Último paso: paga aquí tus ${euros(T().total(entrega))}</p>
+              <p class="ped-pasarela__txt">Se abre la ventana segura de PayPal. Puedes pagar con tarjeta sin tener cuenta.</p>
               <div class="ped-pasarela__botones" id="${f}-paypal"></div>
               <p class="ped-pasarela__estado" data-ped="estado-pago" role="status" aria-live="polite"></p>
             </div>
@@ -240,10 +240,10 @@ function htmlPedido(){
 
     <aside class="ped-resumen" aria-labelledby="${p}-rt">
       <div class="ped-resumen__caja">
-        <h2 class="ped-resumen__titulo" id="${p}-rt">Su pedido <span data-ped="n">(${plural(n, "artículo", "artículos")})</span></h2>
+        <h2 class="ped-resumen__titulo" id="${p}-rt">Tu pedido <span data-ped="n">(${plural(n, "artículo", "artículos")})</span></h2>
         <div data-ped="cuerpo-resumen">${htmlCuerpoResumen(entrega)}</div>
         ${htmlBotonEnviar(pago, f)}
-        <p class="ped-sin">${ic("candado")}<span>Sin registro. No se cobra nada hasta que lo confirmemos con usted.</span></p>
+        <p class="ped-sin">${ic("candado")}<span>Sin registro. No se cobra nada hasta que lo confirmemos contigo.</span></p>
         <p class="ped-dudas"><a href="${U().telURL()}">${ic("tel")}<span>¿Dudas? ${telTxt()}</span></a></p>
       </div>
       ${htmlConfianza()}
@@ -352,7 +352,7 @@ function montarPedido(main){
     raiz.querySelectorAll('[data-ped="total-barra"]').forEach(el => { el.textContent = euros(T().total(m)); });
     const etq = form.querySelector('input[value="casa"]').closest(".ped-opcion").querySelector(".ped-opcion__titulo");
     const ya = etq.querySelector(".etiqueta--salvia");
-    if (T().envio("casa") === 0 && !ya) etq.insertAdjacentHTML("beforeend", `<span class="etiqueta etiqueta--salvia ped-etq">Gratis para su pedido</span>`);
+    if (T().envio("casa") === 0 && !ya) etq.insertAdjacentHTML("beforeend", `<span class="etiqueta etiqueta--salvia ped-etq">Gratis para tu pedido</span>`);
     if (T().envio("casa") !== 0 && ya) ya.remove();
   }
   function cambiarPago(){
@@ -370,7 +370,7 @@ function montarPedido(main){
   function mostrarPasarela(){
     pasarela.hidden = false;
     const tit = pasarela.querySelector(".ped-pasarela__titulo");
-    if (tit) tit.textContent = `Último paso: elija cómo pagar ${euros(T().total(entrega()))}`;
+    if (tit) tit.textContent = `Último paso: paga aquí tus ${euros(T().total(entrega()))}`;
     pasarela.scrollIntoView({ block: "center", behavior: U().reducido() ? "auto" : "smooth" });
     pasarela.focus({ preventScroll: true });
     if (pintada) return;
@@ -391,7 +391,7 @@ function montarPedido(main){
       });
     }).catch(err => {
       console.error("[pago]", err); pintada = false;
-      decir("No se ha podido cargar la pasarela de pago. Compruebe su conexión, inténtelo de nuevo o envíenos el pedido por WhatsApp.", true);
+      decir("No se ha podido cargar la pasarela de pago. Comprueba tu conexión, inténtalo de nuevo o envíanos el pedido por WhatsApp.", true);
     });
   }
 
@@ -434,7 +434,7 @@ function montarPedido(main){
   // código de descuento (lo comprueba la base de datos)
   const aplicarCodigo = async caja => {
     const campo = caja.querySelector('[data-cod="campo"]'), msg = caja.querySelector('[data-cod="msg"]'), cod = campo.value.trim();
-    if (!cod) { msg.textContent = "Escriba el código."; campo.focus(); return; }
+    if (!cod) { msg.textContent = "Escribe el código."; campo.focus(); return; }
     msg.textContent = "Comprobando…";
     const r = await LV.remoto.comprobarCodigo(cod);
     if (!r) { msg.textContent = "Ese código no existe o ya no está activo."; campo.focus(); return; }
@@ -469,7 +469,7 @@ function montarPedido(main){
     }
     const datos = leerDatos();
     guardar();
-    if (LV.datos.TIENDA.vacaciones) { U().anunciar("La tienda está de vacaciones y ahora no admite pedidos. Llámenos o escríbanos por WhatsApp.", true); return; }
+    if (LV.datos.TIENDA.vacaciones) { U().anunciar("La tienda está de vacaciones y ahora no admite pedidos. Llámanos o escríbenos por WhatsApp.", true); return; }
     if (datos.pago === "tarjeta") { mostrarPasarela(); return; }
     if (LV.remoto) LV.remoto.pedido(datos, { canal: datos.pago });
     const ped = T().guardarPedido(datos);
@@ -523,12 +523,12 @@ function htmlConfirmacion(){
   if (!ped || !Array.isArray(ped.lineas) || !ped.lineas.length) {
     return `<div class="ped ped--vacio contenedor">
       <h1 data-titular>No hay ningún pedido preparado</h1>
-      <p class="t-entradilla ped-vacio__txt">Cuando prepare un pedido desde su cesta, lo verá aquí.</p>
+      <p class="t-entradilla ped-vacio__txt">Cuando prepares un pedido desde tu cesta, lo verás aquí.</p>
       <div class="ped-vacio__botones">
         <a class="boton boton--primario" href="${LV.rutas.url.pedido()}">Ir a mi pedido</a>
         <a class="boton boton--secundario" href="${LV.rutas.url.categoria("merceria")}">Ver la mercería</a>
       </div>
-      <p class="ped-vacio__tel">¿Prefiere pedirlo por teléfono? Llame al <a href="${U().telURL()}">${telTxt()}</a>.</p>
+      <p class="ped-vacio__tel">¿Prefieres pedirlo por teléfono? Llama al <a href="${U().telURL()}">${telTxt()}</a>.</p>
     </div>`;
   }
   const dat = ped.datos || {}, correo = dat.pago === "correo", tarjeta = dat.pago === "tarjeta";
@@ -542,19 +542,19 @@ function htmlConfirmacion(){
   return `<div class="ped ped-hecho contenedor">
   <div class="ped-hecho__cab">
     ${htmlCheck()}
-    <h1 data-titular>Su pedido está preparado</h1>
+    <h1 data-titular>Tu pedido está listo</h1>
     <p class="t-entradilla ped-hecho__entradilla">${correo
-      ? "Falta un paso: pulse «Enviar» en su correo para que nos llegue."
-      : "Falta un paso: pulse «Enviar» en WhatsApp para que nos llegue."}</p>
-    ${aperturaFallida && !correo ? `<div class="aviso aviso--error ped-hecho__fallo" role="alert">${ic("aviso")}<p>Parece que WhatsApp no se ha abierto. Copie su pedido o llámenos al ${telTxt()}.</p></div>` : ""}
+      ? "Falta un paso: pulsa «Enviar» en tu correo para que nos llegue."
+      : "Falta un paso: pulsa «Enviar» en WhatsApp para que nos llegue."}</p>
+    ${aperturaFallida && !correo ? `<div class="aviso aviso--error ped-hecho__fallo" role="alert">${ic("aviso")}<p>Parece que WhatsApp no se ha abierto. Copia tu pedido o llámanos al ${telTxt()}.</p></div>` : ""}
     <div class="ped-hecho__botones">
       <a class="boton boton--primario boton--grande" href="${esc(urlReabrir)}"${correo ? "" : ' target="_blank" rel="noopener"'}>${ic(correo ? "correo" : "whats")}<span>${correo ? "Abrir el correo de nuevo" : "Abrir WhatsApp de nuevo"}</span>${correo ? "" : '<span class="visualmente-oculto"> (se abre en otra ventana)</span>'}</a>
       <button type="button" class="boton boton--secundario boton--grande" data-hecho="copiar">${ic("check").replace('class="ico"', 'class="ico ped-copiado-ico"')}<span>Copiar el pedido</span></button>
     </div>
-    ${aperturaFallida && !correo ? "" : `<p class="ped-hecho__nota">¿No se ha abierto ${correo ? "su correo" : "WhatsApp"}? Copie el pedido y envíenoslo como prefiera, o llámenos al <a href="${U().telURL()}">${telTxt()}</a>.</p>`}
+    ${aperturaFallida && !correo ? "" : `<p class="ped-hecho__nota">¿No se ha abierto ${correo ? "tu correo" : "WhatsApp"}? Copia el pedido y envíanoslo como prefieras, o llámanos al <a href="${U().telURL()}">${telTxt()}</a>.</p>`}
     <div class="ped-hecho__vaciar" data-hecho="bloque-vaciar">${yaVacia
-      ? `<p class="ped-hecho__vacia">${ic("check")}<span>Su cesta ya está vacía.</span></p>`
-      : `<p>¿Ya lo ha enviado?</p><button type="button" class="boton boton--texto" data-hecho="vaciar">Sí, vaciar mi cesta</button>`}</div>
+      ? `<p class="ped-hecho__vacia">${ic("check")}<span>Tu cesta ya está vacía.</span></p>`
+      : `<p>¿Ya lo has enviado?</p><button type="button" class="boton boton--texto" data-hecho="vaciar">Sí, vaciar mi cesta</button>`}</div>
   </div>
 
   <section class="ped-hecho__resumen" aria-labelledby="ped-hecho-rt" data-r>
@@ -590,8 +590,8 @@ function htmlConfirmacion(){
 
   <section class="ped-hecho__siguiente" aria-labelledby="ped-hecho-st" data-r>
     <h2 id="ped-hecho-st">Y ahora</h2>
-    <p>Le llamaremos o escribiremos para confirmar el pago y la entrega.</p>
-    <p>¿Prefiere llamar? <a href="${U().telURL()}">${telTxt()}</a>. ${esc(U().horarioResumen())}</p>
+    <p>Te llamaremos o escribiremos para confirmar el pago y la entrega.</p>
+    <p>¿Prefieres llamar? <a href="${U().telURL()}">${telTxt()}</a>. ${esc(U().horarioResumen())}</p>
     <p class="ped-estado${U().estadoTienda().abierto ? " ped-estado--abierto" : ""}">${esc(U().estadoTienda().txt)}.</p>
     <a class="boton boton--secundario" href="${LV.rutas.url.inicio()}">Volver al inicio</a>
   </section>
@@ -603,19 +603,19 @@ function htmlPagado(ped){
   const dat = ped.datos || {};
   const cuando = fechaBonita(ped.fecha);
   const lugar = dat.entrega === "casa"
-    ? `Se lo enviamos a ${esc([dat.dir, [dat.cp, dat.loc].filter(Boolean).join(" ")].filter(Boolean).join(", "))} y le mandamos el número de seguimiento.`
-    : `Le avisamos al ${esc(dat.tel || "teléfono que nos ha dado")} para que lo recoja en la calle Moreno Nieto, 7.`;
+    ? `Te lo enviamos a ${esc([dat.dir, [dat.cp, dat.loc].filter(Boolean).join(" ")].filter(Boolean).join(", "))} y te mandamos el número de seguimiento.`
+    : `Te avisamos al ${esc(dat.tel || "teléfono que nos has dado")} para que lo recojas en la calle Moreno Nieto, 7.`;
   const aviso = [`Hola, La Valenciana. He hecho el pedido ${dat.ref || ""} en la web y lo he pagado con tarjeta${dat.paypal ? ` (PayPal ${dat.paypal})` : ""}.`, `Nombre: ${dat.nombre || ""}`, `Teléfono: ${dat.tel || ""}`].join("\n");
   return `<div class="ped ped-hecho contenedor">
   <div class="ped-hecho__cab">
     ${htmlCheck()}
     <h1 data-titular>Pedido recibido. Gracias</h1>
-    <p class="t-entradilla ped-hecho__entradilla">Hemos reservado ${euros(ped.total)} en su tarjeta, pero no se cobra hasta que comprobemos que tenemos todo. Si falta algo, le avisamos antes.</p>
+    <p class="t-entradilla ped-hecho__entradilla">Hemos reservado ${euros(ped.total)} en tu tarjeta, pero no se cobra hasta que comprobemos que tenemos todo. Si falta algo, te avisamos antes.</p>
     ${dat.ref ? `<p class="ped-hecho__ref">Número de pedido: <strong>${esc(dat.ref)}</strong></p>` : ""}
     <div class="ped-hecho__botones">
       <a class="boton boton--secundario boton--grande" href="${esc(U().whatsURL(aviso))}" target="_blank" rel="noopener">${ic("whats")}<span>Avisarnos por WhatsApp</span><span class="visualmente-oculto"> (se abre en otra ventana)</span></a>
     </div>
-    <p class="ped-hecho__nota">${lugar} PayPal le enviará el justificante por correo.</p>
+    <p class="ped-hecho__nota">${lugar} PayPal te enviará el justificante por correo.</p>
   </div>
   <section class="ped-hecho__resumen" aria-labelledby="ped-hecho-rt" data-r>
     <h2 id="ped-hecho-rt">Resumen del pedido</h2>
@@ -635,7 +635,7 @@ function htmlPagado(ped){
   </section>
   <section class="ped-hecho__siguiente" aria-labelledby="ped-hecho-st" data-r>
     <h2 id="ped-hecho-st">Y ahora</h2>
-    <p>Preparamos su pedido y le avisamos. ¿Alguna duda? Llámenos al <a href="${U().telURL()}">${telTxt()}</a>. ${esc(U().horarioResumen())}</p>
+    <p>Preparamos tu pedido y te avisamos. ¿Alguna duda? Llámanos al <a href="${U().telURL()}">${telTxt()}</a>. ${esc(U().horarioResumen())}</p>
     <a class="boton boton--secundario" href="${LV.rutas.url.inicio()}">Volver al inicio</a>
   </section>
 </div>`;
@@ -663,19 +663,19 @@ function montarConfirmacion(main){
       const span = b.querySelector("span");
       if (ok) {
         b.classList.add("ped--copiado"); span.textContent = "Copiado";
-        U().anunciar("Pedido copiado. Puede pegarlo en WhatsApp o en un correo.");
+        U().anunciar("Pedido copiado. Puedes pegarlo en WhatsApp o en un correo.");
         clearTimeout(tCop); tCop = setTimeout(() => { b.classList.remove("ped--copiado"); span.textContent = "Copiar el pedido"; }, 2500);
       } else {
         const det = raiz.querySelector(".ped-hecho__texto"); det.open = true;
-        U().anunciar("No se ha podido copiar. Debajo tiene el texto del pedido para copiarlo a mano.", true);
+        U().anunciar("No se ha podido copiar. Debajo tienes el texto del pedido para copiarlo a mano.", true);
       }
     }
     if (b.dataset.hecho === "vaciar") {
       T().vaciar();
       const bloque = raiz.querySelector('[data-hecho="bloque-vaciar"]');
-      bloque.innerHTML = `<p class="ped-hecho__vacia" tabindex="-1">${ic("check")}<span>Hecho. Su cesta está vacía. Gracias por su pedido.</span></p>`;
+      bloque.innerHTML = `<p class="ped-hecho__vacia" tabindex="-1">${ic("check")}<span>Hecho. Tu cesta está vacía. ¡Gracias por tu pedido!</span></p>`;
       bloque.querySelector("p").focus();
-      U().anunciar("Su cesta está vacía. Gracias por su pedido.");
+      U().anunciar("Tu cesta está vacía. ¡Gracias por tu pedido!");
     }
   });
   limpiar.push(() => clearTimeout(tCop));

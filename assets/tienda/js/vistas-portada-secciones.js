@@ -22,11 +22,11 @@ const nb = s => String(s).replace(/ (?=\d)/g, "&nbsp;").replace(/(\d) /g, "$1&nb
 /* ---------------- estado de la tienda (texto de DISENO §10) ---------------- */
 function estado(fecha = new Date()){
   let e = { abierto:false, txt:"" };
-  try { e = U().estadoTienda(fecha); } catch (err) { return { abierto:false, txt:"Consulte el horario.", corto:"Horario" }; }
+  try { e = U().estadoTienda(fecha); } catch (err) { return { abierto:false, txt:"Consulta el horario.", corto:"Horario" }; }
   // la etiqueta ya dice «Abierto ahora» / «Cerrado ahora»: la frase de al lado no lo repite
   if (e.abierto) return { abierto:true, txt:`Cierra hoy a las ${e.hasta}.`, corto:"Abierto ahora" };
   const resto = String(e.txt || "").replace(/^Cerrado ahora\.?\s*/, "");
-  return { abierto:false, txt: resto ? resto + "." : "Consulte el horario.", corto:"Cerrado ahora" };
+  return { abierto:false, txt: resto ? resto + "." : "Consulta el horario.", corto:"Cerrado ahora" };
 }
 function estadoHTML(){
   const e = estado();
@@ -265,7 +265,7 @@ function encargoHTML(){
     </div>
     <div class="ed-encargo__accion" data-r data-r-retardo="180">
       ${whats("boton--primario boton--grande", "Escribir por WhatsApp", "Hola, busco un artículo que no encuentro en la web: ")}
-      <p class="ed-encargo__tel">o llame al <a href="${U().telURL()}">${nb(esc(T.tel))}</a></p>
+      <p class="ed-encargo__tel">o llámanos al <a href="${U().telURL()}">${nb(esc(T.tel))}</a></p>
     </div>
     ${metro ? `<div class="ed-encargo__dibujo" data-r="escala" data-r-retardo="300">${metro}</div>` : ""}
   </div>
@@ -432,7 +432,7 @@ function visitenosHTML(){
   <div class="contenedor rejilla ed-visitenos__rejilla">
     <div class="ed-visitenos__mapa">${mapa()}</div>
     <div class="ed-visitenos__datos" data-r-grupo>
-      <h2 id="${id}" data-r>Venga a vernos</h2>
+      <h2 id="${id}" data-r>Ven a vernos</h2>
       <address class="ed-direccion" data-r>${esc(T.calle)}.<br>${esc(T.cp)} ${esc(T.ciudad)} (${esc(T.provincia || "Badajoz")})</address>
       <div data-r>${estadoHTML()}</div>
       <div data-r>${horarioHTML()}</div>

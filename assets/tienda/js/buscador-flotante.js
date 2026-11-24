@@ -29,7 +29,7 @@ function crear(){
   <div class="buscador-cuerpo">
     <label for="buscador-q">¿Qué busca?</label>
     <input id="buscador-q" type="search" autocomplete="off" spellcheck="false" enterkeyhint="search" placeholder="Por ejemplo: cremallera, lana, panty…" aria-describedby="buscador-estado">
-    <p id="buscador-estado" class="buscador-estado" role="status" aria-live="polite">Escriba al menos 2 letras.</p>
+    <p id="buscador-estado" class="buscador-estado" role="status" aria-live="polite">Escribe al menos 2 letras.</p>
     <ul class="buscador-resultados" role="list"></ul>
   </div>`;
   document.body.appendChild(dlg);
@@ -70,7 +70,7 @@ function miniatura(prod){
 function buscar(){
   const q = campo.value.trim();
   lista.innerHTML = "";
-  if (q.length < 2) { estado.textContent = "Escriba al menos 2 letras."; return; }
+  if (q.length < 2) { estado.textContent = "Escribe al menos 2 letras."; return; }
   let prods = [], subs = [];
   try {
     prods = LV.buscador.buscar(q).slice(0, MAX);
@@ -94,7 +94,7 @@ function buscar(){
   const n = prods.length;
   estado.textContent = n
     ? (n === 1 ? "1 artículo." : `${n}${n === MAX ? " o más" : ""} artículos.`)
-    : (subs.length ? "Pruebe en el apartado de arriba." : "No hemos encontrado nada. Pregúntenos por WhatsApp: si no lo tenemos, se lo buscamos.");
+    : (subs.length ? "Prueba en el apartado de arriba." : "No hemos encontrado nada. Pregúntanos por WhatsApp: si no lo tenemos, te lo buscamos.");
 }
 
 function abrir(origen){

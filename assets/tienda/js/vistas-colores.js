@@ -48,7 +48,7 @@ function conColores(nombres){
 
 function tarjetas(pares){
   const T = LV.tarjeta;
-  if (!pares.length) return `<p class="col-vacio">Ahora mismo no tenemos artículos en este color en la web. Pregúntenos: en la tienda hay más.</p>`;
+  if (!pares.length) return `<p class="col-vacio">Ahora mismo no tenemos artículos en este color en la web. Pregúntanos: en la tienda hay más.</p>`;
   return `<div class="tarjeta-rejilla-marco"><div class="tarjeta-rejilla" data-r-grupo>${pares.map(([p, i]) => T.html(p, { variante: i })).join("")}</div></div>`;
 }
 
@@ -83,7 +83,7 @@ function vistaHTML(p){
   <header class="col-cab contenedor">
     <p class="caja-antetitulo">Buscar por color</p>
     <h1 data-titular>${g ? `Artículos en ${esc((colorElegido || g.n).toLowerCase())}` : "¿De qué color lo busca?"}</h1>
-    <p class="t-entradilla col-cab__txt">Elija un color y le enseñamos todo lo que tenemos en ese tono: hilos, botones, cintas, medias, pañuelos… Si quiere casarlo con una tela, mándenos una foto por WhatsApp y le decimos cuál va mejor.</p>
+    <p class="t-entradilla col-cab__txt">Elige un color y te enseñamos todo lo que tenemos en ese tono: hilos, botones, cintas, medias, pañuelos… Si quieres casarlo con una tela, mándanos una foto por WhatsApp y te decimos cuál va mejor.</p>
   </header>
   <nav class="contenedor" aria-label="Colores"><ul class="col-paleta" role="list" data-r-grupo>${paleta}</ul></nav>
   ${cuerpo}
@@ -114,8 +114,8 @@ function tiraColores(){
   <div class="contenedor col-tira__in">
     <div class="col-tira__txt" data-r>
       <p class="caja-antetitulo">Novedad en la web</p>
-      <h2 id="col-tira-t">Busque por color</h2>
-      <p>¿Necesita un hilo, unos botones o unas medias de un tono concreto? Toque un color.</p>
+      <h2 id="col-tira-t">Busca por color</h2>
+      <p>¿Necesitas un hilo, unos botones o unas medias de un tono concreto? Toca un color.</p>
     </div>
     <ul class="col-tira__lista" role="list" data-r-grupo>
       ${GRUPOS.map(g => `<li data-r><a class="col-gota" href="${urlColores(g.id)}"><span class="col-gota__mancha" style="background:${g.id === "estampados" ? fondo("Multicolor") : `linear-gradient(135deg, ${fondo(g.c[0])}, ${fondo(g.c[Math.min(2, g.c.length - 1)])})`}" aria-hidden="true"></span><span class="col-gota__n">${esc(g.n)}</span></a></li>`).join("")}
@@ -126,7 +126,7 @@ function tiraColores(){
 function vistosHTML(){
   const l = leerVistos().map(id => D().PORID[id]).filter(Boolean);
   if (l.length < 2 || !LV.tarjeta || !LV.tarjeta.fila) return "";
-  return `<div class="contenedor col-vistos">${LV.tarjeta.fila(l, { titulo: "Lo último que ha mirado", id: "col-vistos", entradilla: "Por si quiere volver a verlo." })}</div>`;
+  return `<div class="contenedor col-vistos">${LV.tarjeta.fila(l, { titulo: "Lo último que has mirado", id: "col-vistos", entradilla: "Por si quieres volver a verlo." })}</div>`;
 }
 function registrar(){
   if (!LV.rutas || typeof LV.rutas.seccion !== "function") return false;

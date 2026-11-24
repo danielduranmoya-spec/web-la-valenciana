@@ -50,22 +50,22 @@ const cabeza = (titulo, entradilla, extra = "") => `<header class="pag-cabeza">
    ================================================================= */
 const GUIAS = [
   { t:"Cómo elegir el hilo", icono:"bobina", color:"Rosa empolvado",
-    x:"Para coser a mano o a máquina en prendas corrientes, un hilo de poliéster multiuso sirve para casi todo. Escoja un tono algo más oscuro que la tela: al coser se ve más claro. Para botones y telas gruesas, use hilo reforzado. Si duda, traiga un recorte de tela o envíenos una foto por WhatsApp y lo emparejamos." },
+    x:"Para coser a mano o a máquina en prendas corrientes, un hilo de poliéster multiuso sirve para casi todo. Escoge un tono algo más oscuro que la tela: al coser se ve más claro. Para botones y telas gruesas, usa hilo reforzado. Si dudas, trae un recorte de tela o envíanos una foto por WhatsApp y lo emparejamos." },
   { t:"Cómo medir una cremallera", icono:"cremallera", color:"Azul marino",
-    x:"Se mide la parte dentada, desde el tope de arriba hasta el de abajo, con la cremallera cerrada y sin contar las cintas de tela. Si es para sustituir otra, mida la vieja así y fíjese en si es separable (chaquetas) o cerrada (faldas y pantalones). Ante la duda, pida un centímetro de más: se recorta." },
+    x:"Se mide la parte dentada, desde el tope de arriba hasta el de abajo, con la cremallera cerrada y sin contar las cintas de tela. Si es para sustituir otra, mide la vieja así y fíjate en si es separable (chaquetas) o cerrada (faldas y pantalones). Ante la duda, pide un centímetro de más: se recorta." },
   { t:"Medias y pantis: qué talla pedir", icono:"media", color:"Carne",
-    x:"Casi todas las tallas se guían por la estatura y el peso, no por el número de calzado. Si está entre dos tallas, elija la mayor: una media justa se tensa y se rompe antes. Si tiene dudas, díganos su estatura y su peso por teléfono o por WhatsApp y le aconsejamos. Recuerde que las medias con el envase abierto no admiten cambio." }
+    x:"Casi todas las tallas se guían por la estatura y el peso, no por el número de calzado. Si estás entre dos tallas, elige la mayor: una media justa se tensa y se rompe antes. Si tienes dudas, dinos tu estatura y tu peso por teléfono o por WhatsApp y te aconsejamos. Recuerda que las medias con el envase abierto no admiten cambio." }
 ];
 function preguntas(){
   const T = D().TIENDA;
   return [
-    ["¿Cuánto cuesta el envío?", `El envío a la Península cuesta ${eur(T.envio)}. Si su pedido llega a ${eur(T.envioGratis)}, el envío es gratis. Recoger en la tienda no cuesta nada.`],
-    ["¿Cuánto tarda en llegar?", `Entre ${esc(T.plazoEnvio)}. Si hace el pedido antes de las ${T.horaCorte}:00 en un día laborable, sale de la tienda ese mismo día.`],
-    ["¿Tengo que registrarme o crear una cuenta?", "No. Solo le pedimos su nombre y un teléfono para confirmar el pedido con usted."],
-    ["¿Puedo pagar con tarjeta, Bizum o PayPal?", "Sí. En la web paga con tarjeta de débito o crédito (sin cuenta de PayPal) o con PayPal; solo reservamos el importe y no se cobra hasta que comprobemos que tenemos todo. Si envía el pedido por WhatsApp, puede pagar por Bizum cuando se lo confirmemos. En la tienda puede pagar como siempre."],
-    ["¿Cortan la cinta o el elástico a la medida?", "Sí. Los artículos por metros se piden de medio metro en medio metro: 0,5 m, 1 m, 1,5 m… Si necesita otra medida, díganoslo en las notas del pedido. Lo que se corta a medida no admite cambio."],
-    ["¿Y si quiero muchas unidades?", "En la web puede pedir hasta 20 unidades de cada artículo. Para más, llámenos y le hacemos precio."],
-    ["No encuentro lo que busco. ¿Qué hago?", `Escríbanos por WhatsApp al ${nb(esc(T.whatsTxt))} o llame al ${nb(esc(T.tel))}. A veces lo tenemos en la tienda y aún no está en la web; si no, se lo buscamos.`]
+    ["¿Cuánto cuesta el envío?", `El envío a la Península cuesta ${eur(T.envio)}. Si tu pedido llega a ${eur(T.envioGratis)}, el envío es gratis. Recoger en la tienda no cuesta nada.`],
+    ["¿Cuánto tarda en llegar?", `Entre ${esc(T.plazoEnvio)}. Si haces el pedido antes de las ${T.horaCorte}:00 en un día laborable, sale de la tienda ese mismo día.`],
+    ["¿Tengo que registrarme o crear una cuenta?", "No. Solo te pedimos tu nombre y un teléfono para confirmar el pedido contigo."],
+    ["¿Puedo pagar con tarjeta, Bizum o PayPal?", "Sí. En la web pagas con tarjeta de débito o crédito (sin cuenta de PayPal) o con PayPal; solo reservamos el importe y no se cobra hasta que comprobemos que tenemos todo. Si envías el pedido por WhatsApp, puedes pagar por Bizum cuando te lo confirmemos. En la tienda puedes pagar como siempre."],
+    ["¿Cortan la cinta o el elástico a la medida?", "Sí. Los artículos por metros se piden de medio metro en medio metro: 0,5 m, 1 m, 1,5 m… Si necesitas otra medida, dínoslo en las notas del pedido. Lo que se corta a medida no admite cambio."],
+    ["¿Y si quiero muchas unidades?", "En la web puedes pedir hasta 20 unidades de cada artículo. Para más, llámanos y te hacemos precio."],
+    ["No encuentro lo que busco. ¿Qué hago?", `Escríbenos por WhatsApp al ${nb(esc(T.whatsTxt))} o llama al ${nb(esc(T.tel))}. A veces lo tenemos en la tienda y aún no está en la web; si no, te lo buscamos.`]
   ];
 }
 function comoComprarHTML(){
@@ -79,12 +79,12 @@ ${E().comprarHTML ? E().comprarHTML({ h1: true, envios: `#${id}-envios` }) : cab
     <p class="pag-indice__titulo">En esta página</p>
     <ul>${indice.map(([k, t]) => `<li><a class="boton boton--texto" href="#${id}-${k}">${t}</a></li>`).join("")}</ul>
   </nav>
-  ${sec("envios", "Envíos y plazos", `<p>Enviamos a toda la Península por ${eur(T.envio)}. <strong>Desde ${eur(T.envioGratis)}, el envío es gratis.</strong> El pedido llega en ${esc(T.plazoEnvio)}; si lo hace antes de las ${T.horaCorte}:00, sale de la tienda el mismo día.</p><p>Para Baleares, Canarias, Ceuta o Melilla, llámenos y le decimos el coste.</p>`)}
-  ${sec("recogida", "Recogida en tienda", `<p>Elija «Lo recojo en la tienda» al hacer el pedido. Es gratis. Le avisamos cuando esté preparado y lo recoge en ${esc(T.calle)}, en horario de tienda.</p><div class="pag-horario">${E().estadoHTML ? E().estadoHTML() : ""}${E().horarioHTML ? E().horarioHTML() : ""}</div>`)}
-  ${sec("pago", "Formas de pago", `<div class="aviso" role="note">${ic("info")}<p>Puede pagar con tarjeta o PayPal en la web: solo reservamos el importe y no se cobra hasta que comprobemos que tenemos todo. Si lo prefiere, envíenos el pedido por WhatsApp o por correo y pague al recoger o por Bizum.</p></div>
-    <ul class="pag-lista"><li><strong>Tarjeta o PayPal</strong>: en el último paso del pedido, en la ventana segura de PayPal.</li><li><strong>Por WhatsApp</strong>: el pedido se escribe solo; usted solo tiene que pulsar «Enviar».</li><li><strong>Por correo electrónico</strong>: se abre su correo con el pedido escrito.</li><li><strong>Bizum</strong>: cuando le confirmemos el pedido por WhatsApp.</li><li><strong>En la tienda</strong>: al recoger, como siempre.</li></ul>`)}
-  ${sec("cambios", "Cambios y devoluciones", `<p>Tiene ${T.diasCambio} días para cambiarlo. No admitimos cambios de medias, calcetines ni ropa interior con el precinto abierto, ni de artículos cortados a medida.</p><p>Para hacer un cambio, tráigalo a la tienda con el artículo en buen estado o llámenos y le decimos cómo enviárnoslo.</p>`)}
-  ${sec("telefono", "Pedir por teléfono o WhatsApp", `<p>Si lo prefiere, llámenos al <a href="${U().telURL()}">${nb(esc(T.tel))}</a> o escríbanos por WhatsApp al <a href="${U().whatsURL()}" target="_blank" rel="noopener">${nb(esc(T.whatsTxt))}</a>. Díganos qué necesita y se lo preparamos. Si duda con un color, envíenos una foto.</p>`)}
+  ${sec("envios", "Envíos y plazos", `<p>Enviamos a toda la Península por ${eur(T.envio)}. <strong>Desde ${eur(T.envioGratis)}, el envío es gratis.</strong> El pedido llega en ${esc(T.plazoEnvio)}; si lo haces antes de las ${T.horaCorte}:00, sale de la tienda el mismo día.</p><p>Para Baleares, Canarias, Ceuta o Melilla, llámanos y te decimos el coste.</p>`)}
+  ${sec("recogida", "Recogida en tienda", `<p>Elige «Lo recojo en la tienda» al hacer el pedido. Es gratis. Te avisamos cuando esté listo y lo recoges en ${esc(T.calle)}, en horario de tienda.</p><div class="pag-horario">${E().estadoHTML ? E().estadoHTML() : ""}${E().horarioHTML ? E().horarioHTML() : ""}</div>`)}
+  ${sec("pago", "Formas de pago", `<div class="aviso" role="note">${ic("info")}<p>Puedes pagar con tarjeta o PayPal en la web: solo reservamos el importe y no se cobra hasta que comprobemos que tenemos todo. Si lo prefieres, envíanos el pedido por WhatsApp o por correo y paga al recoger o por Bizum.</p></div>
+    <ul class="pag-lista"><li><strong>Tarjeta o PayPal</strong>: en el último paso del pedido, en la ventana segura de PayPal.</li><li><strong>Por WhatsApp</strong>: el pedido se escribe solo; tú solo tienes que pulsar «Enviar».</li><li><strong>Por correo electrónico</strong>: se abre tu correo con el pedido escrito.</li><li><strong>Bizum</strong>: cuando te confirmemos el pedido por WhatsApp.</li><li><strong>En la tienda</strong>: al recoger, como siempre.</li></ul>`)}
+  ${sec("cambios", "Cambios y devoluciones", `<p>Tienes ${T.diasCambio} días para cambiarlo. No admitimos cambios de medias, calcetines ni ropa interior con el precinto abierto, ni de artículos cortados a medida.</p><p>Para hacer un cambio, tráelo a la tienda con el artículo en buen estado o llámanos y te decimos cómo enviárnoslo.</p>`)}
+  ${sec("telefono", "Pedir por teléfono o WhatsApp", `<p>Si lo prefieres, llámanos al <a href="${U().telURL()}">${nb(esc(T.tel))}</a> o escríbenos por WhatsApp al <a href="${U().whatsURL()}" target="_blank" rel="noopener">${nb(esc(T.whatsTxt))}</a>. Dinos qué necesitas y te lo preparamos. Si dudas con un color, envíanos una foto.</p>`)}
   <section class="pag-bloque" id="${id}-guias" aria-labelledby="${id}-guias-t">
     <h2 id="${id}-guias-t" data-r>Guías breves</h2>
     <div class="pag-guias" data-r-grupo>
@@ -101,7 +101,7 @@ ${E().comprarHTML ? E().comprarHTML({ h1: true, envios: `#${id}-envios` }) : cab
     </div>
   </section>
 </div>
-${bandaContacto("¿Prefiere que se lo preparemos nosotros?", `Llámenos o escríbanos y díganos qué necesita. Le atendemos de lunes a sábado, de 10:00 a 14:00 y de 17:00 a 20:00.`)}
+${bandaContacto("¿Prefieres que te lo preparemos nosotros?", `Llámanos o escríbenos y dinos qué necesitas. Te atendemos de lunes a sábado, de 10:00 a 14:00 y de 17:00 a 20:00.`)}
 </div>`;
 }
 
@@ -112,7 +112,7 @@ function visitanosHTML(){
   const T = D().TIENDA, id = U().uid("pag");
   return `<div class="pag pag--visitanos">
 <div class="contenedor">
-  ${cabeza("Visítenos", "Estamos en la calle Moreno Nieto, 7, a un paso de la Plaza de la Iglesia. Venga a vernos: le atendemos con calma.")}
+  ${cabeza("Visítanos", "Estamos en la calle Moreno Nieto, 7, a un paso de la Plaza de la Iglesia. Ven a vernos: te atendemos con calma.")}
   <div class="rejilla pag-visita">
     <div class="pag-visita__mapa">${E().mapa ? E().mapa({ grande: true }) : ""}</div>
     <div class="pag-visita__datos" data-r-grupo>
@@ -133,7 +133,7 @@ function visitanosHTML(){
     </div>
   </div>
 </div>
-${bandaContacto("Pida por teléfono y recójalo en la tienda", `Díganos qué necesita y se lo dejamos preparado. Recogerlo no cuesta nada.`)}
+${bandaContacto("Pide por teléfono y recógelo en la tienda", `Dinos qué necesitas y te lo dejamos preparado. Recogerlo no cuesta nada.`)}
 </div>`;
 }
 
@@ -188,9 +188,9 @@ function horarioPaginaHTML(){
       </section>
     </div>
   </div>
-  <p class="pag-hor__aviso" data-r>Puede escribirnos por WhatsApp a cualquier hora: le contestamos en cuanto abramos. En fiestas como la Feria o Navidad el horario puede cambiar; lo avisamos en nuestras <a href="${R().url.redes()}">redes sociales</a>.</p>
+  <p class="pag-hor__aviso" data-r>Puedes escribirnos por WhatsApp a cualquier hora: te contestamos en cuanto abramos. En fiestas como la Feria o Navidad el horario puede cambiar; lo avisamos en nuestras <a href="${R().url.redes()}">redes sociales</a>.</p>
 </div>
-${bandaContacto("¿Viene a recoger un pedido?", "Llámenos antes y se lo tenemos preparado en el mostrador cuando llegue.")}
+${bandaContacto("¿Vienes a recoger un pedido?", "Llámanos antes y te lo tenemos preparado en el mostrador cuando llegues.")}
 </div>`;
 }
 
@@ -214,11 +214,11 @@ function redesHTML(){
     </li>`).join("");
   return `<div class="pag pag--redes">
 <div class="contenedor">
-  ${cabeza("Síganos en redes sociales", "Ahí contamos las novedades que llegan a la tienda, los avisos de horario en fiestas y algún que otro truco de costura.")}
+  ${cabeza("Síguenos en redes sociales", "Ahí contamos las novedades que llegan a la tienda, los avisos de horario en fiestas y algún que otro truco de costura.")}
   <ul class="pag-redes" role="list" data-r-grupo>${tarjetas}</ul>
-  <p class="pag-hor__aviso" data-r>¿Prefiere hablar con una persona? Escríbanos por <a href="${U().whatsURL()}" target="_blank" rel="noopener">WhatsApp</a> o llame al <a href="${U().telURL()}">${nb(esc(T.tel))}</a>.</p>
+  <p class="pag-hor__aviso" data-r>¿Prefieres hablar con una persona? Escríbenos por <a href="${U().whatsURL()}" target="_blank" rel="noopener">WhatsApp</a> o llama al <a href="${U().telURL()}">${nb(esc(T.tel))}</a>.</p>
 </div>
-${bandaContacto("¿Ha visto algo en nuestras redes?", "Mándenos la foto o el vídeo por WhatsApp y le decimos si lo tenemos y en qué colores.")}
+${bandaContacto("¿Has visto algo en nuestras redes?", "Mándanos la foto o el vídeo por WhatsApp y te decimos si lo tenemos y en qué colores.")}
 </div>`;
 }
 
@@ -228,14 +228,14 @@ ${bandaContacto("¿Ha visto algo en nuestras redes?", "Mándenos la foto o el v�
 function legalHTML(){
   const T = D().TIENDA, id = U().uid("pag");
   const S = [
-    ["aviso", "Aviso legal", `<p>Esta web pertenece a La Valenciana, mercería y complementos, con domicilio en ${esc(T.dir)}. Puede escribirnos a <a href="mailto:${esc(T.correo)}">${esc(T.correo)}</a> o llamarnos al <a href="${U().telURL()}">${nb(esc(T.tel))}</a>.</p><p>Los datos del titular (razón social y NIF) se facilitan a quien los solicite en esa misma dirección de correo.</p><p>Los textos, ilustraciones y el diseño de esta web son de La Valenciana. No se pueden copiar para uso comercial sin nuestro permiso.</p>`],
-    ["privacidad", "Privacidad", `<p>Esta web no tiene registro de usuarios ni guarda sus datos en ningún servidor.</p><p>Cuando hace un pedido, su nombre, teléfono y, si lo da, su dirección, viajan en el mensaje de WhatsApp o en el correo que usted mismo envía. Los usamos solo para preparar y entregar su pedido y para hablar con usted sobre él. No los cedemos a nadie, salvo a la empresa de transporte cuando hay envío a casa.</p><p>Puede pedirnos en cualquier momento que le digamos qué datos suyos tenemos, que los corrijamos o que los borremos, escribiendo a <a href="mailto:${esc(T.correo)}">${esc(T.correo)}</a>. También puede reclamar ante la Agencia Española de Protección de Datos.</p>`],
-    ["cookies", "Cookies", `<p>No usamos cookies de publicidad ni de seguimiento.</p><p>Su navegador guarda en su propio equipo la cesta, el tamaño de letra que haya elegido y los datos del último pedido, para que no los pierda al volver. No nos llegan a nosotros. Puede borrarlos cuando quiera desde la configuración de su navegador.</p><p>Para mostrar el tipo de letra, la web lo descarga de Google Fonts; al hacerlo, Google recibe la dirección de internet de su equipo.</p>`],
-    ["condiciones", "Condiciones de venta", `<p>Los precios incluyen el IVA. El envío a la Península cuesta ${eur(T.envio)} y es gratis a partir de ${eur(T.envioGratis)}. El plazo de entrega es de ${esc(T.plazoEnvio)}. Recoger en la tienda es gratis.</p><p>El pedido no es firme hasta que lo confirmamos con usted por teléfono, WhatsApp o correo. No se cobra nada antes. El pago con tarjeta, Bizum y PayPal desde la web estará disponible próximamente.</p><p>Tiene ${T.diasCambio} días para cambiarlo. No admitimos cambios de medias, calcetines ni ropa interior con el precinto abierto, ni de artículos cortados a medida.</p>`]
+    ["aviso", "Aviso legal", `<p>Esta web pertenece a La Valenciana, mercería y complementos, con domicilio en ${esc(T.dir)}. Puedes escribirnos a <a href="mailto:${esc(T.correo)}">${esc(T.correo)}</a> o llamarnos al <a href="${U().telURL()}">${nb(esc(T.tel))}</a>.</p><p>Los datos del titular (razón social y NIF) se facilitan a quien los solicite en esa misma dirección de correo.</p><p>Los textos, ilustraciones y el diseño de esta web son de La Valenciana. No se pueden copiar para uso comercial sin nuestro permiso.</p>`],
+    ["privacidad", "Privacidad", `<p>Esta web no tiene registro de usuarios ni guarda tus datos en ningún servidor.</p><p>Cuando haces un pedido, tu nombre, teléfono y, si lo das, tu dirección, viajan en el mensaje de WhatsApp o en el correo que tú mismo envías. Los usamos solo para preparar y entregar tu pedido y para hablar contigo sobre él. No los cedemos a nadie, salvo a la empresa de transporte cuando hay envío a casa.</p><p>Puedes pedirnos en cualquier momento que te digamos qué datos tuyos tenemos, que los corrijamos o que los borremos, escribiendo a <a href="mailto:${esc(T.correo)}">${esc(T.correo)}</a>. También puedes reclamar ante la Agencia Española de Protección de Datos.</p>`],
+    ["cookies", "Cookies", `<p>No usamos cookies de publicidad ni de seguimiento.</p><p>Tu navegador guarda en tu propio equipo la cesta y los datos del último pedido, para que no los pierdas al volver. No nos llegan a nosotros. Puedes borrarlos cuando quieras desde la configuración de tu navegador.</p><p>Los tipos de letra están alojados en esta misma web: no se descarga nada de Google.</p>`],
+    ["condiciones", "Condiciones de venta", `<p>Los precios incluyen el IVA. El envío a la Península cuesta ${eur(T.envio)} y es gratis a partir de ${eur(T.envioGratis)}. El plazo de entrega es de ${esc(T.plazoEnvio)}. Recoger en la tienda es gratis.</p><p>El pedido no es firme hasta que lo confirmamos contigo por teléfono, WhatsApp o correo. No se cobra nada antes. El pago con tarjeta, Bizum y PayPal desde la web estará disponible próximamente.</p><p>Tienes ${T.diasCambio} días para cambiarlo. No admitimos cambios de medias, calcetines ni ropa interior con el precinto abierto, ni de artículos cortados a medida.</p>`]
   ];
   return `<div class="pag pag--legal">
 <div class="contenedor">
-  ${cabeza("Aviso legal y privacidad", "Quiénes somos, qué hacemos con sus datos y en qué condiciones vendemos. Sin letra pequeña.")}
+  ${cabeza("Aviso legal y privacidad", "Quiénes somos, qué hacemos con tus datos y en qué condiciones vendemos. Sin letra pequeña.")}
   <div class="pag-legal">
     <nav class="pag-legal__indice pag-indice" aria-label="Apartados" data-r>
       <p class="pag-indice__titulo">Apartados</p>
@@ -259,11 +259,11 @@ function noEncontradaHTML(){
 <div class="contenedor pag-404">
   <div class="pag-404__boton" aria-hidden="true"><div class="pag-404__rueda">${pieza("boton", COLOR("Rosa empolvado"))}</div><span class="pag-404__sombra"></span></div>
   <h1 data-titular>Aquí no hay nada</h1>
-  <p class="t-entradilla pag-404__texto" data-r data-r-retardo="250">La página que busca no existe o ha cambiado de sitio.</p>
+  <p class="t-entradilla pag-404__texto" data-r data-r-retardo="250">La página que buscas no existe o ha cambiado de sitio.</p>
   <form class="pag-404__buscar" role="search" data-r data-r-retardo="350">
-    <label class="campo__etiqueta" for="${id}-q">¿Qué estaba buscando?</label>
+    <label class="campo__etiqueta" for="${id}-q">¿Qué estabas buscando?</label>
     <div class="pag-404__fila">
-      <input class="campo__control" id="${id}-q" name="q" type="search" placeholder="Escriba aquí: botones, lana, medias…" autocomplete="off" enterkeyhint="search">
+      <input class="campo__control" id="${id}-q" name="q" type="search" placeholder="Escribe aquí: botones, lana, medias…" autocomplete="off" enterkeyhint="search">
       <button class="boton boton--secundario" type="submit">${ic("buscar")}<span>Buscar</span></button>
     </div>
   </form>
@@ -291,7 +291,7 @@ const vigilar = main => { if (E().vigilarEstado) limpiar.push(E().vigilarEstado(
 
 LV.vistas.comoComprar = { titulo: () => "Cómo comprar", html: comoComprarHTML, desmontar,
   montar(main){ vigilar(main); acordeones(main); } };
-LV.vistas.visitanos = { titulo: () => "Visítenos", html: visitanosHTML, desmontar,
+LV.vistas.visitanos = { titulo: () => "Visítanos", html: visitanosHTML, desmontar,
   montar(main){ vigilar(main); if (E().respaldoRev) limpiar.push(E().respaldoRev(main)); } };
 LV.vistas.legal = { titulo: () => "Aviso legal y privacidad", html: legalHTML, desmontar };
 LV.vistas.horario = { titulo: () => "Horario", html: horarioPaginaHTML, desmontar,

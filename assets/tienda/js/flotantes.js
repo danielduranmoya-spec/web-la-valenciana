@@ -12,7 +12,7 @@ function iniciar(){
   const caja = document.createElement("div");
   caja.className = "flotantes";
   caja.innerHTML = `
-    <a class="flotante flotante--whats" href="${LV.util.whatsURL("Hola, La Valenciana")}" target="_blank" rel="noopener">${ic("whats")}<span>WhatsApp</span><span class="visualmente-oculto">: escríbanos (se abre en otra ventana)</span></a>
+    <a class="flotante flotante--whats" href="${LV.util.whatsURL("Hola, La Valenciana")}" target="_blank" rel="noopener">${ic("whats")}<span>WhatsApp</span><span class="visualmente-oculto">: escríbenos (se abre en otra ventana)</span></a>
     <button type="button" class="flotante flotante--cesta" aria-haspopup="dialog" aria-controls="ces-panel" hidden>${ic("cesta")}<span>Cesta</span><span class="flotante__n" aria-hidden="true">0</span><span class="visualmente-oculto" data-flot-sr></span></button>`;
   document.body.appendChild(caja);
   const cesta = caja.querySelector(".flotante--cesta");

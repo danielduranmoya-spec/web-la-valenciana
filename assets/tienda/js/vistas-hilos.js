@@ -118,22 +118,22 @@ function empezarHTML(){
   <div class="contenedor">
     <div class="hil-seccion-cabeza" data-r>
       <p class="caja-antetitulo">Para orientarse</p>
-      <h2 id="hil-empezar-t">Elija por dónde empezar</h2>
-      <p>Toque lo que necesita y le llevamos directo. Si no lo tiene claro, más abajo le proponemos ideas.</p>
+      <h2 id="hil-empezar-t">Elige por dónde empezar</h2>
+      <p>Toca lo que necesitas y te llevamos directo. Si no lo tienes claro, más abajo te proponemos ideas.</p>
     </div>
     ${circulos(items, { clase: "hil-circulos--empezar" })}
   </div>
 </section>`;
 }
-const crearHTML = () => carrusel(PROYECTOS, { id: "hil-crear-portada", titulo: "¿Qué le apetece crear hoy?", ante: "Ideas con nuestras lanas",
-  entradilla: "Cada idea lleva su guía: cuántos ovillos, qué agujas y los pasos. Así sabe qué comprar antes de empezar." });
+const crearHTML = () => carrusel(PROYECTOS, { id: "hil-crear-portada", titulo: "¿Qué te apetece crear hoy?", ante: "Ideas con nuestras lanas",
+  entradilla: "Cada idea lleva su guía: cuántos ovillos, qué agujas y los pasos. Así sabes qué comprar antes de empezar." });
 function tiposHTML(){
   return `<section class="hil-tipos seccion seccion--rosa" aria-labelledby="hil-tipos-t">
   <div class="contenedor hil-tipos__rejilla">
     <div class="hil-seccion-cabeza" data-r>
       <p class="caja-antetitulo">Valores</p>
-      <h2 id="hil-tipos-t">Elija por tipo de hilo</h2>
-      <p>En cada material le enseñamos trabajos hechos con él, para que vea cómo queda, y una guía para acertar con las agujas, la cantidad y el lavado.</p>
+      <h2 id="hil-tipos-t">Elige por tipo de hilo</h2>
+      <p>En cada material te enseñamos trabajos hechos con él, para que veas cómo queda, y una guía para acertar con las agujas, la cantidad y el lavado.</p>
     </div>
     ${circulosTipos()}
   </div>
@@ -147,7 +147,7 @@ function serviciosHTML(){
     ${it("camion", `Envío gratis desde ${T.envioGratis} €`, `${T.plazoEnvio}, a toda la península.`)}
     ${it("tienda", "Recogida en tienda", "Gratis, en la calle Moreno Nieto, 7.")}
     ${it("candado", "Pago seguro", "Con tarjeta o PayPal, o al recoger.")}
-    ${it("whats", "Le aconsejamos", "Por WhatsApp o en el mostrador, sin prisas.")}
+    ${it("whats", "Te aconsejamos", "Por WhatsApp o en el mostrador, sin prisas.")}
   </ul>
 </section>`;
 }
@@ -166,11 +166,11 @@ function tarjetaLabor(t, l, i){
         <div><dt>Tiempo</dt><dd>${esc(l.tiempo)}</dd></div>
         <div><dt>Mide</dt><dd>${esc(l.mide)}</dd></div>
       </dl>
-      <p class="hil-labor__material"><strong>Necesita:</strong> ${esc(l.material)}.</p>
+      <p class="hil-labor__material"><strong>Necesitas:</strong> ${esc(l.material)}.</p>
       <details class="hil-guia"${i === 0 ? "" : ""}>
         <summary>Guía paso a paso</summary>
         <ol>${l.pasos.map(p => `<li>${esc(p)}</li>`).join("")}</ol>
-        <p class="hil-guia__nota">Cantidades orientativas: cambian con la talla y con cómo teja cada una. Si duda, pregúntenos.</p>
+        <p class="hil-guia__nota">Cantidades orientativas: cambian con la talla y con cómo teja cada una. Si dudas, pregúntanos.</p>
       </details>
       <div class="hil-labor__botones">
         ${whats("boton--primario", "Pedir el material", msg)}
@@ -208,7 +208,7 @@ LV.vistas.hilo = {
   <div class="contenedor">
     <div class="hil-seccion-cabeza" data-r>
       <h2 id="hil-valores-t">Valores</h2>
-      <p>Trabajos hechos con ${esc(t.nombre.toLowerCase())}, como referencia de lo que sale de cada ovillo. Cada uno trae lo que necesita y su guía.</p>
+      <p>Trabajos hechos con ${esc(t.nombre.toLowerCase())}, como referencia de lo que sale de cada ovillo. Cada uno trae lo que necesitas y su guía.</p>
     </div>
     <div class="hil-labores">${t.labores.map((l, i) => tarjetaLabor(t, l, i)).join("")}</div>
     <p class="hil-nota">Los dibujos son orientativos. Muy pronto los cambiaremos por fotos de labores reales hechas con nuestras lanas.</p>
@@ -219,7 +219,7 @@ LV.vistas.hilo = {
   <div class="contenedor">
     <div class="hil-seccion-cabeza" data-r>
       <h2 id="hil-guia-t">Guía del ${esc(t.nombre.toLowerCase())}</h2>
-      <p>Lo que le contaríamos en el mostrador antes de llevarse los ovillos.</p>
+      <p>Lo que te contaríamos en el mostrador antes de llevarte los ovillos.</p>
     </div>
     <dl class="hil-guia-gen__lista" data-r-grupo>
       ${GUIA.map(([k, n]) => `<div class="hil-guia-gen__item" data-r><dt>${esc(n)}</dt><dd>${esc(t.guia[k])}</dd></div>`).join("")}
@@ -243,8 +243,8 @@ ${otros.length ? `<section class="hil-otros seccion" aria-labelledby="hil-otros-
 
 <section class="hil-ayuda seccion seccion--rosa" aria-labelledby="hil-ayuda-t">
   <div class="contenedor hil-ayuda__rejilla">
-    <div data-r><h2 id="hil-ayuda-t">¿Tiene una idea y no sabe por dónde empezar?</h2>
-    <p>Cuéntenos qué quiere hacer y le preparamos los ovillos, las agujas y el patrón.</p></div>
+    <div data-r><h2 id="hil-ayuda-t">¿Tienes una idea y no sabes por dónde empezar?</h2>
+    <p>Cuéntanos qué quieres hacer y te preparamos los ovillos, las agujas y el patrón.</p></div>
     <div data-r>${whats("boton--primario boton--grande", "Escribir por WhatsApp", `Hola, quiero hacer una labor con ${t.nombre.toLowerCase()} y no sé qué necesito: `)}</div>
   </div>
 </section>
@@ -269,9 +269,9 @@ function quitarExtras(main){ main.querySelectorAll(`[${ATTR}]`).forEach(n => n.r
 function extraLanas(main){
   const cab = main.querySelector(".lis-cab"); if (!cab) return;
   const div = document.createElement("div"); div.setAttribute(ATTR, "");
-  div.innerHTML = carrusel(PROYECTOS, { id: "hil-crear-lanas", titulo: "¿Qué quiere tejer hoy?", nivel: "h2" }) +
+  div.innerHTML = carrusel(PROYECTOS, { id: "hil-crear-lanas", titulo: "¿Qué quieres tejer hoy?", nivel: "h2" }) +
     `<section class="hil-tipos hil-tipos--lanas" aria-labelledby="hil-tipos-lanas-t"><div class="contenedor hil-tipos__rejilla">
-      <div class="hil-seccion-cabeza"><h2 id="hil-tipos-lanas-t">Elija por tipo de hilo</h2><p>Con sus valores (trabajos hechos con él) y su guía.</p></div>
+      <div class="hil-seccion-cabeza"><h2 id="hil-tipos-lanas-t">Elige por tipo de hilo</h2><p>Con sus valores (trabajos hechos con él) y su guía.</p></div>
       ${circulosTipos()}</div></section>`;
   cab.after(div);
   montarCarrusel(div);
@@ -286,8 +286,8 @@ function extraFicha(main, prod){
   div.innerHTML = `<div>
     <div class="hil-seccion-cabeza">
       <p class="caja-antetitulo">Valores</p>
-      <h2 id="hil-ficha-t">Qué puede hacer con esta lana</h2>
-      <p>Trabajos hechos con ${esc(t.nombre.toLowerCase())}, con lo que necesita y su guía paso a paso.</p>
+      <h2 id="hil-ficha-t">Qué puedes hacer con esta lana</h2>
+      <p>Trabajos hechos con ${esc(t.nombre.toLowerCase())}, con lo que necesitas y su guía paso a paso.</p>
     </div>
     <ul class="hil-mini" role="list">${t.labores.map(l => `<li><a class="hil-mini__enlace" href="${R().url.hilo(t.id, l.id)}">
       <span class="hil-mini__lienzo" style="--hil-lienzo:${H().tono(l.c, .8)}">${H().dibujo(l, { clase: "hil-mini__dib" })}</span>

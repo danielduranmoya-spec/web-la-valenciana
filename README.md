@@ -2,7 +2,7 @@
 
 Web de **La Valenciana**, mercería y complementos en la calle Moreno Nieto 7 de Almendralejo, con tres secciones: **Mercería**, **Complementos** y **Cápsulas**.
 
-- Paleta blanca, crema y kraft (la de la v3), con Playfair Display y Jost alojadas en la propia web.
+- Paleta blanca, crema y kraft (la de la v3), con Federo (títulos) y Oxygen (texto y precios) alojadas en la propia web.
 - En la portada, una caja de cartón que se abre y de la que salen las secciones.
 - Catálogo con vistas de colores, medidas y tallas, búsqueda por color, cesta y pedido con pago con tarjeta (PayPal), WhatsApp o correo.
 - Web estática (HTML, CSS y JavaScript), publicada gratis con GitHub Pages.
