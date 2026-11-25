@@ -115,16 +115,22 @@ function aviso(){
   document.body.prepend(d);
 }
 
-const listo = !cfg.url ? Promise.resolve(false) : conTiempo(Promise.all([
+// La tienda arranca en cuanto llega la base o a los 3 s (lo que pase antes). Si la base llega más tarde
+// (conexión lenta), se aplica igualmente y se avisa con «lv:catalogo-actualizado» para repintar lo necesario.
+let arrancada = false;
+const traer = !cfg.url ? Promise.resolve(null) : Promise.all([
   pedir(`productos?select=${COLS_FOTOS}&order=orden`).catch(() => pedir(`productos?select=${COLS}&order=orden`)),
   pedir("ajustes?select=clave,valor"),
   pedir("subcategorias?select=id,cat,nombre,texto,orden&order=orden")
-]), 3000).then(([filas, ajustes, subs]) => {
+]).then(([filas, ajustes, subs]) => {
   if (!Array.isArray(filas) || !filas.length) return false;
   aplicar(filas, ajustes, subs); conectado = true;
   if (document.body) aviso(); else document.addEventListener("DOMContentLoaded", aviso);
+  if (arrancada) document.dispatchEvent(new CustomEvent("lv:catalogo-actualizado"));
   return true;
 }).catch(e => { console.warn("[LV.remoto] sin base de datos, se usa datos.js:", e.message); return false; });
+const listo = conTiempo(traer, 3000).catch(() => { console.warn("[LV.remoto] la base tarda: se arranca con datos.js y se aplicará al llegar"); return false; })
+  .then(r => { arrancada = true; return r; });
 
 /** Registra el pedido en la base de datos. extra: {canal, paypal_id, ref}. Nunca lanza error. */
 function pedido(datos, extra = {}){
@@ -144,5 +150,5 @@ function comprobarCodigo(cod){
     .then(r => r && r.codigo ? r : null).catch(() => null);
 }
 
-return { listo, pedido, parchear, comprobarCodigo, conectado: () => conectado };
+return { listo, traer, pedido, parchear, comprobarCodigo, conectado: () => conectado };
 })();

@@ -16,30 +16,106 @@
 <link rel="preload" href="assets/fonts/Jost.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="assets/fonts/fuentes.css">
 <script>document.documentElement.className+=" js";</script>
-<link rel="stylesheet" href="assets/tienda/css/tokens.css">
-<link rel="stylesheet" href="assets/tienda/css/nucleo.css">
-<link rel="stylesheet" href="assets/tienda/css/cabecera.css">
-<link rel="stylesheet" href="assets/tienda/css/pie.css">
-<link rel="stylesheet" href="assets/tienda/css/portada-hero.css">
-<link rel="stylesheet" href="assets/tienda/css/caja.css">
-<link rel="stylesheet" href="assets/tienda/css/caja-original.css">
-<link rel="stylesheet" href="assets/tienda/css/portada.css">
-<link rel="stylesheet" href="assets/tienda/css/paginas.css">
-<link rel="stylesheet" href="assets/tienda/css/tarjeta.css">
-<link rel="stylesheet" href="assets/tienda/css/listado.css">
-<link rel="stylesheet" href="assets/tienda/css/ficha.css">
-<link rel="stylesheet" href="assets/tienda/css/cesta.css">
-<link rel="stylesheet" href="assets/tienda/css/pedido.css">
-<link rel="stylesheet" href="assets/tienda/css/ilustraciones.css">
-<link rel="stylesheet" href="assets/tienda/css/tema.css">
-<link rel="stylesheet" href="assets/tienda/css/efectos.css">
-<link rel="stylesheet" href="assets/tienda/css/colores.css">
-<link rel="stylesheet" href="assets/tienda/css/movimiento.css">
-<link rel="stylesheet" href="assets/tienda/css/fusion.css">
-<link rel="stylesheet" href="assets/tienda/css/hilos.css?v=20261123a">
+<style id="lv-carga-estilo">
+/* Pantalla de carga: va en línea para verse antes de que lleguen las hojas de estilo y los scripts */
+.lv-carga{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;padding:24px 16px;
+  background:#FFFFFF radial-gradient(ellipse at 50% 42%,#F8F3EB 0,#F8F3EB 22%,rgba(248,243,235,0) 62%);
+  color:#2F2A26;font-family:"Jost","Helvetica Neue",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;text-align:center;
+  transition:opacity .45s ease,visibility 0s linear .45s}
+.lv-carga__in{display:flex;flex-direction:column;align-items:center;gap:14px;max-width:22rem;opacity:0;animation:lvc-aparece .5s ease .35s forwards}
+.lv-carga__ovillo{width:132px;height:112px;overflow:visible}
+.lv-carga__bola{transform-origin:60px 58px;animation:lvc-gira 2.6s ease-in-out infinite}
+.lv-carga__hebra{stroke-dasharray:150;stroke-dashoffset:150;animation:lvc-hebra 2.6s ease-in-out infinite}
+.lv-carga__aguja{transform-origin:118px 78px;animation:lvc-aguja 2.6s ease-in-out infinite}
+.lv-carga__marca{margin:4px 0 0;font:400 1.75rem/1.1 "Playfair Display","Federo","Iowan Old Style",Georgia,serif;letter-spacing:.01em}
+.lv-carga__filete{width:56px;height:2px;border-radius:2px;background:linear-gradient(90deg,#C8A27A,#7A4E2D);overflow:hidden;position:relative}
+.lv-carga__filete::after{content:"";position:absolute;inset:0;background:#F8F3EB;transform:translateX(-100%);animation:lvc-filete 1.6s ease-in-out infinite}
+.lv-carga__txt{margin:0;font-size:1rem;line-height:1.5;color:#5E554D;min-height:3em}
+.lv-carga__txt a{color:#7A4E2D;font-weight:600;text-underline-offset:3px}
+.lv-carga__lento{display:none}
+.lv-carga.es-lenta .lv-carga__normal{display:none}
+.lv-carga.es-lenta .lv-carga__lento{display:inline}
+html.lv-cargada .lv-carga{opacity:0;visibility:hidden;pointer-events:none}
+@keyframes lvc-aparece{to{opacity:1}}
+@keyframes lvc-gira{0%{transform:rotate(0)}50%{transform:rotate(-14deg)}100%{transform:rotate(0)}}
+@keyframes lvc-hebra{0%{stroke-dashoffset:150}55%{stroke-dashoffset:0}100%{stroke-dashoffset:-150}}
+@keyframes lvc-aguja{0%,100%{transform:translateX(0) rotate(0)}50%{transform:translateX(-6px) rotate(-6deg)}}
+@keyframes lvc-filete{0%{transform:translateX(-100%)}60%,100%{transform:translateX(100%)}}
+@media (prefers-reduced-motion:reduce){.lv-carga__bola,.lv-carga__hebra,.lv-carga__aguja,.lv-carga__filete::after{animation:none}.lv-carga__hebra{stroke-dashoffset:0}.lv-carga__in{animation-duration:.01s}}
+@media print{.lv-carga{display:none}}
+html:not(.js) .lv-carga{display:none}
+</style>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "Store", "name": "La Valenciana", "description": "Mercería y complementos en Almendralejo", "url": "https://danielduranmoya-spec.github.io/web-la-valenciana/", "address": {"@type": "PostalAddress", "streetAddress": "Calle Moreno Nieto 7", "postalCode": "06200", "addressLocality": "Almendralejo", "addressRegion": "Badajoz", "addressCountry": "ES"}, "telephone": "+34924670839", "email": "administracion@lavalencianamerceria.com", "openingHoursSpecification": [{"@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"], "opens": "10:00", "closes": "14:00"}, {"@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"], "opens": "17:00", "closes": "20:00"}], "sameAs": ["https://www.instagram.com/_lavalenciana", "https://www.tiktok.com/@_lavalenciana_", "https://www.facebook.com/mercerialavalenciana/"]}</script>
 </head>
 <body>
+<div class="lv-carga" id="lv-carga" role="status" aria-live="polite">
+  <div class="lv-carga__in">
+    <svg class="lv-carga__ovillo" viewBox="0 0 140 112" aria-hidden="true">
+      <ellipse cx="62" cy="102" rx="34" ry="5" fill="#2F2A26" opacity=".08"/>
+      <path class="lv-carga__hebra" d="M88 80 C104 96 112 70 126 86 S134 104 120 104" fill="none" stroke="#7A4E2D" stroke-width="2" stroke-linecap="round"/>
+      <g class="lv-carga__bola">
+        <circle cx="60" cy="58" r="38" fill="#C8A27A"/>
+        <g fill="none" stroke="#9E7A55" stroke-width="2.2" stroke-linecap="round">
+          <path d="M26 46 C44 34 78 30 96 44"/>
+          <path d="M23 60 C44 46 82 42 98 58"/>
+          <path d="M27 76 C48 62 82 58 95 72"/>
+          <path d="M40 90 C56 80 78 78 86 86"/>
+        </g>
+        <g fill="none" stroke="#7A4E2D" stroke-width="2" stroke-linecap="round" opacity=".75">
+          <path d="M46 22 C34 42 36 76 52 95"/>
+          <path d="M66 20 C52 44 54 76 70 96"/>
+        </g>
+        <path d="M38 34 C46 26 56 23 64 23" fill="none" stroke="#F8F3EB" stroke-width="3" stroke-linecap="round" opacity=".7"/>
+      </g>
+      <g class="lv-carga__aguja">
+        <line x1="92" y1="16" x2="128" y2="94" stroke="#7A4E2D" stroke-width="3" stroke-linecap="round"/>
+        <circle cx="91" cy="14" r="4.5" fill="#5A3820"/>
+      </g>
+    </svg>
+    <p class="lv-carga__marca">La Valenciana</p>
+    <span class="lv-carga__filete" aria-hidden="true"></span>
+    <p class="lv-carga__txt"><span class="lv-carga__normal">Preparando la tienda…</span><span class="lv-carga__lento">Tu conexión va un poco lenta. Un momento, ya casi está.<span id="lv-carga-ayuda" hidden><br>¿Tarda mucho? Llámanos al <a href="tel:+34924670839">924&nbsp;67&nbsp;08&nbsp;39</a>.</span></span></p>
+  </div>
+</div>
+<script>
+/* Pantalla de carga: se quita cuando la tienda avisa de que está lista (lv:listo). Si la conexión va lenta,
+   cambia el mensaje; y por si algo falla, nunca se queda más de 25 s. */
+(function(){
+  var d = document, h = d.documentElement, c = d.getElementById("lv-carga"), fin = false;
+  var t1 = setTimeout(function(){ c.classList.add("es-lenta"); }, 4000);
+  var t2 = setTimeout(function(){ var a = d.getElementById("lv-carga-ayuda"); if (a) a.hidden = false; }, 12000);
+  function quitar(){
+    if (fin) return; fin = true; clearTimeout(t1); clearTimeout(t2); clearTimeout(t3);
+    h.classList.add("lv-cargada"); c.removeAttribute("role");
+    setTimeout(function(){ if (c.parentNode) c.parentNode.removeChild(c); }, 600);
+  }
+  var t3 = setTimeout(quitar, 25000);
+  d.addEventListener("lv:listo", quitar);
+  window.LV_quitarCarga = quitar;
+})();
+</script>
+<!-- hojas de estilo después de la pantalla de carga: así esta se ve aunque la conexión vaya lenta -->
+<link rel="stylesheet" href="assets/tienda/css/tokens.css?v=20261125a">
+<link rel="stylesheet" href="assets/tienda/css/nucleo.css?v=20261125a">
+<link rel="stylesheet" href="assets/tienda/css/cabecera.css?v=20261125a">
+<link rel="stylesheet" href="assets/tienda/css/pie.css?v=20261125a">
+<link rel="stylesheet" href="assets/tienda/css/portada-hero.css?v=20261125a">
+<link rel="stylesheet" href="assets/tienda/css/caja.css?v=20261125a">
+<link rel="stylesheet" href="assets/tienda/css/caja-original.css?v=20261125a">
+<link rel="stylesheet" href="assets/tienda/css/portada.css?v=20261125a">
+<link rel="stylesheet" href="assets/tienda/css/paginas.css?v=20261125a">
+<link rel="stylesheet" href="assets/tienda/css/tarjeta.css?v=20261125a">
+<link rel="stylesheet" href="assets/tienda/css/listado.css?v=20261125a">
+<link rel="stylesheet" href="assets/tienda/css/ficha.css?v=20261125a">
+<link rel="stylesheet" href="assets/tienda/css/cesta.css?v=20261125a">
+<link rel="stylesheet" href="assets/tienda/css/pedido.css?v=20261125a">
+<link rel="stylesheet" href="assets/tienda/css/ilustraciones.css?v=20261125a">
+<link rel="stylesheet" href="assets/tienda/css/tema.css?v=20261125a">
+<link rel="stylesheet" href="assets/tienda/css/efectos.css?v=20261125a">
+<link rel="stylesheet" href="assets/tienda/css/colores.css?v=20261125a">
+<link rel="stylesheet" href="assets/tienda/css/movimiento.css?v=20261125a">
+<link rel="stylesheet" href="assets/tienda/css/fusion.css?v=20261125a">
+<link rel="stylesheet" href="assets/tienda/css/hilos.css?v=20261125a">
 <a class="saltar" id="saltar" href="#contenido">Saltar al contenido</a>
 <header id="cabecera"></header>
 <main id="contenido" tabindex="-1">
@@ -49,37 +125,37 @@
 <div id="capa-cesta"></div>
 <div id="avisos" role="status" aria-live="polite" aria-atomic="true"></div>
 <div id="avisos-urgentes" role="alert" aria-live="assertive" aria-atomic="true"></div>
-<script src="assets/js/pago-config.js?v=20261123a"></script>
-<script src="assets/tienda/js/datos.js?v=20261123a"></script>
-<script src="assets/tienda/js/hilos.js?v=20261123a"></script>
-<script src="assets/js/supabase-config.js?v=20261123a"></script>
-<script src="assets/tienda/js/remoto.js?v=20261123a"></script>
-<script src="assets/tienda/js/util.js?v=20261123a"></script>
-<script src="assets/tienda/js/iconos.js?v=20261123a"></script>
-<script src="assets/tienda/js/tienda.js?v=20261123a"></script>
-<script src="assets/tienda/js/buscador.js?v=20261123a"></script>
-<script src="assets/tienda/js/rutas.js?v=20261123a"></script>
-<script src="assets/tienda/js/ilus.js?v=20261123a"></script>
-<script src="assets/tienda/js/ilus-complementos.js?v=20261123a"></script>
-<script src="assets/tienda/js/ilus-merceria.js?v=20261123a"></script>
-<script src="assets/tienda/js/mov.js?v=20261123a"></script>
-<script src="assets/tienda/js/tarjeta.js?v=20261123a"></script>
-<script src="assets/tienda/js/cabecera.js?v=20261123a"></script>
-<script src="assets/tienda/js/pie.js?v=20261123a"></script>
-<script src="assets/tienda/js/cesta.js?v=20261123a"></script>
-<script src="assets/tienda/js/vistas-portada-hero.js?v=20261123a"></script>
-<script src="assets/tienda/js/vistas-portada-caja.js?v=20261123a"></script>
-<script src="assets/tienda/js/vistas-portada-secciones.js?v=20261123a"></script>
-<script src="assets/tienda/js/vistas-paginas.js?v=20261123a"></script>
-<script src="assets/tienda/js/vistas-colores.js?v=20261123a"></script>
-<script src="assets/tienda/js/vistas-categoria.js?v=20261123a"></script>
-<script src="assets/tienda/js/vistas-producto.js?v=20261123a"></script>
-<script src="assets/tienda/js/vistas-hilos.js?v=20261123a"></script>
-<script src="assets/tienda/js/pago.js?v=20261123a"></script>
-<script src="assets/tienda/js/vistas-pedido.js?v=20261123a"></script>
-<script src="assets/tienda/js/efectos.js?v=20261123a"></script>
-<script src="assets/tienda/js/buscador-flotante.js?v=20261123a"></script>
-<script src="assets/tienda/js/flotantes.js?v=20261123a"></script>
-<script src="assets/tienda/js/arranque.js?v=20261123a"></script>
+<script src="assets/js/pago-config.js?v=20261125a"></script>
+<script src="assets/tienda/js/datos.js?v=20261125a"></script>
+<script src="assets/tienda/js/hilos.js?v=20261125a"></script>
+<script src="assets/js/supabase-config.js?v=20261125a"></script>
+<script src="assets/tienda/js/remoto.js?v=20261125a"></script>
+<script src="assets/tienda/js/util.js?v=20261125a"></script>
+<script src="assets/tienda/js/iconos.js?v=20261125a"></script>
+<script src="assets/tienda/js/tienda.js?v=20261125a"></script>
+<script src="assets/tienda/js/buscador.js?v=20261125a"></script>
+<script src="assets/tienda/js/rutas.js?v=20261125a"></script>
+<script src="assets/tienda/js/ilus.js?v=20261125a"></script>
+<script src="assets/tienda/js/ilus-complementos.js?v=20261125a"></script>
+<script src="assets/tienda/js/ilus-merceria.js?v=20261125a"></script>
+<script src="assets/tienda/js/mov.js?v=20261125a"></script>
+<script src="assets/tienda/js/tarjeta.js?v=20261125a"></script>
+<script src="assets/tienda/js/cabecera.js?v=20261125a"></script>
+<script src="assets/tienda/js/pie.js?v=20261125a"></script>
+<script src="assets/tienda/js/cesta.js?v=20261125a"></script>
+<script src="assets/tienda/js/vistas-portada-hero.js?v=20261125a"></script>
+<script src="assets/tienda/js/vistas-portada-caja.js?v=20261125a"></script>
+<script src="assets/tienda/js/vistas-portada-secciones.js?v=20261125a"></script>
+<script src="assets/tienda/js/vistas-paginas.js?v=20261125a"></script>
+<script src="assets/tienda/js/vistas-colores.js?v=20261125a"></script>
+<script src="assets/tienda/js/vistas-categoria.js?v=20261125a"></script>
+<script src="assets/tienda/js/vistas-producto.js?v=20261125a"></script>
+<script src="assets/tienda/js/vistas-hilos.js?v=20261125a"></script>
+<script src="assets/tienda/js/pago.js?v=20261125a"></script>
+<script src="assets/tienda/js/vistas-pedido.js?v=20261125a"></script>
+<script src="assets/tienda/js/efectos.js?v=20261125a"></script>
+<script src="assets/tienda/js/buscador-flotante.js?v=20261125a"></script>
+<script src="assets/tienda/js/flotantes.js?v=20261125a"></script>
+<script src="assets/tienda/js/arranque.js?v=20261125a"></script>
 </body>
 </html>

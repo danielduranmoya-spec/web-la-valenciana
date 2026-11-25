@@ -32,6 +32,15 @@ const url = {
   hilo: (t, labor) => `#/hilo/${t}${labor ? "/" + labor : ""}`
 };
 
+/** Busca un producto aunque el enlace venga mal escrito (mayúsculas, tildes, espacios,
+    «%20», un «/» de más pegado…): «100% Baby 3», «Baby-3» o «baby_3» llevan a baby-3. */
+const normal = s => String(s || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase()
+  .replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
+function parecido(id){
+  const n = normal(id); if (!n) return null;
+  return D.PRODUCTOS.find(p => normal(p.id) === n) || D.PRODUCTOS.find(p => normal(p.nombre) === n) || null;
+}
+
 /**
  * Traduce un hash a {vista, params}. Valida catálogo: si la categoría,
  * subcategoría o producto no existen → vista "noEncontrada".
@@ -50,8 +59,8 @@ function resolver(hash){
     return { vista: "categoria", params: { cat: b, sub: c || null, categoria, subcategoria: c ? D.subcategoria(b, c) : null } };
   }
   if (a === "p") {
-    const prod = D.producto(b); if (!prod) return nf;
-    return { vista: "producto", params: { id: b, prod, pestana: PESTANAS.includes(c) ? c : null } };
+    const prod = D.producto(b) || parecido(b); if (!prod) return nf;
+    return { vista: "producto", params: { id: prod.id, prod, pestana: PESTANAS.includes(c) ? c : null } };
   }
   if (a === "novedades" && !b) return { vista: "novedades", params: {} };
   if (a === "buscar") return { vista: "buscar", params: { q: partes.slice(1).join("/").trim() } };
@@ -265,6 +274,10 @@ function iniciar(){
     el.focus({ preventScroll: true });
   });
   window.addEventListener("scroll", () => { clearTimeout(tGuardar); tGuardar = setTimeout(guardarY, 200); }, { passive: true });
+  // si el catálogo de la base llega tarde (conexión lenta) y estamos en «no encontrada», se vuelve a intentar
+  document.addEventListener("lv:catalogo-actualizado", () => {
+    if (actualRuta && actualRuta.vista === "noEncontrada") recargar();
+  });
   if (!location.hash || !location.hash.startsWith("#/")) { try { history.replaceState(null, "", "#/" ); } catch (e) {} }
   return encolar();
 }
